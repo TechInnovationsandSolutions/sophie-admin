@@ -15,6 +15,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { AppLayoutComponent } from './app-layout/app-layout.component';
 import { appRoutes } from './routes';
 import { OrdersComponent } from './orders/orders.component';
+import { CreateCategoryComponent } from './category/create-category/create-category.component';
+import { CategoryListComponent } from './category/category-list/category-list.component';
 
 @NgModule({
   imports: [
@@ -33,7 +35,9 @@ import { OrdersComponent } from './orders/orders.component';
     LoginComponent,
     SidebarComponent,
     AppLayoutComponent,
-    OrdersComponent
+    OrdersComponent,
+    CreateCategoryComponent,
+    CategoryListComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

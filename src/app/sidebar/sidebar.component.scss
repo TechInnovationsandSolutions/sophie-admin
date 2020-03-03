@@ -1,0 +1,11 @@
+nav{
+    min-height: 100vh;
+
+    a.nav-link{
+        color: #a7a7a7;
+    
+        &.active{
+           color: #fff; 
+        }
+    }
+}

@@ -13,12 +13,14 @@ import { ReviewsComponent } from './reviews/reviews.component';
 import { LoginComponent } from './login/login.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { AppLayoutComponent } from './app-layout/app-layout.component';
+import { appRoutes } from './routes';
+import { OrdersComponent } from './orders/orders.component';
 
 @NgModule({
   imports: [
     BrowserModule,
     CommonModule, 
-    RouterModule
+    RouterModule.forRoot(appRoutes)
   ],
   declarations: [
     AppComponent,
@@ -30,7 +32,8 @@ import { AppLayoutComponent } from './app-layout/app-layout.component';
     ReviewsComponent,
     LoginComponent,
     SidebarComponent,
-    AppLayoutComponent
+    AppLayoutComponent,
+    OrdersComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

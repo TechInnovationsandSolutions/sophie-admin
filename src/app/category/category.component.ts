@@ -6,10 +6,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./category.component.scss']
 })
 export class CategoryComponent implements OnInit {
+  isAddCategory:boolean = false;
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  showAddCategory(){
+    this.isAddCategory = true;
+  }
+
+  hideAddCategory(){
+    this.isAddCategory = false;
+  }
 }

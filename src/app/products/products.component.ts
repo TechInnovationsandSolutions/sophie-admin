@@ -6,10 +6,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
+  isAddProduct:boolean = false;
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  showAddProduct(){
+    this.isAddProduct = true;
+  }
+
+  hideAddProduct(){
+    this.isAddProduct = false;
   }
 
 }

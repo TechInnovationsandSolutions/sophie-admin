@@ -18,6 +18,11 @@ import { appRoutes } from './routes';
 import { OrdersComponent } from './orders/orders.component';
 import { CreateCategoryComponent } from './category/create-category/create-category.component';
 import { CategoryListComponent } from './category/category-list/category-list.component';
+import { SWAL_TOKEN } from './shared/swal-service.service';
+import { CreateProductComponent } from './products/create-product/create-product.component';
+import { ListProductComponent } from './products/list-product/list-product.component';
+
+const swal = window['swal'];
 
 @NgModule({
   imports: [
@@ -40,9 +45,16 @@ import { CategoryListComponent } from './category/category-list/category-list.co
     AppLayoutComponent,
     OrdersComponent,
     CreateCategoryComponent,
-    CategoryListComponent
+    CategoryListComponent,
+    CreateProductComponent,
+    ListProductComponent
   ],
-  providers: [],
+  providers: [
+    {
+      provide: SWAL_TOKEN,
+      useValue: swal
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

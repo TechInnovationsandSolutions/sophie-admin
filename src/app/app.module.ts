@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from "@angular/router";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 import { AppComponent } from './app.component';
 import { CommonModule } from '@angular/common';
@@ -22,7 +23,9 @@ import { CategoryListComponent } from './category/category-list/category-list.co
   imports: [
     BrowserModule,
     CommonModule, 
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    ReactiveFormsModule,
+    FormsModule
   ],
   declarations: [
     AppComponent,

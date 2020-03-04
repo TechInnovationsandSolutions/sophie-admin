@@ -22,6 +22,7 @@ import { CategoryListComponent } from './category/category-list/category-list.co
 import { SWAL_TOKEN } from './shared/swal-service.service';
 import { CreateProductComponent } from './products/create-product/create-product.component';
 import { ListProductComponent } from './products/list-product/list-product.component';
+import { AuthService } from './shared/services/auth.services';
 
 // const swal = window['swal'];
 
@@ -52,6 +53,7 @@ import { ListProductComponent } from './products/list-product/list-product.compo
     ListProductComponent
   ],
   providers: [
+    AuthService
     // {
     //   provide: SWAL_TOKEN,
     //   useValue: swal

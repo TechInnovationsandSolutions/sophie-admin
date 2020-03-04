@@ -1,1 +1,19 @@
-<p>category works!</p>
+<app-app-layout>
+    <p app-title>dashboard works!</p>
+    <div app-body>
+        <div class="d-flex flex-wrap col-sm-12 col-md-10 col-lg-8 container">
+            <div class="d-flex flex-wrap col-sm-12 py-3 mx-auto">
+                <button *ngIf="!isAddCategory" class="mr-auto btn btn-outline-success" (click)="showAddCategory()">
+                    Add Category
+                </button>
+                <button *ngIf="isAddCategory" class="ml-auto btn btn-outline-danger" (click)="hideAddCategory()">
+                    &times;
+                </button>
+            </div>
+            <div class="col-sm-12 py-2">
+                <app-category-list *ngIf="!isAddCategory"></app-category-list>
+                <app-create-category *ngIf="isAddCategory"></app-create-category>
+            </div>
+        </div>
+    </div>
+</app-app-layout>

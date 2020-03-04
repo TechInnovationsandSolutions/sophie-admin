@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from "@angular/router";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+import { HttpClientModule } from "@angular/common/http";
 
 import { AppComponent } from './app.component';
 import { CommonModule } from '@angular/common';
@@ -22,7 +23,7 @@ import { SWAL_TOKEN } from './shared/swal-service.service';
 import { CreateProductComponent } from './products/create-product/create-product.component';
 import { ListProductComponent } from './products/list-product/list-product.component';
 
-const swal = window['swal'];
+// const swal = window['swal'];
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ const swal = window['swal'];
     CommonModule, 
     RouterModule.forRoot(appRoutes),
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   declarations: [
     AppComponent,
@@ -50,10 +52,10 @@ const swal = window['swal'];
     ListProductComponent
   ],
   providers: [
-    {
-      provide: SWAL_TOKEN,
-      useValue: swal
-    }
+    // {
+    //   provide: SWAL_TOKEN,
+    //   useValue: swal
+    // }
   ],
   bootstrap: [AppComponent]
 })

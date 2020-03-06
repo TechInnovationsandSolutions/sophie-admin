@@ -29,6 +29,10 @@
             <input type="text" class="form-control" id="productExcerpt" placeholder="" maxlength="75" formControlName="productExcerpt" required>
         </div>
         <div class="form-group">
+            <label for="productQuantity">Product Quantity</label>
+            <input type="number" class="form-control" id="productQuantity" placeholder="10" formControlName="productQuantity" required>
+        </div>
+        <div class="form-group">
             <label for="productImg">Choose Product Image</label>
             <input type="file" (change)="onFileChange($event)" class="form-control-file" id="productImg" accept=".jpg, .jpeg, .png" required>
         </div>

@@ -21,7 +21,8 @@ export class CreateProductComponent implements OnInit {
     productPrice: ['', Validators.required],
     productPromoPrice: ['', Validators.required],
     productDescription: ['', Validators.required],
-    productExcerpt: ['', Validators.required]
+    productExcerpt: ['', Validators.required],
+    productQuantity: ['', Validators.required]
   })
 
   ngOnInit() {

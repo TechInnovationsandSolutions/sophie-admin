@@ -1,6 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2'
+import { ActivatedRoute } from '@angular/router';
+import { DashboardServService, ICategory } from 'src/app/shared';
 
 @Component({
   selector: 'app-create-category',
@@ -9,15 +11,39 @@ import Swal from 'sweetalert2'
 })
 export class CreateCategoryComponent implements OnInit {
   
-  constructor(private fb:FormBuilder, private cd: ChangeDetectorRef) { }
+  constructor(private fb:FormBuilder, private cd: ChangeDetectorRef, private route:ActivatedRoute, private serv:DashboardServService) { }
 
   categoryForm = this.fb.group({
     name:['', Validators.required],
-    img: ['', Validators.required]
+    img: ['', Validators.required],
+    id: [''],
   })
 
+  isCreate:boolean =  true;
+  showInputFile:boolean =  true;
+
   ngOnInit() {
-    
+    if(this.route.snapshot.params.fn == 'edit' && this.route.snapshot.queryParams.category){
+      this.serv.getCatgory(this.route.snapshot.queryParams.category.toString()).then(res=>{
+        const theCategory = <ICategory>res;
+        this.categoryForm.patchValue({
+          name: theCategory.name,
+          img: theCategory.image,
+          id: theCategory.id
+        });
+
+        setTimeout(() => {
+          const imgElem = <HTMLImageElement>document.getElementById('imgPreview');
+          console.log('imhh', imgElem)
+          imgElem.src = theCategory.image;
+          this.showInputFile = false;
+         }, 500);
+
+         console.log(this.categoryForm.value, this.categoryForm.valid)
+
+        this.isCreate = false;
+      }, err=>console.error(err));
+    }
   }
 
   getSlug(cat_name:string){
@@ -46,6 +72,7 @@ export class CreateCategoryComponent implements OnInit {
         const imgElem = <HTMLImageElement>document.getElementById('imgPreview');
         console.log('imhh', imgElem)
         imgElem.src = URL.createObjectURL(file);
+        this.showInputFile = false;
        }, 500);
       
         // need to run CD since file load runs outside of zone
@@ -59,29 +86,34 @@ export class CreateCategoryComponent implements OnInit {
       img: null
     });
 
+    this.showInputFile = true;
+
     <HTMLInputElement><unknown>document.getElementById('category-img').setAttribute('value', null)
 
    console.log('frm', this.categoryForm.value);
   }
 
-  onSubmit(formValue){
-    // e.preventDefault();
-    // console.log(this.swal)
-    formValue.slug = this.getSlug(formValue.name);
+  createNewCategory(category:ICategory){
     Swal.fire({
       title: 'Confirmation',
-      text: "You want to create a new Category by name - " + formValue.name + "?",
+      text: "You want to create a new Category by name - " + category.name + "?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, Create!',
       cancelButtonText: 'No, cancel!',
     }).then((result) => {
       if (result.value) {
-        Swal.fire(
-          'Created!',
-          'Category '+ formValue.name + 'has been deleted.',
-          'success'
-        )
+        this.serv.createCategory(category).then(res=>console.log(res)).then(()=>{
+          Swal.fire(
+            'Created!',
+            'Category '+ category.name + 'has been successfully created.',
+            'success'
+          ).then(()=>location.reload())
+        }).catch(err=>Swal.fire({
+          title: 'Error',
+          icon: 'error',
+          text:err
+        }))
       } else if (
         /* Read more about handling dismissals below */
         result.dismiss === Swal.DismissReason.cancel
@@ -93,5 +125,47 @@ export class CreateCategoryComponent implements OnInit {
         )
       }
     })
+  }
+
+  updateNewCategory(category:ICategory){
+    Swal.fire({
+      title: 'Confirmation',
+      text: "You want to update the details of " + category.name + "?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, Update!',
+      cancelButtonText: 'No, cancel!',
+    }).then((result) => {
+      if (result.value) {
+        this.serv.updateCategory(category).then(res=>console.log(res)).then(()=>{
+          Swal.fire(
+            'Updated!',
+            'Category '+ category.name + 'has been successfully update.',
+            'success'
+          ).then(()=>location.reload())
+        }).catch(err=>Swal.fire({
+          title: 'Error',
+          icon: 'error',
+          text:err
+        }))
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        Swal.fire(
+          'Cancelled',
+          'operation aborted',
+          'info'
+        )
+      }
+    })
+  }
+
+  onSubmit(formValue){
+    // e.preventDefault();
+    // console.log(this.swal)
+    formValue.slug = this.getSlug(formValue.name);
+
+    this.isCreate ? this.createNewCategory(formValue) : this.updateNewCategory(formValue);
   }
 }

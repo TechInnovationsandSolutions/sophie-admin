@@ -38,6 +38,27 @@ export class DashboardServService {
     this.isLogged() ? true: this.router.navigate(['/login']);
   }
 
+  getCatgory(id){
+    return new Promise((resolve, reject)=>{
+      this.http.get<any>(this._url + 'categories/' + id).subscribe(
+        res=>{
+          console.log(res);
+          if (res.status == 'success') {
+            resolve(res.data);
+          } else if(res.code == 401){
+            this.removeToken();
+            this.checkLoggedIn();
+          } else{
+            reject(res);
+          }
+        }, 
+        (err: HttpErrorResponse)=>{
+          console.log(err.error);
+        }
+      )
+    })
+  }
+
   getCatgories(){
     return new Promise(resolve=>{
       this.http.get<any>(this._url + 'categories').subscribe(
@@ -45,6 +66,54 @@ export class DashboardServService {
           console.log(res);
           if (res.status == 'success') {
             resolve(res.data);
+          }
+        }, 
+        (err: HttpErrorResponse)=>{
+          console.log(err.error);
+        }
+      )
+    })
+  }
+
+  createCategory(category:ICategory){
+    return new Promise(resolve=>{
+      const token = this.getToken();
+      this.http.post<any>(this._url + 'categories',{
+        name: category.name,
+        picture: new Array(category.image)
+      },
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      })
+      .subscribe(
+        res=>{
+          console.log(res);
+          if (res.status == 'success') {
+            resolve(res);
+          }
+        }, 
+        (err: HttpErrorResponse)=>{
+          console.log(err.error);
+        }
+      )
+    })
+  }
+
+  updateCategory(category:ICategory){
+    return new Promise(resolve=>{
+      const token = this.getToken();
+      this.http.put<any>(this._url + 'categories/'+category.id,{
+        name: category.name,
+        picture: category.image
+      },
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      })
+      .subscribe(
+        res=>{
+          console.log(res);
+          if (res.status == 'success') {
+            resolve(res);
           }
         }, 
         (err: HttpErrorResponse)=>{

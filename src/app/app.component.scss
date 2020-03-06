@@ -1,0 +1,35 @@
+$smokeyWhite: #F5F4F4;
+$sophiePink : #FFD9E8;
+$placeHolderAsh: #AFA7A7;
+$placeHolderForm: #787A7C;
+$iconColor: #544F4F;
+$iconHoverColor: #007bff;
+$limeGreen: #2C9412;
+
+@mixin flexWrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+@mixin maxWidth {
+    width: 100%;
+    max-width: 100%;
+}
+
+@mixin maxWidthFlexWrap {
+    @include flexWrap();
+    @include maxWidth();
+}
+
+@mixin invertOnHover ($bg:#000, $clr:#fff, $borderClr: $bg, $borderWid: 1px) {
+    background-color: $bg;
+    color: $clr;
+    border: $borderWid solid $borderClr;
+    transition: 0.2s ease-in;
+
+    &:hover{
+        background-color: $clr;
+        color: $bg;  
+        border: $borderWid solid $borderClr;
+    }
+}

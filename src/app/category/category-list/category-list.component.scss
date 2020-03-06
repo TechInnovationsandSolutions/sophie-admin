@@ -1,10 +1,26 @@
 @import './../../app.component.scss';
 
 #category-table{
+
+    thead, tbody, td, tr, th{
+       div{
+           @include maxWidth();
+           height: 100%;
+       }
+    }
+
     .category-img{
         $d: 50px;
         height: $d;
         width: $d;
         object-fit: contain;
+    }
+
+    .btn-category-edit{
+        @include invertOnHover(#fff, $dark)
+    }
+
+    .btn-category-delete{
+        @include invertOnHover(#fff, $danger)
     }
 }

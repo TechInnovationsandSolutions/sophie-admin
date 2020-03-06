@@ -8,7 +8,7 @@
           <caption>List of categories</caption>
           <thead class="thead-dark">
             <tr>
-              <th>ID</th>
+              <th>S/N</th>
               <th>Name</th>
               <th></th>
               <th></th>
@@ -33,7 +33,7 @@
               </td>
               <td data-field="edit">
                 <div class="d-flex p-2">
-                  <button class="btn m-auto btn-category-edit" (click)="editCategory(this.category, i+1)">
+                  <button class="btn m-auto btn-category-edit" (click)="editCategory(this.category)">
                     <i class="fas fa-pencil-alt"></i>
                   </button>
                 </div>
@@ -41,7 +41,7 @@
               </td>
               <td data-field="delete">
                 <div class="d-flex p-2">
-                  <button class="btn m-auto btn-category-delete" (click)="deleteCategory(this.category, i+ 2)">
+                  <button class="btn m-auto btn-category-delete" (click)="deleteCategory(this.category)">
                     <i class="fas fa-trash-alt"></i>
                   </button>
                 </div>

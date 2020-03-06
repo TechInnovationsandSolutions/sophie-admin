@@ -56,16 +56,19 @@ export class CategoryListComponent implements OnInit {
   //   });
   // }
 
-  editCategory(cat:ICategory, i:number){
-    cat.id = i;
+  editCategory(cat:ICategory){
     console.log(cat);
     this.serv._category = cat;
-    this.router.navigate([''])
+    this.router.navigate(['/category/edit'], {
+      queryParams:{
+        category: cat.id
+      }
+    })
   }
 
-  deleteCategory(cat:ICategory, i:number){
+  deleteCategory(cat:ICategory){
     console.log(cat);
-    cat.id = i;
+    
     Swal.fire({
       title: 'Confirmation',
       text: "You want to delete " + cat.name + " Category?",

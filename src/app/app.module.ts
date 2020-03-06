@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from "@angular/router";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
+import { DataTablesModule } from "angular-datatables";
 
 import { AppComponent } from './app.component';
 import { CommonModule } from '@angular/common';
@@ -33,7 +34,8 @@ import { AuthService } from './shared/services/auth.services';
     RouterModule.forRoot(appRoutes),
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    DataTablesModule
   ],
   declarations: [
     AppComponent,

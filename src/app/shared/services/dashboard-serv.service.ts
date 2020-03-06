@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from "@angular/common/http";
+import { Router } from '@angular/router';
+import { ICategory, IProduct } from '../model';
 
 const TOKEN = 'x-token';
 
@@ -8,9 +10,13 @@ const TOKEN = 'x-token';
 })
 export class DashboardServService {
   private pageNoOfProduct = 20; 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router:Router) { }
 
   _url = 'https://tis-bandb.herokuapp.com/api/v1/'; //Base URL
+
+  //Temporary data
+  _category:ICategory;
+  _product:IProduct;
 
   setToken(token: string): void {
     localStorage.setItem(TOKEN, token);
@@ -28,6 +34,10 @@ export class DashboardServService {
     return localStorage.getItem(TOKEN) != null;
   }
 
+  checkLoggedIn(){
+    this.isLogged() ? true: this.router.navigate(['/login']);
+  }
+
   getCatgories(){
     return new Promise(resolve=>{
       this.http.get<any>(this._url + 'categories').subscribe(
@@ -35,6 +45,27 @@ export class DashboardServService {
           console.log(res);
           if (res.status == 'success') {
             resolve(res.data);
+          }
+        }, 
+        (err: HttpErrorResponse)=>{
+          console.log(err.error);
+        }
+      )
+    })
+  }
+
+  deleteCategory(id:string){
+    return new Promise(resolve=>{
+      const token = this.getToken();
+      this.http.delete<any>(this._url + 'categories/'+id,
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      })
+      .subscribe(
+        res=>{
+          console.log(res);
+          if (res.status == 'success') {
+            resolve(res);
           }
         }, 
         (err: HttpErrorResponse)=>{

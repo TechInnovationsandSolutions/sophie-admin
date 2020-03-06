@@ -163,6 +163,25 @@ export class DashboardServService {
     })
   }
 
+  getProductsByCategory(catid:number, param:string){
+    return new Promise(resolve=>{
+      this.http.get<any>(this._url + 'categories/'+ catid +'/products', {
+        params: new HttpParams().set('page', param)
+      }).subscribe(
+        res=>{
+          console.log(res);
+          if (res.status == 'success') {
+            res.data.pg = this.numberOfProductPages(res.data.total)
+            resolve(res.data);
+          }
+        }, 
+        (err: HttpErrorResponse)=>{
+          console.log(err.error);
+        }
+      )
+    })
+  }
+
   numberOfProductPages(totalNo){
     const no = Math.ceil(totalNo/this.pageNoOfProduct);
     return new Array(no).fill(1); //Thank you Leonardo Giroto

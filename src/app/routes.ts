@@ -21,6 +21,11 @@ export const appRoutes:Routes =[
         canActivate: [AuthGuardGuard]
     },
     {
+        path: 'category/:fn',
+        component: CategoryComponent,
+        canActivate: [AuthGuardGuard]
+    },
+    {
         path:'orders',
         component: OrdersComponent,
         canActivate: [AuthGuardGuard]
@@ -48,6 +53,21 @@ export const appRoutes:Routes =[
     {
         path: '',
         redirectTo:'dashboard',
+        pathMatch: 'full'
+    },
+    {
+        path: 'category',
+        redirectTo:'categories',
+        pathMatch: 'full'
+    },
+    {
+        path: 'categories/add',
+        redirectTo:'categories',
+        pathMatch: 'full'
+    },
+    {
+        path: 'categories/edit',
+        redirectTo:'categories',
         pathMatch: 'full'
     },
     {

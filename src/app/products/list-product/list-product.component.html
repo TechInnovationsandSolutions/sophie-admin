@@ -1,1 +1,76 @@
-<p>list-product works!</p>
+<div class="product-list-sect">
+    <div class="d-flex flex-wrap py-2">
+        <form class="form-inline my-2 my-lg-0 ml-auto">
+            <input class="form-control" type="search" placeholder="Search" aria-label="Search Products">
+            <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">
+                <span>
+                    <i class="fas fa-search"></i>                         
+                </span>
+            </button>
+        </form>
+    </div>
+    <div class="col-sm-12 container py-2">
+        <!-- table of products  -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>category</th>
+                    <th>cost</th>
+                    <th>reduced cost</th>
+                    <th>discount</th>
+                    <th>excerpts</th>
+                    <th>tags</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of products">
+                    <td>{{product.name}}</td>
+                    <td>{{product.category}}</td>
+                    <td>{{product.cost | currency:"NGN":"₦"}}</td>
+                    <td>{{product.reduced_cost | currency:"NGN":"₦"}}</td>
+                    <td>{{product.discount}}</td>
+                    <td>{{product.excerpts}}</td>
+                    <td>{{product?.tag?.join(',')}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="pagination py-2 d-flex">
+        <div class="flex flex-wrap m-auto">
+            <span class="pagination-nav prev"
+            *ngIf="currentPage !== 1"
+            (click)="setPage(currentPage - 1)"
+            >
+            Previous
+            </span>
+            <ng-container *ngIf="pagesArray.length <= 10" >
+            <span class="pagination-nav page"
+                *ngFor="let page of pagesArray; let index = index"
+                [ngClass]="{ 'active': currentPage === index + 1 }"
+                (click)="setPage(index + 1)"
+            >
+                {{ index + 1 }}
+            </span>
+            </ng-container>
+            <ng-container *ngIf="pagesArray.length > 10" >
+            <select
+                [ngModel]="currentPage"
+                (ngModelChange)="setPage($event.target.value)"
+            >
+                <option
+                *ngFor="let p of pagesArray; let index = index"
+                [value]="(index + 1)" >
+                {{ index + 1 }}
+                </option>
+            </select>
+            </ng-container>
+            <span class="pagination-nav next"
+            *ngIf="currentPage !== pagesArray.length"
+            (click)="setPage(currentPage + 1)"
+            >
+            Next
+            </span>
+        </div>
+    </div>
+</div>

@@ -6,39 +6,52 @@ import { CustomersComponent } from './customers/customers.component';
 import { TransactionsComponent } from './transactions/transactions.component';
 import { ReviewsComponent } from './reviews/reviews.component';
 import { ProductsComponent } from './products/products.component';
+import { LoginComponent } from './login/login.component';
+import { AuthGuardGuard } from './shared';
 
 export const appRoutes:Routes =[
     {
         path: 'dashboard',
-        component: DashboardComponent
+        component: DashboardComponent,
+        canActivate: [AuthGuardGuard]
     },
     {
         path: 'categories',
-        component: CategoryComponent
+        component: CategoryComponent,
+        canActivate: [AuthGuardGuard]
     },
     {
         path:'orders',
-        component: OrdersComponent
+        component: OrdersComponent,
+        canActivate: [AuthGuardGuard]
     },
     {
         path: 'customers',
-        component: CustomersComponent
+        component: CustomersComponent,
+        canActivate: [AuthGuardGuard]
     },
     {
         path: 'transactions',
-        component: TransactionsComponent
+        component: TransactionsComponent,
+        canActivate: [AuthGuardGuard]
     },
     {
         path: 'reviews',
-        component: ReviewsComponent
+        component: ReviewsComponent,
+        canActivate: [AuthGuardGuard]
     },
     {
         path: 'products',
-        component: ProductsComponent
+        component: ProductsComponent,
+        canActivate: [AuthGuardGuard]
     },
     {
         path: '',
         redirectTo:'dashboard',
         pathMatch: 'full'
+    },
+    {
+        path: 'login',
+        component: LoginComponent
     }
 ]

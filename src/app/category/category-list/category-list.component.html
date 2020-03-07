@@ -33,19 +33,24 @@
               </td>
               <td data-field="edit">
                 <div class="d-flex p-2">
-                  <button class="btn m-auto btn-category-edit" (click)="editCategory(this.category)">
+                  <button class="btn m-auto btn-category-edit" (click)="editCategory(this.category)" title="Click to Edit Category details">
                     <i class="fas fa-pencil-alt"></i>
                   </button>
                 </div>
-                 
               </td>
               <td data-field="delete">
                 <div class="d-flex p-2">
-                  <button class="btn m-auto btn-category-delete" (click)="deleteCategory(this.category)">
+                  <button class="btn m-auto btn-category-delete" (click)="deleteCategory(this.category)" title="Click to delete Category details">
                     <i class="fas fa-trash-alt"></i>
                   </button>
                 </div>
-                 
+              </td>
+              <td data-field="see_products">
+                <div class="d-flex p-2">
+                  <button class="btn m-auto btn-category-product_list" (click)="productCatList(this.category)" title="Click to see Category product list">
+                    <i class="fas fa-list-alt"></i>
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>

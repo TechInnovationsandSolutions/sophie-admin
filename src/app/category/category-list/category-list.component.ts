@@ -68,7 +68,7 @@ export class CategoryListComponent implements OnInit {
 
   deleteCategory(cat:ICategory){
     console.log(cat);
-    
+
     Swal.fire({
       title: 'Confirmation',
       text: "You want to delete " + cat.name + " Category?",
@@ -106,4 +106,8 @@ export class CategoryListComponent implements OnInit {
     })
   }
 
+  productCatList(cat:ICategory){
+    this.router.navigate(['/category', cat.id, 'products'], {queryParams:{page:1}});
+    // location.reload();
+  }
 }

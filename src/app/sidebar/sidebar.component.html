@@ -20,7 +20,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]='["/products"]' routerLinkActive="active">
+          <a class="nav-link" [routerLink]='["/products"]' [queryParams] = "{page:1}" queryParamsHandling="merge" routerLinkActive="active">
             <i class="fas fa-shopping-cart"></i>
             Products
           </a>

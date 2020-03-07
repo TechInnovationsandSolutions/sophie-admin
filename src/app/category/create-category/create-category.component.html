@@ -1,0 +1,28 @@
+<div class="col-sm-12 py-2 px-1">
+    <form [formGroup] = "categoryForm" (submit) = "onSubmit(categoryForm.value)">
+        <div class="form-group">
+          <label for="category-name">Category Name</label>
+          <input type="text" class="form-control" id="category-name" placeholder="eg. Skin catehory" formControlName="name"  required>
+        </div>
+        <div class="form-group" *ngIf="!!categoryForm.get('name').value">
+          <p>Slug: <span>{{ getSlug(categoryForm.get('name').value) }}</span></p>
+        </div>
+        <div class="form-group" *ngIf="showInputFile">
+            <label for="category-img">Choose Category Image</label>
+            <input type="file" (change)="onFileChange($event)" class="form-control-file" id="category-img" accept=".jpg, .jpeg, .png" required>
+        </div>
+        <div *ngIf="!!categoryForm.get('img').value">
+            <p>Image Preview</p>
+            <img id="imgPreview" src="" alt="Category image preview">
+            <button type="button" *ngIf="!showInputFile" class="btn btn-danger mx-2" (click)="removeImg()" title="Remove current image">
+              <i class="far fa-trash-alt"></i>
+            </button>
+        </div>
+        <button *ngIf="isCreate" type="submit" class="btn btn-success my-3" [disabled]="categoryForm.invalid || categoryForm.pristine">
+            Create Category
+        </button>
+        <button *ngIf="!isCreate" type="submit" class="btn btn-success my-3" [disabled]="categoryForm.invalid">
+          Update Category
+      </button>
+      </form>
+</div>

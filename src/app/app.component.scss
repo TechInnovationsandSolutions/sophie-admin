@@ -1,0 +1,62 @@
+$smokeyWhite: #F5F4F4;
+$sophiePink : #FFD9E8;
+$placeHolderAsh: #AFA7A7;
+$placeHolderForm: #787A7C;
+$iconColor: #544F4F;
+$iconHoverColor: #007bff;
+$limeGreen: #2C9412;
+
+
+//Bootstrap 4 colors
+$primary:    #007bff !default; // primary
+$indigo:  #6610f2 !default;
+$purple:  #6f42c1 !default;
+$pink:    #e83e8c !default;
+$danger:     #dc3545 !default; // danger
+$orange:  #fd7e14 !default;
+$warning:  #ffc107 !default; // warning
+$success:   #28a745 !default; // success
+$teal:    #20c997 !default;
+$cyan:    #17a2b8 !default; // info
+
+// Grays
+$white:    #fff !default;
+$gray-100: #f8f9fa !default; // light
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$secondary: #868e96 !default; // secondary
+$gray-700: #495057 !default;
+$dark: #343a40 !default; // dark
+$gray-900: #212529 !default;
+$black:    #000 !default;
+
+
+@mixin flexWrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+@mixin maxWidth {
+    width: 100%;
+    max-width: 100%;
+}
+
+@mixin maxWidthFlexWrap {
+    @include flexWrap();
+    @include maxWidth();
+}
+
+@mixin invertOnHover ($bg:#000, $clr:#fff, $borderClr: $bg, $borderWid: 1px) {
+    background-color: $bg;
+    color: $clr;
+    border: $borderWid solid $borderClr;
+    transition: 0.2s ease-in;
+
+    &:hover{
+        background-color: $clr;
+        color: $bg;  
+        border: $borderWid solid $borderClr;
+    }
+}

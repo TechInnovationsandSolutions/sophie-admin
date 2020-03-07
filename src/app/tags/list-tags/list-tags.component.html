@@ -1,0 +1,58 @@
+<div>
+    <div *ngIf="tags.length">
+        <table id="tag-table" class="table table-borderless row-border hover">
+          <caption>List of tags</caption>
+          <thead class="thead-dark">
+            <tr>
+              <th>S/N</th>
+              <th>Name</th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let tag of tags; let i = index">
+              <td data-field="id">
+                <span class="d-flex flex-wrap p-2">
+                  <span class="m-auto">
+                    {{ i + 1 }}
+                  </span>
+                </span>
+              </td>
+              <td data-field="name">
+                  <div class="d-flex flex-wrap p-2">
+                      <p class="tag-name text-capitalize px-2 my-auto">
+                          {{ tag.name }}
+                      </p>
+                  </div>
+              </td>
+              <td data-field="edit">
+                <div class="d-flex p-2">
+                  <button class="btn m-auto btn-tag-edit" (click)="editTag(this.tag)" title="Click to Edit tag details">
+                    <i class="fas fa-pencil-alt"></i>
+                  </button>
+                </div>
+              </td>
+              <td data-field="delete">
+                <div class="d-flex p-2">
+                  <button class="btn m-auto btn-tag-delete" (click)="deleteTag(this.tag)" title="Click to delete tag details">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </td>
+              <td data-field="see_products">
+                <div class="d-flex p-2">
+                  <button class="btn m-auto btn-tag-product_list" (click)="productTagList(this.tag)" title="Click to see tag product list">
+                    <i class="fas fa-list"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+    <div *ngIf="!tags.length">
+        <p>No tag Yet. Click  <strong>Add tag</strong> to create tags.</p>
+    </div>
+</div>

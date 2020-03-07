@@ -1,0 +1,63 @@
+<div>
+    <div *ngIf="categories.length">
+        <!-- <div *ngFor="let category of categories">
+            <p>Name: <strong>{{ category.name }}</strong></p>
+            <img src="{{ category.image }}" alt="image of {{ category.name }}">
+        </div> -->
+        <table id="category-table" class="table table-borderless row-border hover">
+          <caption>List of categories</caption>
+          <thead class="thead-dark">
+            <tr>
+              <th>S/N</th>
+              <th>Name</th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let category of categories; let i = index">
+              <td data-field="id">
+                <span class="d-flex flex-wrap p-2">
+                  <span class="m-auto">
+                    {{ i + 1 }}
+                  </span>
+                </span>
+              </td>
+              <td data-field="name">
+                  <div class="d-flex flex-wrap p-2">
+                      <img src="{{ category.image }}" alt="Image of {{ category.name }}" class="category-img">
+                      <p class="category-name text-capitalize px-2 my-auto">
+                          {{ category.name }}
+                      </p>
+                  </div>
+              </td>
+              <td data-field="edit">
+                <div class="d-flex p-2">
+                  <button class="btn m-auto btn-category-edit" (click)="editCategory(this.category)" title="Click to Edit Category details">
+                    <i class="fas fa-pencil-alt"></i>
+                  </button>
+                </div>
+              </td>
+              <td data-field="delete">
+                <div class="d-flex p-2">
+                  <button class="btn m-auto btn-category-delete" (click)="deleteCategory(this.category)" title="Click to delete Category details">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </td>
+              <td data-field="see_products">
+                <div class="d-flex p-2">
+                  <button class="btn m-auto btn-category-product_list" (click)="productCatList(this.category)" title="Click to see Category product list">
+                    <i class="fas fa-list"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+    <div *ngIf="!categories.length">
+        <p>No Category Yet. Click  <strong>Add Category</strong> to create categories.</p>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+<nav class="col-xs-12 d-md-block bg-dark sidebar py-3">
+    <div class="sidebar-sticky">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]='["/dashboard"]' routerLinkActive="active">
+            <i class="fas fa-home"></i>
+            Dashboard <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]='["/orders"]' routerLinkActive="active">
+              <i class="fas fa-file-alt"></i>
+              Orders
+            </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]='["/categories"]' routerLinkActive="active">
+            <i class="fas fa-layer-group"></i>
+            Categories
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]='["/tags"]' routerLinkActive="active">
+            <i class="fas fa-tags"></i>
+            Tags
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]='["/products"]' [queryParams] = "{page:1}" queryParamsHandling="merge" routerLinkActive="active">
+            <i class="fas fa-shopping-cart"></i>
+            Products
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]='["/customers"]' routerLinkActive="active">
+            <i class="fas fa-user-friends"></i>
+            Customers
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]='["/transactions"]' routerLinkActive="active">
+            <i class="fas fa-cash-register"></i>
+            Transactions
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]='["/reviews"]' routerLinkActive="active">
+            <i class="fas fa-comment-alt"></i>
+            Reviews
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>

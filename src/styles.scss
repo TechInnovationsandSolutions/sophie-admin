@@ -1,1 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css");
+@import url("https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css");
+
+html, body{
+    width: 100%;
+    height: 100%; 
+}
+
+textarea{
+    resize: none;
+}

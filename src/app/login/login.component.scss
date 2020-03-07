@@ -1,0 +1,51 @@
+@import './../app.component.scss';
+
+.signin-pg{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: $smokeyWhite;
+    width: 100%;
+    height: 100%;
+
+    .img-header{
+        $dm: 80px;
+        width: $dm;
+        height: $dm;
+        padding: 0.1 * $dm;
+        margin: auto;
+        background-color: #fff;
+        border-radius: 100%;
+        border: 5px solid $sophiePink;
+
+        img{
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .form-signin {
+        width: 100%;
+        max-width: 330px;
+        padding: 15px;
+        margin: 0 auto;
+
+        button[type='submit']{
+            @include invertOnHover( #333, $sophiePink);
+            text-transform: uppercase;
+            font-weight: bold;
+
+            &:disabled{
+                background-color: #333;
+                color: $smokeyWhite;
+
+                &:hover{
+                    background-color: #333;
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+}

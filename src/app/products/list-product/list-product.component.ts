@@ -11,13 +11,20 @@ export class ListProductComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router, private service: DashboardServService) { }
 
+  searchText:string = '';
   pagesArray: Array<number> = [];
   currentPage: number = 1;
   products: IProduct[] = [];
 
   ngOnInit() {
+    console.log(this.route.snapshot.params);
     if (!this.route.snapshot.queryParams.page) {
-      this.router.navigate([],{ queryParams: { page: 1 } });
+      this.router.navigate([],{ 
+        queryParams: { 
+          page: 1 
+        },
+        queryParamsHandling: 'merge'
+      });
       return;
     }
 
@@ -29,7 +36,11 @@ export class ListProductComponent implements OnInit {
     if(this.route.snapshot.params.id){
       const id = +this.route.snapshot.params.id;
       aProm = this.service.getProductsByCategory(id, pg);
-    } else{
+    } else if (this.route.snapshot.params.fn == 'search') {
+      const searchhTerm = this.route.snapshot.queryParams.searchhTerm ? this.route.snapshot.queryParams.searchhTerm : '';
+      aProm = this.service.getSearchedProducts(searchhTerm, pg)
+    }
+    else{
       aProm = this.service.getProducts(pg)
     }
     aProm.then(res=>{
@@ -38,7 +49,6 @@ export class ListProductComponent implements OnInit {
       this.pagesArray = resp.pg;
       this.products = resp.data;
     });
-    // console.log(this.route.snapshot.params);
   }
 
   setPage(val){
@@ -57,5 +67,15 @@ export class ListProductComponent implements OnInit {
       this.pagesArray = resp.pg;
       this.products = resp.data;
     });
+  }
+
+  onSearch(){
+    this.router.navigate(['/products/search'], {
+      queryParams:{
+        searchhTerm: this.searchText
+      },
+      queryParamsHandling: 'merge'
+    });
+    // location.reload();
   }
 }

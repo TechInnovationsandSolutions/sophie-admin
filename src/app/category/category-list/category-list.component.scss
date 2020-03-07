@@ -23,4 +23,13 @@
     .btn-category-delete{
         @include invertOnHover(#fff, $danger)
     }
+
+    .btn-category-product_list{
+        @include invertOnHover(#fff, $orange)
+    }
+
+    .btn-category-edit,.btn-category-delete, .btn-category-product_list{
+        border-radius: 100%;
+    }
+
 }

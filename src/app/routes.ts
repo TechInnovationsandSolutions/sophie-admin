@@ -8,6 +8,7 @@ import { ReviewsComponent } from './reviews/reviews.component';
 import { ProductsComponent } from './products/products.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuardGuard } from './shared';
+import { TagsComponent } from './tags/tags.component';
 
 export const appRoutes:Routes =[
     {
@@ -88,6 +89,10 @@ export const appRoutes:Routes =[
         path: 'categories/:id',
         redirectTo:'categories',
         pathMatch: 'full'
+    },
+    {
+        path: 'tags',
+        component: TagsComponent
     },
     {
         path: 'login',

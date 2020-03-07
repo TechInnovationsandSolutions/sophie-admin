@@ -339,4 +339,27 @@ export class DashboardServService {
       )
     })
   }
+
+  //Get all user => Customer
+  getCustomers(){
+    return new Promise(resolve=>{
+      const token = this.getToken();
+      this.http.get<any>(this._url + 'users',
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      })
+      .subscribe(
+        res=>{
+          console.log(res);
+          if (res.status == 'success') {
+            let customers = res.data.filter(r=> !r.is_admin);
+            resolve(customers);
+          }
+        }, 
+        (err: HttpErrorResponse)=>{
+          console.log(err.error);
+        }
+      )
+    })
+  }
 }

@@ -144,6 +144,8 @@ export class DashboardServService {
     })
   }
 
+// products
+
   getProducts(param:string){
     return new Promise(resolve=>{
       this.http.get<any>(this._url + 'products', {
@@ -201,9 +203,118 @@ export class DashboardServService {
     })
   }
 
+  getProductsByTag(tagName:string){
+    return new Promise(resolve=>{
+      this.http.post<any>(this._url + 'products/tags',{
+        tag: tagName
+      }).subscribe(
+        res=>{
+          console.log(res);
+          if (res.status == 'success') {
+            res.data.pg = this.numberOfProductPages(res.data.total)
+            resolve(res.data);
+          }
+        }, 
+        (err: HttpErrorResponse)=>{
+          console.log(err.error);
+        }
+      )
+    })
+  }
+
   numberOfProductPages(totalNo){
     const no = Math.ceil(totalNo/this.pageNoOfProduct);
     return new Array(no).fill(1); //Thank you Leonardo Giroto
 
+  }
+
+
+  // tags
+  getAllTags(){
+    return new Promise(resolve=>{
+      const token = this.getToken();
+      this.http.get<any>(this._url + 'tags',
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      })
+      .subscribe(
+        res=>{
+          console.log(res);
+          if (res.status == 'success') {
+            resolve(res);
+          }
+        }, 
+        (err: HttpErrorResponse)=>{
+          console.log(err.error);
+        }
+      )
+    })
+  }
+
+  createTag(tagName:string){
+    return new Promise(resolve=>{
+      const token = this.getToken();
+      this.http.post<any>(this._url + 'tags',{
+        name: tagName,
+      },
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      })
+      .subscribe(
+        res=>{
+          console.log(res);
+          if (res.status == 'success') {
+            resolve(res);
+          }
+        }, 
+        (err: HttpErrorResponse)=>{
+          console.log(err.error);
+        }
+      )
+    })
+  }
+
+  updateTag(tagName:string){
+    return new Promise(resolve=>{
+      const token = this.getToken();
+      this.http.put<any>(this._url + 'tags',{
+        name: tagName,
+      },
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      })
+      .subscribe(
+        res=>{
+          console.log(res);
+          if (res.status == 'success') {
+            resolve(res);
+          }
+        }, 
+        (err: HttpErrorResponse)=>{
+          console.log(err.error);
+        }
+      )
+    })
+  }
+
+  deleteTag(tagId:number){
+    return new Promise(resolve=>{
+      const token = this.getToken();
+      this.http.put<any>(this._url + 'tags/' + tagId,
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      })
+      .subscribe(
+        res=>{
+          console.log(res);
+          if (res.status == 'success') {
+            resolve(res);
+          }
+        }, 
+        (err: HttpErrorResponse)=>{
+          console.log(err.error);
+        }
+      )
+    })
   }
 }

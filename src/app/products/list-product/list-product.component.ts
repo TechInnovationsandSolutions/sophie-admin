@@ -21,14 +21,24 @@ export class ListProductComponent implements OnInit {
       return;
     }
 
+    var aProm:any;
+
     const pg = this.route.snapshot.queryParams.page;
     this.currentPage = Number(pg);
-    this.service.getProducts(pg).then(res=>{
+
+    if(this.route.snapshot.params.id){
+      const id = +this.route.snapshot.params.id;
+      aProm = this.service.getProductsByCategory(id, pg);
+    } else{
+      aProm = this.service.getProducts(pg)
+    }
+    aProm.then(res=>{
       // console.log(pg, res)
       var resp = <ProductResponse>res;
       this.pagesArray = resp.pg;
       this.products = resp.data;
     });
+    // console.log(this.route.snapshot.params);
   }
 
   setPage(val){

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Router } from '@angular/router';
-import { ICategory, IProduct } from '../model';
+import { ICategory, IProduct, ITag } from '../model';
 
 const TOKEN = 'x-token';
 
@@ -17,6 +17,7 @@ export class DashboardServService {
   //Temporary data
   _category:ICategory;
   _product:IProduct;
+  _tag:ITag;
 
   setToken(token: string): void {
     localStorage.setItem(TOKEN, token);
@@ -241,7 +242,7 @@ export class DashboardServService {
         res=>{
           console.log(res);
           if (res.status == 'success') {
-            resolve(res);
+            resolve(res.data);
           }
         }, 
         (err: HttpErrorResponse)=>{
@@ -309,6 +310,27 @@ export class DashboardServService {
           console.log(res);
           if (res.status == 'success') {
             resolve(res);
+          }
+        }, 
+        (err: HttpErrorResponse)=>{
+          console.log(err.error);
+        }
+      )
+    })
+  }
+
+  getTag(id){
+    return new Promise((resolve, reject)=>{
+      this.http.get<any>(this._url + 'tags/' + id).subscribe(
+        res=>{
+          console.log(res);
+          if (res.status == 'success') {
+            resolve(res.data);
+          } else if(res.code == 401){
+            this.removeToken();
+            this.checkLoggedIn();
+          } else{
+            reject(res);
           }
         }, 
         (err: HttpErrorResponse)=>{

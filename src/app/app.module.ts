@@ -24,6 +24,9 @@ import { SWAL_TOKEN } from './shared/swal-service.service';
 import { CreateProductComponent } from './products/create-product/create-product.component';
 import { ListProductComponent } from './products/list-product/list-product.component';
 import { AuthService } from './shared/services/auth.services';
+import { TagsComponent } from './tags/tags.component';
+import { CreateTagsComponent } from './tags/create-tags/create-tags.component';
+import { ListTagsComponent } from './tags/list-tags/list-tags.component';
 
 // const swal = window['swal'];
 
@@ -52,7 +55,10 @@ import { AuthService } from './shared/services/auth.services';
     CreateCategoryComponent,
     CategoryListComponent,
     CreateProductComponent,
-    ListProductComponent
+    ListProductComponent,
+    TagsComponent,
+    CreateTagsComponent,
+    ListTagsComponent
   ],
   providers: [
     AuthService

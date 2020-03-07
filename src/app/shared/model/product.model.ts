@@ -1,3 +1,5 @@
+import { ICategory } from './category.model';
+
 // import { ICategory } from './category.model';
 
 export interface IReview{
@@ -14,7 +16,7 @@ export interface IProdImage{
 export interface IProduct{
     id: number,
     name: string,
-    category:string,
+    category:ICategory,
     description:string,
     excerpts:string,
     cost:string,

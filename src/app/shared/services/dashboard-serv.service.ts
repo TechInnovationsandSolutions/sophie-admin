@@ -163,6 +163,25 @@ export class DashboardServService {
     })
   }
 
+  getSearchedProducts(searchTerm:string, param:string){
+    return new Promise(resolve=>{
+      this.http.get<any>(this._url + 'products/search', {
+        params: new HttpParams().set('search', searchTerm).set('page', param)
+      }).subscribe(
+        res=>{
+          console.log(res);
+          if (res.status == 'success') {
+            res.data.pg = this.numberOfProductPages(res.data.total)
+            resolve(res.data);
+          }
+        }, 
+        (err: HttpErrorResponse)=>{
+          console.log(err.error);
+        }
+      )
+    })
+  }
+
   getProductsByCategory(catid:number, param:string){
     return new Promise(resolve=>{
       this.http.get<any>(this._url + 'categories/'+ catid +'/products', {

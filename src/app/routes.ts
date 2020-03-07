@@ -27,6 +27,10 @@ export const appRoutes:Routes =[
         canActivate: [AuthGuardGuard]
     },
     {
+        path: 'category/:id/products',
+        component: ProductsComponent
+    },
+    {
         path:'orders',
         component: OrdersComponent,
         canActivate: [AuthGuardGuard]
@@ -57,6 +61,15 @@ export const appRoutes:Routes =[
         canActivate: [AuthGuardGuard]
     },
     {
+        path: 'tags',
+        component: TagsComponent,
+        canActivate: [AuthGuardGuard]
+    },
+    {
+        path: 'login',
+        component: LoginComponent
+    },
+    {
         path: '',
         redirectTo:'dashboard',
         pathMatch: 'full'
@@ -65,10 +78,6 @@ export const appRoutes:Routes =[
         path: 'category',
         redirectTo:'categories',
         pathMatch: 'full'
-    },
-    {
-        path: 'category/:id/products',
-        component: ProductsComponent
     },
     {
         path: 'categories/add',
@@ -89,13 +98,5 @@ export const appRoutes:Routes =[
         path: 'categories/:id',
         redirectTo:'categories',
         pathMatch: 'full'
-    },
-    {
-        path: 'tags',
-        component: TagsComponent
-    },
-    {
-        path: 'login',
-        component: LoginComponent
     }
 ]

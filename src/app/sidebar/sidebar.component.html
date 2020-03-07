@@ -20,6 +20,12 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" [routerLink]='["/tags"]' routerLinkActive="active">
+            <i class="fas fa-tags"></i>
+            Tags
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" [routerLink]='["/products"]' [queryParams] = "{page:1}" queryParamsHandling="merge" routerLinkActive="active">
             <i class="fas fa-shopping-cart"></i>
             Products

@@ -61,12 +61,26 @@ export const appRoutes:Routes =[
         pathMatch: 'full'
     },
     {
+        path: 'category/:id/products',
+        component: ProductsComponent
+    },
+    {
         path: 'categories/add',
         redirectTo:'categories',
         pathMatch: 'full'
     },
     {
         path: 'categories/edit',
+        redirectTo:'categories',
+        pathMatch: 'full'
+    },
+    {
+        path: 'category/:id',
+        redirectTo:'categories',
+        pathMatch: 'full'
+    },
+    {
+        path: 'categories/:id',
         redirectTo:'categories',
         pathMatch: 'full'
     },

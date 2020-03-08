@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DashboardServService } from '../shared';
 
 @Component({
   selector: 'app-orders',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrdersComponent implements OnInit {
 
-  constructor() { }
+  constructor(private serv:DashboardServService) { }
+
+  orders:any[] = [];
 
   ngOnInit() {
+    this.serv.getAllOrders().then(res=>{
+      this.orders = <any[]>res;
+      console.log('All orders', this.orders);
+    })
   }
 
 }

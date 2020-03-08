@@ -1,0 +1,13 @@
+@import './../app.component.scss';
+
+#customer-table{
+
+    .btn-customer-product_list{
+        @include invertOnHover(#fff, $purple)
+    }
+    
+    .btn-customer-product_list{
+        border-radius: 100%;
+    }
+
+}

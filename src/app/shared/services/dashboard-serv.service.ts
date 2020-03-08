@@ -39,6 +39,12 @@ export class DashboardServService {
     this.isLogged() ? true: this.router.navigate(['/login']);
   }
 
+  numberOfProductPages(totalNo){
+    const no = Math.ceil(totalNo/this.pageNoOfProduct);
+    return new Array(no).fill(1); //Thank you Leonardo Giroto
+  }
+
+  //Category fns
   getCatgory(id){
     return new Promise((resolve, reject)=>{
       this.http.get<any>(this._url + 'categories/' + id).subscribe(
@@ -145,8 +151,8 @@ export class DashboardServService {
     })
   }
 
-// products
 
+// products
   getProducts(param:string){
     return new Promise(resolve=>{
       this.http.get<any>(this._url + 'products', {
@@ -223,12 +229,110 @@ export class DashboardServService {
     })
   }
 
-  numberOfProductPages(totalNo){
-    const no = Math.ceil(totalNo/this.pageNoOfProduct);
-    return new Array(no).fill(1); //Thank you Leonardo Giroto
-
+  getProduct(id){
+    return new Promise((resolve, reject)=>{
+      this.http.get<any>(this._url + 'products/' + id).subscribe(
+        res=>{
+          console.log(res);
+          if (res.status == 'success') {
+            resolve(res.data);
+          } else if(res.code == 401){
+            this.removeToken();
+            this.checkLoggedIn();
+          } else{
+            reject(res);
+          }
+        }, 
+        (err: HttpErrorResponse)=>{
+          console.log(err.error);
+        }
+      )
+    })
   }
 
+  createProduct(product:IProduct){
+    return new Promise(resolve=>{
+      const token = this.getToken();
+      this.http.post<any>(this._url + 'products',{
+        name: product.name,
+        category_id: product.category.id,
+        description: product.description,
+        excerpts: product.excerpts,
+        cost: product.cost,
+        discount: product.discount,
+        image: new Array(product.images),
+        quantity: product.quantity
+      },
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      })
+      .subscribe(
+        res=>{
+          console.log(res);
+          if (res.status == 'success') {
+            resolve(res);
+          }
+        }, 
+        (err: HttpErrorResponse)=>{
+          console.log(err.error);
+        }
+      )
+    })
+  }
+
+  updateProduct(product:IProduct){
+    return new Promise(resolve=>{
+      const token = this.getToken();
+      this.http.put<any>(this._url + 'products/' + product.id,{
+        name: product.name,
+        category_id: product.category.id,
+        description: product.description,
+        excerpts: product.excerpts,
+        cost: product.cost,
+        discount: product.discount,
+        image: new Array(product.images),
+        quantity: product.quantity
+      },
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      })
+      .subscribe(
+        res=>{
+          console.log(res);
+          if (res.status == 'success') {
+            resolve(res);
+          }
+        }, 
+        (err: HttpErrorResponse)=>{
+          console.log(err.error);
+        }
+      )
+    })
+  }
+
+  deleteProduct(id){
+    return new Promise((resolve, reject)=>{
+      const token = this.getToken();
+      this.http.delete<any>(this._url + 'products/' + id,{
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      }).subscribe(
+        res=>{
+          console.log(res);
+          if (res.status == 'success') {
+            resolve(res.data);
+          } else if(res.code == 401){
+            this.removeToken();
+            this.checkLoggedIn();
+          } else{
+            reject(res);
+          }
+        }, 
+        (err: HttpErrorResponse)=>{
+          console.log(err.error);
+        }
+      )
+    })
+  }
 
   // tags
   getAllTags(){

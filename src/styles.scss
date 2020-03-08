@@ -18,9 +18,19 @@ textarea{
 }
 
 table{
+    background-color: transparent !important;
+    transition: 0.7s ease-in;
+
     th{
         text-transform: capitalize;
         font-family: 'Roboto' sans-serif;
         font-weight: 500;
+    }
+
+    &:hover{
+        tr:hover{
+            background-color: whitesmoke !important;
+            box-shadow: 0.1px 0.1px 0.1px rgba($color: #000000, $alpha: 0.1);
+        }
     }
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DashboardServService, ICustomer } from '../shared';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-customers',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CustomersComponent implements OnInit {
 
-  constructor() { }
+  constructor(private serv:DashboardServService,private route: ActivatedRoute, private router: Router) { }
+
+  customers:ICustomer[] = [];
 
   ngOnInit() {
+    this.serv.getCustomers().then(res=>{
+      this.customers = <ICustomer[]>res;
+      console.log('this.customers', this.customers)
+    })
   }
 
+  getCustomerOrders(customer:ICustomer){
+    console.log('this customer', customer);
+  }
 }

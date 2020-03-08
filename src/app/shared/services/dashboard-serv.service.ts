@@ -362,4 +362,27 @@ export class DashboardServService {
       )
     })
   }
+
+
+  //Orders
+  getAllOrders(){
+    return new Promise(resolve=>{
+      const token = this.getToken();
+      this.http.get<any>(this._url + 'orders-all',
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      })
+      .subscribe(
+        res=>{
+          console.log(res);
+          if (res.status == 'success') {
+            resolve(res.data);
+          }
+        }, 
+        (err: HttpErrorResponse)=>{
+          console.log(err.error);
+        }
+      )
+    })
+  }
 }

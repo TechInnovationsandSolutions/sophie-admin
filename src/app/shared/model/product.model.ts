@@ -28,5 +28,6 @@ export interface IProduct{
     ratings?:IReview[],
     tag?:string[],
     avg_rating?:number,
-    images: IProdImage[]
+    images: IProdImage[],
+    quantity: number
 }

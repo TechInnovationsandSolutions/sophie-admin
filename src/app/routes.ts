@@ -60,9 +60,15 @@ export const appRoutes:Routes =[
         component: ProductsComponent,
         canActivate: [AuthGuardGuard]
     },
+    // {
+    //     path: 'products/view/:id',
+    //     component: ProductsComponent,
+    //     canActivate: [AuthGuardGuard]
+    // },
     {
-        path: 'products/:id',
-        component: ProductsComponent
+        path: 'product/:fn',
+        component: ProductsComponent,
+        canActivate: [AuthGuardGuard]
     },
     {
         path: 'tag/:fn',

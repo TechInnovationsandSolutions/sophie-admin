@@ -201,7 +201,7 @@ export class CreateProductComponent implements OnInit {
       _form.append('id', this.isCreate ? formValue.id : null);
       _form.append('name', formValue.productName);
       _form.append('images', formValue.productImg);
-      _form.append('category', formValue.productCategory);
+      _form.append('category_id', formValue.productCategory.id);
       _form.append('cost', formValue.productPrice);
       _form.append('reduced_cost', formValue.productPromoPrice);
       _form.append('description', formValue.productDescription);

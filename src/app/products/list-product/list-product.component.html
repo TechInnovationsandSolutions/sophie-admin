@@ -53,21 +53,21 @@
                     </td>
                     <td data-field="view-product">
                         <span class="view-product">
-                            <button title="click to view product" class="btn-product-view btn">
+                            <button title="click to view product" class="btn-product-view btn" (click)="viewProduct(product)">
                                 <i class="far fa-eye"></i>
                             </button>
                         </span>
                     </td>
                     <td data-field="edit-product">
                         <span class="edit-product">
-                            <button title="click to edit product" class="btn-product-edit btn">
+                            <button title="click to edit product" class="btn-product-edit btn" (click)="editProduct(product)">
                                 <i class="fas fa-pencil-alt"></i>
                             </button>
                         </span>
                     </td>
                     <td data-field="delete-product">
                         <span class="delete-product">
-                            <button title="click to delete product" class="btn-product-delete btn">
+                            <button title="click to delete product" class="btn-product-delete btn" (click)="deleteProduct(product)">
                                 <i class="far fa-trash-alt"></i>
                             </button>
                         </span>

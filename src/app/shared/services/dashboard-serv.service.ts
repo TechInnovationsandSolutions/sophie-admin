@@ -250,19 +250,10 @@ export class DashboardServService {
     })
   }
 
-  createProduct(product:IProduct){
+  createProduct(product){
     return new Promise(resolve=>{
       const token = this.getToken();
-      this.http.post<any>(this._url + 'products',{
-        name: product.name,
-        category_id: product.category.id,
-        description: product.description,
-        excerpts: product.excerpts,
-        cost: product.cost,
-        discount: product.discount,
-        image: new Array(product.images),
-        quantity: product.quantity
-      },
+      this.http.post<any>(this._url + 'products',product,
       {
         headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
       })
@@ -280,19 +271,10 @@ export class DashboardServService {
     })
   }
 
-  updateProduct(product:IProduct){
+  updateProduct(product, productId){
     return new Promise(resolve=>{
       const token = this.getToken();
-      this.http.put<any>(this._url + 'products/' + product.id,{
-        name: product.name,
-        category_id: product.category.id,
-        description: product.description,
-        excerpts: product.excerpts,
-        cost: product.cost,
-        discount: product.discount,
-        image: new Array(product.images),
-        quantity: product.quantity
-      },
+      this.http.put<any>(this._url + 'products/' + productId,product,
       {
         headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
       })

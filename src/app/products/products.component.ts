@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -8,17 +9,40 @@ import { Component, OnInit } from '@angular/core';
 export class ProductsComponent implements OnInit {
   isAddProduct:boolean = false;
 
-  constructor() { }
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
+    if(this.route.snapshot.params){
+      var fn = this.route.snapshot.params['fn'];
+      if (fn == 'add' || fn == 'edit') {
+        this.isAddProduct = true
+      } 
+      // else {
+      //   this.router.navigate(['/products']);
+      // }
+    }
   }
 
   showAddProduct(){
-    this.isAddProduct = true;
+    this.router.navigate(['/product/add']);
   }
 
   hideAddProduct(){
-    this.isAddProduct = false;
+    console.log(this.route.snapshot.queryParams.currentPage)
+
+    if (this.route.snapshot.queryParams.currentPage) {
+      this.router.navigate(['/products'], {
+        queryParams: {
+          page: this.route.snapshot.queryParams.currentPage
+        },
+      });
+    } else{
+      this.router.navigate(['/products'], {
+        queryParams: {
+          page: 1
+        },
+      });
+    }
   }
 
 }

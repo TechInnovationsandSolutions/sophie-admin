@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardServService, ProductResponse, IProduct } from './../../shared/index';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-list-product',
@@ -17,8 +18,9 @@ export class ListProductComponent implements OnInit {
   products: IProduct[] = [];
 
   ngOnInit() {
-    console.log(this.route.snapshot.params);
+    console.log(this.route.snapshot.queryParams.page);
     if (!this.route.snapshot.queryParams.page) {
+      console.log('no product param')
       this.router.navigate([],{ 
         queryParams: { 
           page: 1 
@@ -41,6 +43,7 @@ export class ListProductComponent implements OnInit {
       aProm = this.service.getSearchedProducts(searchhTerm, pg)
     }
     else{
+      console.log('here')
       aProm = this.service.getProducts(pg)
     }
     aProm.then(res=>{
@@ -77,5 +80,60 @@ export class ListProductComponent implements OnInit {
       queryParamsHandling: 'merge'
     });
     // location.reload();
+  }
+
+  editProduct(theproduct:IProduct){
+    console.log(theproduct);
+    this.router.navigate(['/product/edit'], {
+      queryParams:{
+        currentPage: this.currentPage,
+        product: theproduct.id
+      }
+    })
+  }
+
+  deleteProduct(product:IProduct){
+    console.log(product);
+
+    Swal.fire({
+      title: 'Confirmation',
+      text: "You want to delete " + product.name + " product?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, Delete!',
+      cancelButtonText: 'No, cancel!',
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor:'#28a745'
+    }).then((result) => {
+      if (result.value) {
+        this.service.deleteProduct(product.id.toString()).then(res=>console.log(res)).then(()=>{
+          Swal.fire(
+            'Deleted!',
+            'Product '+ product.name + 'has been deleted.',
+            'success'
+          ).then(()=>{
+            location.reload();
+          })
+        }).catch(err=>Swal.fire({
+          title: 'Error',
+          icon: 'error',
+          text:err
+        }))
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        Swal.fire(
+          'Cancelled',
+          'operation aborted',
+          'info'
+        )
+      }
+    })
+  }
+
+  viewProduct(product:IProduct){
+    console.log(product);
+    
   }
 }

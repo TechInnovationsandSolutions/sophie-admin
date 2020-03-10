@@ -1,1 +1,68 @@
-<p>customers works!</p>
+<app-app-layout>
+    <p app-title>List of Users</p>
+    <div app-body>
+        <div class="d-flex flex-wrap col-sm-12 col-md-10 col-lg-10 mx-auto container">
+            <div class="col-sm-12 py-2">
+                <table class="table" id="customer-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>email</th>
+                            <th>phone number</th>
+                            <th>address</th>
+                            <th>registration date</th>
+                            <th>orders</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let customer of customers">
+                            <td data-field="customer-name">
+                                <span class="text-capitalize">
+                                    <span>
+                                        {{ customer.first_name }}
+                                    </span> <span>
+                                        {{ customer.last_name }}
+                                    </span>
+                                </span>
+                            </td>
+                            <td data-field="customer-email">
+                                <span>
+                                    {{ customer.email }} <span *ngIf="customer.email_verified_at" class="text-success" title="email is verified">
+                                        <i class="fas fa-check-circle"></i>
+                                    </span>
+                                </span>
+                                </td>
+                            <td data-field="customer-phone_number">
+                                <span>
+                                    {{ customer.phone || '-' }}
+                                </span>
+                            </td>
+                            <td data-field="customer-address">
+                                <span>
+                                   {{ customer.address  || '-' }} 
+                                </span>
+                                </td>
+                            <td data-field="customer-registration_date">
+                                <span>
+                                    {{ customer.created_at | date}}
+                                </span>
+                            </td>
+                            <td data-field="customer-orders">
+                                <button class="btn btn-customer-product_list" title="see all orders by this customer" (click)="getCustomerOrders(customer)">
+                                    <i class="fas fa-th-list"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="!customers.length">
+                            <div class="d-flex p-2 w-100">
+                                <p class="mx-auto text-center text-capitalize">
+                                    No customer
+                                </p>
+                            </div>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</app-app-layout>

@@ -1,4 +1,9 @@
 <div>
+    <div [ngClass]="{'d-none': !selectedCheckbox.length}" class="btn-bulk-wrapper px-0 py-2 mb-2 col-sm-12">
+      <button class="btn bulk-delete ml-auto">
+        Delete Selected
+      </button>
+    </div>
     <div *ngIf="categories.length">
         <!-- <div *ngFor="let category of categories">
             <p>Name: <strong>{{ category.name }}</strong></p>
@@ -8,7 +13,7 @@
           <caption>List of categories</caption>
           <thead class="thead-dark">
             <tr>
-              <th>S/N</th>
+              <th></th>
               <th>Name</th>
               <th></th>
               <th></th>
@@ -20,7 +25,13 @@
               <td data-field="id">
                 <span class="d-flex flex-wrap p-2">
                   <span class="m-auto">
-                    {{ i + 1 }}
+                    <div>
+                      <label for="category-checkbox" class="sr-only">
+                        check for bulk actions like delete
+                      </label>
+                      <input type="checkbox" name="category-checkbox" id="category-checkbox" (change) ="onCategoryChecked(category.id, $event)">
+                    </div>
+                   
                   </span>
                 </span>
               </td>

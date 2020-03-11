@@ -33,3 +33,21 @@
     }
 
 }
+
+.btn-bulk-wrapper{
+    transition: 0.5s ease-in-out all;
+    display: flex;
+    flex-wrap: wrap;
+
+    button.bulk-delete{
+        background-color: rgba($danger, 0.15);
+        color: $danger;
+        font-weight: bold;
+        transition: 0.2s ease-out;
+    
+        &:hover{
+            background-color: $danger;
+            color: #fff;
+        }
+    }
+}

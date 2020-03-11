@@ -20,6 +20,7 @@ export class CategoryListComponent implements OnInit {
   // dtElement: DataTableDirective;
   // dtOptions:DataTables.Settings = {};
   dataTable: any;
+  selectedCheckbox:number[] = [];
 
   constructor(private serv: DashboardServService, private chRef: ChangeDetectorRef, private router: Router) { }
 
@@ -109,5 +110,21 @@ export class CategoryListComponent implements OnInit {
   productCatList(cat:ICategory){
     this.router.navigate(['/category', cat.id, 'products'], {queryParams:{page:1}});
     // location.reload();
+  }
+
+  onCategoryChecked(categoryId: number, e){
+    console.log(categoryId, e, e.target.checked);
+    var isInCheckList = this.selectedCheckbox.indexOf(categoryId);
+    console.log('isInCheckList', isInCheckList, 'then', !isInCheckList);
+
+    if (e.target.checked == true && isInCheckList === -1) {
+      this.selectedCheckbox.push(categoryId);
+    }
+
+    if (e.target.checked == false && isInCheckList > -1) {
+      this.selectedCheckbox.splice(isInCheckList, 1);
+    }
+
+    console.log('this.selectedCheckbox', this.selectedCheckbox);
   }
 }

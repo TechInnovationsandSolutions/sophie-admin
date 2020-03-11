@@ -1,6 +1,6 @@
 <div>
     <div [ngClass]="{'d-none': !selectedCheckbox.length}" class="btn-bulk-wrapper px-0 py-2 mb-2 col-sm-12">
-      <button class="btn bulk-delete ml-auto">
+      <button class="btn bulk-delete ml-auto" (click)="bulkDelete()">
         Delete Selected
       </button>
     </div>
@@ -29,7 +29,7 @@
                       <label for="category-checkbox" class="sr-only">
                         check for bulk actions like delete
                       </label>
-                      <input type="checkbox" name="category-checkbox" id="category-checkbox" (change) ="onCategoryChecked(category.id, $event)">
+                      <input type="checkbox" name="category-checkbox" id="category-checkbox" (change) ="onCategoryChecked(category, $event)">
                     </div>
                    
                   </span>

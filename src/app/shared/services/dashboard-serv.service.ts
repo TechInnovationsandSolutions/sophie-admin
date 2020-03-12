@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Router } from '@angular/router';
 import { ICategory, IProduct, ITag } from '../model';
+import { cloudinaryConfig } from "./../../configs";
 
 const TOKEN = 'x-token';
 
@@ -13,6 +14,7 @@ export class DashboardServService {
   constructor(private http: HttpClient, private router:Router) { }
 
   _url = 'https://tis-bandb.herokuapp.com/api/v1/'; //Base URL
+  cloudinary = cloudinaryConfig;
 
   //Temporary data
   _category:ICategory;
@@ -84,49 +86,63 @@ export class DashboardServService {
 
   createCategory(category:ICategory){
     return new Promise(resolve=>{
-      const token = this.getToken();
-      this.http.post<any>(this._url + 'categories',{
-        name: category.name,
-        picture: new Array(category.image)
-      },
-      {
-        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
-      })
-      .subscribe(
-        res=>{
-          console.log(res);
-          if (res.status == 'success') {
-            resolve(res);
+      this.http.post('https://api.cloudinary.com/v1_1/' + cloudinaryConfig.cloud_name  + '/image/upload/', { file:  category.image, public_id: 'category-' + category.name, upload_preset : cloudinaryConfig.upload_preset}).subscribe(resp => {
+        const response = <any>resp;
+        console.log('cloudy', response);
+        const token = this.getToken();
+        this.http.post<any>(this._url + 'categories',{
+          name: category.name,
+          picture: {
+            url: response.url,
+            thumbnail: response.eager[0].url
           }
-        }, 
-        (err: HttpErrorResponse)=>{
-          console.log(err.error);
-        }
-      )
+        },
+        {
+          headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+        })
+        .subscribe(
+          res=>{
+            console.log(res);
+            if (res.status == 'success') {
+              resolve(res);
+            }
+          }, 
+          (err: HttpErrorResponse)=>{
+            console.log(err.error);
+          }
+        )
+      })
     })
   }
 
   updateCategory(category:ICategory){
     return new Promise(resolve=>{
-      const token = this.getToken();
-      this.http.put<any>(this._url + 'categories/'+category.id,{
-        name: category.name,
-        picture: category.image
-      },
-      {
-        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
-      })
-      .subscribe(
-        res=>{
-          console.log(res);
-          if (res.status == 'success') {
-            resolve(res);
+      this.http.post('https://api.cloudinary.com/v1_1/' + cloudinaryConfig.cloud_name  + '/image/upload/', { file:  category.image, public_id: 'category-' + category.name, upload_preset : cloudinaryConfig.upload_preset}).subscribe(resp => {
+        const response = <any>resp;
+        console.log('cloudy', response);
+        const token = this.getToken();
+        this.http.put<any>(this._url + 'categories/'+category.id,{
+          name: category.name,
+          picture: {
+            url: response.url,
+            thumbnail: response.eager[0].url
           }
-        }, 
-        (err: HttpErrorResponse)=>{
-          console.log(err.error);
-        }
-      )
+        },
+        {
+          headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+        })
+        .subscribe(
+          res=>{
+            console.log(res);
+            if (res.status == 'success') {
+              resolve(res);
+            }
+          }, 
+          (err: HttpErrorResponse)=>{
+            console.log(err.error);
+          }
+        )
+      })
     })
   }
 
@@ -250,45 +266,77 @@ export class DashboardServService {
     })
   }
 
-  createProduct(product){
+  createProduct(product:IProduct){
     return new Promise(resolve=>{
-      const token = this.getToken();
-      this.http.post<any>(this._url + 'products',product,
-      {
-        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
-      })
-      .subscribe(
-        res=>{
-          console.log(res);
-          if (res.status == 'success') {
-            resolve(res);
+      this.http.post('https://api.cloudinary.com/v1_1/' + cloudinaryConfig.cloud_name  + '/image/upload/', { file:  product.images[0].url, public_id: 'product-' + product.name, upload_preset : cloudinaryConfig.upload_preset}).subscribe(resp => {
+        const response = <any>resp;
+        console.log('cloudy', response);
+        const token = this.getToken();
+        this.http.post<any>(this._url + 'products',{
+          name: product.name,
+          category_id: product.category.id,
+          description: product.description,
+          excerpts: product.excerpt,
+          cost: product.cost,
+          discount: product.discount,
+          image:{
+            url: response.url,
+            thumbnail: response.eager[0].url
+          },
+          quantity: product.quantity
+        },
+        {
+          headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+        })
+        .subscribe(
+          res=>{
+            console.log(res);
+            if (res.status == 'success') {
+              resolve(res);
+            }
+          }, 
+          (err: HttpErrorResponse)=>{
+            console.log(err.error);
           }
-        }, 
-        (err: HttpErrorResponse)=>{
-          console.log(err.error);
-        }
-      )
+        )
+      })
     })
   }
 
-  updateProduct(product, productId){
+  updateProduct(product:IProduct){
     return new Promise(resolve=>{
-      const token = this.getToken();
-      this.http.put<any>(this._url + 'products/' + productId,product,
-      {
-        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
-      })
-      .subscribe(
-        res=>{
-          console.log(res);
-          if (res.status == 'success') {
-            resolve(res);
+      this.http.post('https://api.cloudinary.com/v1_1/' + cloudinaryConfig.cloud_name  + '/image/upload/', { file:  product.images[0].url, public_id: 'product-' + product.name, upload_preset : cloudinaryConfig.upload_preset}).subscribe(resp => {
+        const response = <any>resp;
+        console.log('cloudy', response);
+        const token = this.getToken();
+        this.http.put<any>(this._url + 'products/' + product.id,{
+          name: product.name,
+          category_id: product.category.id,
+          description: product.description,
+          excerpts: product.excerpt,
+          cost: product.cost,
+          discount: product.discount,
+          image:{
+            url: response.url,
+            thumbnail: response.eager[0].url
+          },
+          quantity: product.quantity
+        },
+        {
+          headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+        })
+        .subscribe(
+          res=>{
+            console.log(res);
+            if (res.status == 'success') {
+              resolve(res);
+            }
+          }, 
+          (err: HttpErrorResponse)=>{
+            console.log(err.error);
           }
-        }, 
-        (err: HttpErrorResponse)=>{
-          console.log(err.error);
-        }
-      )
+        )
+      })
     })
   }
 

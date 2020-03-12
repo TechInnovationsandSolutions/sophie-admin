@@ -83,7 +83,8 @@ export class CreateProductComponent implements OnInit {
   
       reader.onload = () => {
         this.productForm.patchValue({
-          productImg: event.target.files[0]
+          // productImg: event.target.files[0]
+          productImg: reader.result
        });
 
        console.log('frm', this.productForm.value);
@@ -112,11 +113,11 @@ export class CreateProductComponent implements OnInit {
    console.log('frm', this.productForm.value);
   }
 
-  createNewProduct(product, productName){
+  createNewProduct(product:IProduct){
     try {
       Swal.fire({
         title: 'Confirmation',
-        text: "You want to create a new Product by name - " + productName + "?",
+        text: "You want to create a new Product by name - " + product.name + "?",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, Create!',
@@ -126,7 +127,7 @@ export class CreateProductComponent implements OnInit {
           this.serv.createProduct(product).then(res=>console.log(res)).then(()=>{
             Swal.fire(
               'Updated!',
-              'Category '+ productName + 'has been successfully update.',
+              'Category '+ product.name + 'has been successfully update.',
               'success'
               )
             // ).then(()=>location.reload())
@@ -151,21 +152,21 @@ export class CreateProductComponent implements OnInit {
     }
   }
 
-  updateProduct(product, productName, productId){
+  updateProduct(product:IProduct){
     try {
       Swal.fire({
         title: 'Confirmation',
-        text: "You want to create a new Product by name - " + productName + "?",
+        text: "You want to create a new Product by name - " + product.name + "?",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, Create!',
         cancelButtonText: 'No, cancel!',
       }).then((result) => {
         if (result.value) {
-          this.serv.updateProduct(product, productId).then(res=>console.log(res)).then(()=>{
+          this.serv.updateProduct(product).then(res=>console.log(res)).then(()=>{
             Swal.fire(
               'Updated!',
-              'Category '+ productName + 'has been successfully update.',
+              'Category '+ product.name + 'has been successfully update.',
               'success'
               )
             // ).then(()=>location.reload())
@@ -197,40 +198,40 @@ export class CreateProductComponent implements OnInit {
 
       console.log('formValue', formValue);
 
-      var _form = new FormData();
-      _form.append('id', this.isCreate ? formValue.id : null);
-      _form.append('name', formValue.productName);
-      _form.append('images', formValue.productImg);
-      _form.append('category_id', formValue.productCategory.id);
-      _form.append('cost', formValue.productPrice);
-      _form.append('reduced_cost', formValue.productPromoPrice);
-      _form.append('description', formValue.productDescription);
-      _form.append('excerpt', formValue.productExcerpt);
-      _form.append('quantity', formValue.productQuantity);
-      _form.append('discount', formValue.discount);
+      // var _form = new FormData();
+      // _form.append('id', this.isCreate ? formValue.id : null);
+      // _form.append('name', formValue.productName);
+      // _form.append('images', formValue.productImg);
+      // _form.append('category_id', formValue.productCategory.id);
+      // _form.append('cost', formValue.productPrice);
+      // _form.append('reduced_cost', formValue.productPromoPrice);
+      // _form.append('description', formValue.productDescription);
+      // _form.append('excerpt', formValue.productExcerpt);
+      // _form.append('quantity', formValue.productQuantity);
+      // _form.append('discount', formValue.discount);
 
 
-      console.log('_form', _form);
+      // console.log('_form', _form);
       
 
-      // var _product:IProduct = {
-      //   id: _form.id ? _form.id : null,
-      //   name: _form.productName,
-      //   images:[
-      //     {
-      //       url: _form.productImg
-      //     }
-      //   ],
-      //   category: _form.productCategory,
-      //   cost: _form.productPrice,
-      //   reduced_cost: _form.productPromoPrice,
-      //   description: _form.productDescription,
-      //   excerpt: _form.productExcerpt,
-      //   quantity: _form.productQuantity,
-      //   discount: _discount.toString(),
-      // };
-      // console.log('trans-formValue', _product);
-      this.isCreate ? this.createNewProduct(_form, formValue.productName) : this.updateProduct(_form, formValue.productName, formValue.id);
+      var _product:IProduct = {
+        id: formValue.id ? formValue.id : null,
+        name: formValue.productName,
+        images:[
+          {
+            url: formValue.productImg
+          }
+        ],
+        category: formValue.productCategory,
+        cost: formValue.productPrice,
+        reduced_cost: formValue.productPromoPrice,
+        description: formValue.productDescription,
+        excerpt: formValue.productExcerpt,
+        quantity: formValue.productQuantity,
+        discount: _discount.toString(),
+      };
+      console.log('trans-formValue', _product);
+      this.isCreate ? this.createNewProduct(_product) : this.updateProduct(_product);
     } catch (error) {
       console.error(error);
     }

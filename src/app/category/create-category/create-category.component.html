@@ -11,7 +11,7 @@
             <label for="category-img">Choose Category Image</label>
             <input type="file" (change)="onFileChange($event)" class="form-control-file" id="category-img" accept=".jpg, .jpeg, .png" required>
         </div>
-        <div *ngIf="!!categoryForm.get('img').value">
+        <div *ngIf="!!categoryForm.get('image').value">
             <p>Image Preview</p>
             <img id="imgPreview" src="" alt="Category image preview">
             <button type="button" *ngIf="!showInputFile" class="btn btn-danger mx-2" (click)="removeImg()" title="Remove current image">

@@ -123,10 +123,10 @@ export class DashboardServService {
         const token = this.getToken();
         this.http.put<any>(this._url + 'categories/'+category.id,{
           name: category.name,
-          picture: {
+          picture: [{
             url: response.url,
             thumbnail: response.eager[0].url
-          }
+          }]
         },
         {
           headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
@@ -316,10 +316,10 @@ export class DashboardServService {
           excerpts: product.excerpt,
           cost: product.cost,
           discount: product.discount,
-          image:{
+          image:[{
             url: response.url,
             thumbnail: response.eager[0].url
-          },
+          }],
           quantity: product.quantity
         },
         {

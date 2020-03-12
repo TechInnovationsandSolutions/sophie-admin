@@ -15,7 +15,7 @@ export class CreateCategoryComponent implements OnInit {
 
   categoryForm = this.fb.group({
     name:['', Validators.required],
-    img: ['', Validators.required],
+    image: ['', Validators.required],
     id: [''],
   })
 
@@ -28,7 +28,7 @@ export class CreateCategoryComponent implements OnInit {
         const theCategory = <ICategory>res;
         this.categoryForm.patchValue({
           name: theCategory.name,
-          img: theCategory.image,
+          image: theCategory.image,
           id: theCategory.id
         });
 
@@ -63,7 +63,7 @@ export class CreateCategoryComponent implements OnInit {
   
       reader.onload = () => {
         this.categoryForm.patchValue({
-          img: reader.result
+          image: reader.result
        });
 
        console.log('frm', this.categoryForm.value);

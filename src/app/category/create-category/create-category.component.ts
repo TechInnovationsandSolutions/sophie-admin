@@ -83,12 +83,12 @@ export class CreateCategoryComponent implements OnInit {
 
   removeImg(){
     this.categoryForm.patchValue({
-      img: null
+      image: null
     });
 
     this.showInputFile = true;
 
-    <HTMLInputElement><unknown>document.getElementById('category-img').setAttribute('value', null)
+    <HTMLInputElement><unknown>document.getElementById('imgPreview').setAttribute('value', '')
 
    console.log('frm', this.categoryForm.value);
   }

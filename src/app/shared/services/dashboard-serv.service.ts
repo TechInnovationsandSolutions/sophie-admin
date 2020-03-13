@@ -108,12 +108,15 @@ export class DashboardServService {
       this.http.post('https://api.cloudinary.com/v1_1/' + cloudinaryConfig.cloud_name  + '/image/upload/', { file:  category.image, public_id: 'category-' + category.name, upload_preset : cloudinaryConfig.upload_preset}).subscribe(resp => {
         const response = <any>resp;
         console.log('cloudy', response);
+
+        const img_thumbnail = (response.eager && response.eager[0].secure_url) ? response.eager[0].secure_url : response.secure_url.split('upload/').join('upload/c_scale,w_150/');
+
         const token = this.getToken();
         this.http.post<any>(this._url + 'categories',{
           name: category.name,
           picture: {
-            url: response.url,
-            thumbnail: response.eager[0].url
+            url: response.secure_url,
+            thumbnail: img_thumbnail
           }
         },
         {
@@ -143,12 +146,15 @@ export class DashboardServService {
       this.http.post('https://api.cloudinary.com/v1_1/' + cloudinaryConfig.cloud_name  + '/image/upload/', { file:  category.image, public_id: 'category-' + category.name, upload_preset : cloudinaryConfig.upload_preset}).subscribe(resp => {
         const response = <any>resp;
         console.log('cloudy', response);
+
+        const img_thumbnail = (response.eager && response.eager[0].secure_url) ? response.eager[0].secure_url : response.secure_url.split('upload/').join('upload/c_scale,w_150/');
+
         const token = this.getToken();
         this.http.put<any>(this._url + 'categories/'+category.id,{
           name: category.name,
           picture: [{
-            url: response.url,
-            thumbnail: response.eager[0].url
+            url: response.secure_url,
+            thumbnail: img_thumbnail
           }]
         },
         {
@@ -322,6 +328,9 @@ export class DashboardServService {
       this.http.post('https://api.cloudinary.com/v1_1/' + cloudinaryConfig.cloud_name  + '/image/upload/', { file:  product.images[0].url, public_id: 'product-' + product.name, upload_preset : cloudinaryConfig.upload_preset}).subscribe(resp => {
         const response = <any>resp;
         console.log('cloudy', response);
+
+        const img_thumbnail = (response.eager && response.eager[0].secure_url) ? response.eager[0].secure_url : response.secure_url.split('upload/').join('upload/c_scale,w_150/');
+
         const token = this.getToken();
         this.http.post<any>(this._url + 'products',{
           name: product.name,
@@ -329,12 +338,14 @@ export class DashboardServService {
           description: product.description,
           excerpts: product.excerpt,
           cost: product.cost,
-          discount: product.discount,
+          discount: Math.floor(+product.discount * 100),
           image:{
-            url: response.url,
-            thumbnail: response.eager[0].url
+            url: response.secure_url,
+            title: response.public_id,
+            thumbnail: img_thumbnail
           },
-          quantity: product.quantity
+          quantity: product.quantity,
+          tags: product.formTags
         },
         {
           headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
@@ -363,6 +374,9 @@ export class DashboardServService {
       this.http.post('https://api.cloudinary.com/v1_1/' + cloudinaryConfig.cloud_name  + '/image/upload/', { file:  product.images[0].url, public_id: 'product-' + product.name, upload_preset : cloudinaryConfig.upload_preset}).subscribe(resp => {
         const response = <any>resp;
         console.log('cloudy', response);
+
+        const img_thumbnail = (response.eager && response.eager[0].secure_url) ? response.eager[0].secure_url : response.secure_url.split('upload/').join('upload/c_scale,w_150/');
+
         const token = this.getToken();
         this.http.put<any>(this._url + 'products/' + product.id,{
           name: product.name,
@@ -370,12 +384,14 @@ export class DashboardServService {
           description: product.description,
           excerpts: product.excerpt,
           cost: product.cost,
-          discount: product.discount,
-          image:[{
-            url: response.url,
-            thumbnail: response.eager[0].url
-          }],
-          quantity: product.quantity
+          discount: Math.floor(+product.discount * 100),
+          image:{
+            url: response.secure_url,
+            title: response.public_id,
+            thumbnail: img_thumbnail
+          },
+          quantity: product.quantity,
+          tags: product.formTags
         },
         {
           headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)

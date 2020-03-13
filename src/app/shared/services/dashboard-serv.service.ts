@@ -38,7 +38,18 @@ export class DashboardServService {
   }
 
   checkLoggedIn(){
-    this.isLogged() ? true: this.router.navigate(['/login']);
+    // if (!this.isLogged()) {
+    //   const redirectUrl = route['_routerState']['url'];
+    //   this.router.navigateByUrl(
+    //     this.router.createUrlTree(
+    //       ['/login'], {
+    //         queryParams: {
+    //           redirectUrl
+    //         }
+    //       }
+    //     )
+    //   );
+    // }
   }
 
   numberOfProductPages(totalNo){
@@ -62,7 +73,11 @@ export class DashboardServService {
           }
         }, 
         (err: HttpErrorResponse)=>{
-          console.log(err.error);
+          console.log(err);
+          if(err.status === 401){
+            this.removeToken();
+            //route guard handles the redirection
+          }
         }
       )
     })
@@ -78,7 +93,11 @@ export class DashboardServService {
           }
         }, 
         (err: HttpErrorResponse)=>{
-          console.log(err.error);
+          console.log(err);
+          if(err.status === 401){
+            this.removeToken();
+            //route guard handles the redirection
+          }
         }
       )
     })
@@ -108,7 +127,11 @@ export class DashboardServService {
             }
           }, 
           (err: HttpErrorResponse)=>{
-            console.log(err.error);
+            console.log(err);
+            if(err.status === 401){
+              this.removeToken();
+              this.checkLoggedIn();
+            }
           }
         )
       })
@@ -139,7 +162,11 @@ export class DashboardServService {
             }
           }, 
           (err: HttpErrorResponse)=>{
-            console.log(err.error);
+            console.log(err);
+            if(err.status === 401){
+              this.removeToken();
+              this.checkLoggedIn();
+            }
           }
         )
       })
@@ -161,7 +188,11 @@ export class DashboardServService {
           }
         }, 
         (err: HttpErrorResponse)=>{
-          console.log(err.error);
+          console.log(err);
+          if(err.status === 401){
+            this.removeToken();
+            //route guard handles the redirection
+          }
         }
       )
     })
@@ -182,7 +213,11 @@ export class DashboardServService {
           }
         }, 
         (err: HttpErrorResponse)=>{
-          console.log(err.error);
+          console.log(err);
+          if(err.status === 401){
+            this.removeToken();
+            //route guard handles the redirection
+          }
         }
       )
     })
@@ -201,7 +236,11 @@ export class DashboardServService {
           }
         }, 
         (err: HttpErrorResponse)=>{
-          console.log(err.error);
+          console.log(err);
+          if(err.status === 401){
+            this.removeToken();
+            //route guard handles the redirection
+          }
         }
       )
     })
@@ -220,7 +259,11 @@ export class DashboardServService {
           }
         }, 
         (err: HttpErrorResponse)=>{
-          console.log(err.error);
+          console.log(err);
+          if(err.status === 401){
+            this.removeToken();
+            //route guard handles the redirection
+          }
         }
       )
     })
@@ -239,7 +282,11 @@ export class DashboardServService {
           }
         }, 
         (err: HttpErrorResponse)=>{
-          console.log(err.error);
+          console.log(err);
+          if(err.status === 401){
+            this.removeToken();
+            //route guard handles the redirection
+          }
         }
       )
     })
@@ -254,13 +301,17 @@ export class DashboardServService {
             resolve(res.data);
           } else if(res.code == 401){
             this.removeToken();
-            this.checkLoggedIn();
+            //route guard handles the redirection
           } else{
             reject(res);
           }
         }, 
         (err: HttpErrorResponse)=>{
-          console.log(err.error);
+          console.log(err);
+          if(err.status === 401){
+            this.removeToken();
+            //route guard handles the redirection
+          }
         }
       )
     })
@@ -296,7 +347,11 @@ export class DashboardServService {
             }
           }, 
           (err: HttpErrorResponse)=>{
-            console.log(err.error);
+            console.log(err);
+            if(err.status === 401){
+              this.removeToken();
+              this.checkLoggedIn();
+            }
           }
         )
       })
@@ -352,13 +407,17 @@ export class DashboardServService {
             resolve(res.data);
           } else if(res.code == 401){
             this.removeToken();
-            this.checkLoggedIn();
+            //route guard handles the redirection
           } else{
             reject(res);
           }
         }, 
         (err: HttpErrorResponse)=>{
-          console.log(err.error);
+          console.log(err);
+          if(err.status === 401){
+            this.removeToken();
+            //route guard handles the redirection
+          }
         }
       )
     })
@@ -380,7 +439,11 @@ export class DashboardServService {
           }
         }, 
         (err: HttpErrorResponse)=>{
-          console.log(err.error);
+          console.log(err);
+          if(err.status === 401){
+            this.removeToken();
+            //route guard handles the redirection
+          }        
         }
       )
     })
@@ -403,7 +466,11 @@ export class DashboardServService {
           }
         }, 
         (err: HttpErrorResponse)=>{
-          console.log(err.error);
+          console.log(err);
+          if(err.status === 401){
+            this.removeToken();
+            //route guard handles the redirection
+          }
         }
       )
     })
@@ -426,7 +493,11 @@ export class DashboardServService {
           }
         }, 
         (err: HttpErrorResponse)=>{
-          console.log(err.error);
+          console.log(err);
+          if(err.status === 401){
+            this.removeToken();
+            //route guard handles the redirection
+          }
         }
       )
     })
@@ -447,7 +518,11 @@ export class DashboardServService {
           }
         }, 
         (err: HttpErrorResponse)=>{
-          console.log(err.error);
+          console.log(err);
+          if(err.status === 401){
+            this.removeToken();
+            //route guard handles the redirection
+          }
         }
       )
     })
@@ -468,7 +543,11 @@ export class DashboardServService {
           }
         }, 
         (err: HttpErrorResponse)=>{
-          console.log(err.error);
+          console.log(err);
+          if(err.status === 401){
+            this.removeToken();
+            //route guard handles the redirection
+          }
         }
       )
     })
@@ -491,7 +570,11 @@ export class DashboardServService {
           }
         }, 
         (err: HttpErrorResponse)=>{
-          console.log(err.error);
+          console.log(err);
+          if(err.status === 401){
+            this.removeToken();
+            //route guard handles the redirection
+          }
         }
       )
     })
@@ -514,7 +597,11 @@ export class DashboardServService {
           }
         }, 
         (err: HttpErrorResponse)=>{
-          console.log(err.error);
+          console.log(err);
+          if(err.status === 401){
+            this.removeToken();
+            this.checkLoggedIn();
+          }
         }
       )
     })

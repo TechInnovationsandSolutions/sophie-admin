@@ -1,4 +1,5 @@
 import { ICategory } from './category.model';
+import { ITag } from './tag.model';
 
 // import { ICategory } from './category.model';
 
@@ -26,7 +27,8 @@ export interface IProduct{
     lastUpdate?:string,
     availibility?:string,
     ratings?:IReview[],
-    tag?:string[],
+    tags?:ITag[],
+    formTags: string[],
     avg_rating?:number,
     images: IProdImage[],
     quantity: number

@@ -13,7 +13,7 @@ export class AuthGuardGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     
-      const redirectUrl = route['_routerState']['url'];
+    const redirectUrl = route['_routerState']['url'];
 
     if (this.serv.isLogged()) {
       return true;

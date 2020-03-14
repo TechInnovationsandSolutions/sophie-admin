@@ -20,6 +20,7 @@ export class CategoryListComponent implements OnInit {
   // dtElement: DataTableDirective;
   // dtOptions:DataTables.Settings = {};
   dataTable: any;
+  private selectedCheckbox:ICategory[] = [];
 
   constructor(private serv: DashboardServService, private chRef: ChangeDetectorRef, private router: Router) { }
 
@@ -109,5 +110,125 @@ export class CategoryListComponent implements OnInit {
   productCatList(cat:ICategory){
     this.router.navigate(['/category', cat.id, 'products'], {queryParams:{page:1}});
     // location.reload();
+  }
+
+  onCategoryChecked(categoryId: ICategory, e){
+    console.log(categoryId, e, e.target.checked);
+    var isInCheckList = this.selectedCheckbox.indexOf(categoryId);
+    console.log('isInCheckList', isInCheckList, 'then', !isInCheckList);
+
+    if (e.target.checked == true && isInCheckList === -1) {
+      this.selectedCheckbox.push(categoryId);
+    }
+
+    if (e.target.checked == false && isInCheckList > -1) {
+      this.selectedCheckbox.splice(isInCheckList, 1);
+    }
+
+    console.log('this.selectedCheckbox', this.selectedCheckbox);
+  }
+
+  bulkDelete(){
+    if (this.selectedCheckbox && this.selectedCheckbox.length) {
+      var no = this.selectedCheckbox.length;
+      var selectdCats = this.selectedCheckbox;
+      var serviceGuy = this.serv;
+
+      Swal.fire({
+        title: 'Delete Selected Categories',
+        text: 'Are you sure to delete ' + no + ' selected record(s) ?',
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Delete!',
+        cancelButtonText: 'No, cancel'
+      }).then(function(result) {
+        if (result.value) {
+          try {
+
+            var aProm = new Promise(function (resolve, reject){
+              var resultMsg = [];
+              (async function() {
+                console.log('async', selectdCats)
+                for (let i = 0; i < selectdCats.length; i++) {
+                  var obj = selectdCats[i];
+                  const id = obj.id;
+                  const az_name = obj.name;
+                  console.log('hollq!', id);
+                  await serviceGuy.deleteCategory(id.toString()).then(res => {
+                    var resp = <any>res;
+                    if (resp.success) {
+                      return resp;
+                    }
+                  })
+                  .then(resp=>{
+                    // console.log('b4 Gosh', resp);
+                    resultMsg.push({
+                      username: az_name,
+                      msg: resp
+                    });
+                  })
+                }
+                resolve(resultMsg);
+              })();
+            })
+            aProm.then(res=>{
+              var resp = <any[]>res;
+              // console.log('Gosh!', resp);
+              if (resp) {
+                var messageFails = [];
+                messageFails = resp.filter(r=> r.msg === false);
+
+                var msgType = '', msgText = '', msgHtml = '';
+
+                if (messageFails && messageFails.length === 0) {
+                  msgText = 'Your selected record(s) have been deleted! 🙂';
+                  msgType = 'success';
+                } else if (messageFails.length > 0) {
+                  var output = '';
+
+                  for (let i = 0; i < messageFails.length; i++) {						
+                  var 	mf = messageFails[i];
+                    output += '<li><p="text-capitalize">'+  mf.username + '</strong> was not deleted - <em>'+ mf.msg +'</em>.</p></li>'
+                  }
+
+                  msgText = (resp.length > messageFails.length) ?'Your selected record(s) have been deleted except the following:' : '';
+                  msgHtml = msgText + '<br><ol>' + output + '</ol>';
+                  msgType = 'warning';
+                }
+
+                Swal.fire({
+                  title: 'Done!',
+                  text: msgText,
+                  icon: (msgType == 'success') ? "success": "warning" ,
+                  html: msgHtml,
+                  buttonsStyling:false,
+                  confirmButtonText: 'OK'
+                })
+                .then(()=> location.reload())
+                // .then(()=> loadFn());
+              }	
+            })
+            
+          } catch (error) {
+            console.error(error);
+            Swal.fire({
+              title: 'Error Occurred!',
+              icon: "error",
+              buttonsStyling: false,
+              confirmButtonText: 'Reload',
+            })
+            .then(()=> document.location.reload());
+          }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire({
+            title: 'Cancelled',
+            text: 'You selected record(s) have not been deleted! :)',
+            icon: "error",
+            buttonsStyling: false,
+            confirmButtonText: 'OK',
+          });
+        }
+      });
+    }
   }
 }

@@ -1,1 +1,4 @@
-<p>collapsible works!</p>
+<div (click)="toggleContent()" class="col-sm-12 p-0">
+  <ng-content select="[well-title]"></ng-content>
+  <ng-content *ngIf="visibleSection" select="[well-body]"></ng-content>
+</div>

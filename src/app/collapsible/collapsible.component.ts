@@ -6,10 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./collapsible.component.scss']
 })
 export class CollapsibleComponent implements OnInit {
+  visibleSection = true;
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  toggleContent() {
+    this.visibleSection = !this.visibleSection;
+  }
 }

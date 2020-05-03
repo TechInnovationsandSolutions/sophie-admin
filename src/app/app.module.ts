@@ -27,6 +27,7 @@ import { AuthService } from './shared/services/auth.services';
 import { TagsComponent } from './tags/tags.component';
 import { CreateTagsComponent } from './tags/create-tags/create-tags.component';
 import { ListTagsComponent } from './tags/list-tags/list-tags.component';
+import { CollapsibleComponent } from './collapsible/collapsible.component';
 
 // const swal = window['swal'];
 
@@ -58,7 +59,8 @@ import { ListTagsComponent } from './tags/list-tags/list-tags.component';
     ListProductComponent,
     TagsComponent,
     CreateTagsComponent,
-    ListTagsComponent
+    ListTagsComponent,
+    CollapsibleComponent
   ],
   providers: [
     AuthService

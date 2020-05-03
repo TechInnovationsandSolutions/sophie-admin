@@ -8,15 +8,15 @@ import { DashboardServService } from '../shared';
 })
 export class OrdersComponent implements OnInit {
 
-  constructor(private serv:DashboardServService) { }
+  constructor(private serv: DashboardServService) { }
 
-  orders:any[] = [];
+  orders: any[] = [];
 
   ngOnInit() {
-    this.serv.getAllOrders().then(res=>{
-      this.orders = <any[]>res;
+    this.serv.getAllOrders().then(res => {
+      this.orders = res as any[];
       console.log('All orders', this.orders);
-    })
+    });
   }
 
 }

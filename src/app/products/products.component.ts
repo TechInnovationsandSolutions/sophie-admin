@@ -7,28 +7,28 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-  isAddProduct:boolean = false;
+  isAddProduct = false;
 
   constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    if(this.route.snapshot.params){
-      var fn = this.route.snapshot.params['fn'];
+    if (this.route.snapshot.params) {
+      const fn = this.route.snapshot.params.fn;
       if (fn == 'add' || fn == 'edit') {
-        this.isAddProduct = true
-      } 
+        this.isAddProduct = true;
+      }
       // else {
       //   this.router.navigate(['/products']);
       // }
     }
   }
 
-  showAddProduct(){
+  showAddProduct() {
     this.router.navigate(['/product/add']);
   }
 
-  hideAddProduct(){
-    console.log(this.route.snapshot.queryParams.currentPage)
+  hideAddProduct() {
+    console.log(this.route.snapshot.queryParams.currentPage);
 
     if (this.route.snapshot.queryParams.currentPage) {
       this.router.navigate(['/products'], {
@@ -36,7 +36,7 @@ export class ProductsComponent implements OnInit {
           page: this.route.snapshot.queryParams.currentPage
         },
       });
-    } else{
+    } else {
       this.router.navigate(['/products'], {
         queryParams: {
           page: 1

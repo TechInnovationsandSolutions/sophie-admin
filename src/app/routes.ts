@@ -10,7 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuardGuard } from './shared';
 import { TagsComponent } from './tags/tags.component';
 
-export const appRoutes:Routes =[
+export const appRoutes: Routes = [
     {
         path: 'dashboard',
         component: DashboardComponent,
@@ -31,7 +31,7 @@ export const appRoutes:Routes =[
         component: ProductsComponent
     },
     {
-        path:'orders',
+        path: 'orders',
         component: OrdersComponent,
         canActivate: [AuthGuardGuard]
     },
@@ -90,32 +90,32 @@ export const appRoutes:Routes =[
     },
     {
         path: '',
-        redirectTo:'dashboard',
+        redirectTo: 'dashboard',
         pathMatch: 'full'
     },
     {
         path: 'category',
-        redirectTo:'categories',
+        redirectTo: 'categories',
         pathMatch: 'full'
     },
     {
         path: 'categories/add',
-        redirectTo:'categories',
+        redirectTo: 'categories',
         pathMatch: 'full'
     },
     {
         path: 'categories/edit',
-        redirectTo:'categories',
+        redirectTo: 'categories',
         pathMatch: 'full'
     },
     {
         path: 'category/:id',
-        redirectTo:'categories',
+        redirectTo: 'categories',
         pathMatch: 'full'
     },
     {
         path: 'categories/:id',
-        redirectTo:'categories',
+        redirectTo: 'categories',
         pathMatch: 'full'
     }
-]
+];

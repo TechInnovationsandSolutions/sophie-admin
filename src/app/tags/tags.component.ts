@@ -10,25 +10,25 @@ export class TagsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router) { }
 
-  isAddTag:boolean = false;
+  isAddTag = false;
 
   ngOnInit() {
-    if(this.route.snapshot.params){
-      var fn = this.route.snapshot.params['fn'];
+    if (this.route.snapshot.params) {
+      const fn = this.route.snapshot.params.fn;
       if (fn == 'add' || fn == 'edit') {
-        this.isAddTag = true
+        this.isAddTag = true;
       } else {
         this.router.navigate(['/tags']);
       }
     }
   }
 
-  showAddTag(){
+  showAddTag() {
     // this.isAddTag = true;
     this.router.navigate(['/tag/add']);
   }
 
-  hideAddTag(){
+  hideAddTag() {
     // this.isAddTag = false;
     this.router.navigate(['/tags']);
   }

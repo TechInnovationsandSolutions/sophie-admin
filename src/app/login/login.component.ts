@@ -9,38 +9,38 @@ import { DashboardServService, AuthService } from '../shared';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private router: Router, private serv:DashboardServService, private auth:AuthService, private route: ActivatedRoute) { }
+  constructor(private router: Router, private serv: DashboardServService, private auth: AuthService, private route: ActivatedRoute) { }
 
-  email:string;
-  password:string;
-  msg:string = '';
-  url_route:string = '';
+  email: string;
+  password: string;
+  msg = '';
+  url_route = '';
 
   ngOnInit() {
-    this.url_route= this.route.snapshot.queryParams.redirectUrl ? this.route.snapshot.queryParams.redirectUrl : '/dashboard';
+    this.url_route = this.route.snapshot.queryParams.redirectUrl ? this.route.snapshot.queryParams.redirectUrl : '/dashboard';
   }
 
-  formFocus():void{
+  formFocus(): void {
     this.msg = '';
   }
 
-  submitForm(){
-    var emailRegEx = new RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$');
-    if(emailRegEx.test(this.email) && this.password){
+  submitForm() {
+    const emailRegEx = new RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$');
+    if (emailRegEx.test(this.email) && this.password) {
       this.tryLogin(this.email, this.password);
     }
   }
 
-  tryLogin(email:string, password:string){
+  tryLogin(email: string, password: string) {
     this.auth.login(email, password).subscribe(
       r => {
-        if(r.data.token && r.data.is_admin) {
-          this.serv.setToken(r.data.token)
+        if (r.data.token && r.data.is_admin) {
+          this.serv.setToken(r.data.token);
           this.router.navigateByUrl(this.url_route);
         }
     },
     r => {
-      this.msg = 'Email or Password is incorrect.'
+      this.msg = 'Email or Password is incorrect.';
     });
   }
 }

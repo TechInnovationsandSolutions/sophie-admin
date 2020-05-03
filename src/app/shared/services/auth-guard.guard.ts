@@ -7,12 +7,13 @@ import { DashboardServService } from './dashboard-serv.service';
   providedIn: 'root'
 })
 export class AuthGuardGuard implements CanActivate {
-  constructor(private serv: DashboardServService, private router: Router){}
+  constructor(private serv: DashboardServService, private router: Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    
+
+    // tslint:disable-next-line: no-string-literal
     const redirectUrl = route['_routerState']['url'];
 
     if (this.serv.isLogged()) {
@@ -31,5 +32,4 @@ export class AuthGuardGuard implements CanActivate {
 
     return false;
   }
-  
 }

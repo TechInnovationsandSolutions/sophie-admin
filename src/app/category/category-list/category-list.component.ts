@@ -6,7 +6,7 @@ import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-bs4';
 import { DashboardServService } from 'src/app/shared/services/dashboard-serv.service';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 
 
@@ -16,17 +16,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./category-list.component.scss']
 })
 export class CategoryListComponent implements OnInit {
-  categories:ICategory[] = [];
+  categories: ICategory[] = [];
   // dtElement: DataTableDirective;
   // dtOptions:DataTables.Settings = {};
   dataTable: any;
-  private selectedCheckbox:ICategory[] = [];
+  private selectedCheckbox: ICategory[] = [];
 
   constructor(private serv: DashboardServService, private chRef: ChangeDetectorRef, private router: Router) { }
 
   ngOnInit() {
-    this.serv.getCatgories().then(res=>{
-      this.categories = <ICategory[]>res;
+    this.serv.getCatgories().then(res => {
+      this.categories = res as ICategory[];
       console.log('this.categories', this.categories);
 
 
@@ -37,9 +37,9 @@ export class CategoryListComponent implements OnInit {
       this.dataTable = table.DataTable({
         destroy: true,
         responsive: true,
-        "ordering": false
+        ordering: false
       });
-    }).catch(err=>console.error(err))
+    }).catch(err => console.error(err));
     // this.dtOptions = {
     //   pagingType: 'full_numbers',
     //   responsive: true,
@@ -57,43 +57,43 @@ export class CategoryListComponent implements OnInit {
   //   });
   // }
 
-  editCategory(cat:ICategory){
+  editCategory(cat: ICategory) {
     console.log(cat);
     this.serv._category = cat;
     this.router.navigate(['/category/edit'], {
-      queryParams:{
+      queryParams: {
         category: cat.id
       }
-    })
+    });
   }
 
-  deleteCategory(cat:ICategory){
+  deleteCategory(cat: ICategory) {
     console.log(cat);
 
     Swal.fire({
       title: 'Confirmation',
-      text: "You want to delete " + cat.name + " Category?",
+      text: 'You want to delete ' + cat.name + ' Category?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, Delete!',
       cancelButtonText: 'No, cancel!',
       confirmButtonColor: '#dc3545',
-      cancelButtonColor:'#28a745'
+      cancelButtonColor: '#28a745'
     }).then((result) => {
       if (result.value) {
-        this.serv.deleteCategory(cat.id.toString()).then(res=>console.log(res)).then(()=>{
+        this.serv.deleteCategory(cat.id.toString()).then(res => console.log(res)).then(() => {
           Swal.fire(
             'Deleted!',
-            'Category '+ cat.name + 'has been deleted.',
+            'Category ' + cat.name + 'has been deleted.',
             'success'
-          ).then(()=>{
+          ).then(() => {
             location.reload();
-          })
-        }).catch(err=>Swal.fire({
+          });
+        }).catch(err => Swal.fire({
           title: 'Error',
           icon: 'error',
-          text:err
-        }))
+          text: err
+        }));
       } else if (
         /* Read more about handling dismissals below */
         result.dismiss === Swal.DismissReason.cancel
@@ -102,19 +102,19 @@ export class CategoryListComponent implements OnInit {
           'Cancelled',
           'operation aborted',
           'info'
-        )
+        );
       }
-    })
+    });
   }
 
-  productCatList(cat:ICategory){
-    this.router.navigate(['/category', cat.id, 'products'], {queryParams:{page:1}});
+  productCatList(cat: ICategory) {
+    this.router.navigate(['/category', cat.id, 'products'], {queryParams: {page: 1}});
     // location.reload();
   }
 
-  onCategoryChecked(categoryId: ICategory, e){
+  onCategoryChecked(categoryId: ICategory, e) {
     console.log(categoryId, e, e.target.checked);
-    var isInCheckList = this.selectedCheckbox.indexOf(categoryId);
+    const isInCheckList = this.selectedCheckbox.indexOf(categoryId);
     console.log('isInCheckList', isInCheckList, 'then', !isInCheckList);
 
     if (e.target.checked == true && isInCheckList === -1) {
@@ -128,16 +128,16 @@ export class CategoryListComponent implements OnInit {
     console.log('this.selectedCheckbox', this.selectedCheckbox);
   }
 
-  bulkDelete(){
+  bulkDelete() {
     if (this.selectedCheckbox && this.selectedCheckbox.length) {
-      var no = this.selectedCheckbox.length;
-      var selectdCats = this.selectedCheckbox;
-      var serviceGuy = this.serv;
+      const no = this.selectedCheckbox.length;
+      const selectdCats = this.selectedCheckbox;
+      const serviceGuy = this.serv;
 
       Swal.fire({
         title: 'Delete Selected Categories',
         text: 'Are you sure to delete ' + no + ' selected record(s) ?',
-        icon: "warning",
+        icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, Delete!',
         cancelButtonText: 'No, cancel'
@@ -145,53 +145,53 @@ export class CategoryListComponent implements OnInit {
         if (result.value) {
           try {
 
-            var aProm = new Promise(function (resolve, reject){
-              var resultMsg = [];
+            const aProm = new Promise(function(resolve, reject) {
+              const resultMsg = [];
               (async function() {
-                console.log('async', selectdCats)
+                console.log('async', selectdCats);
                 for (let i = 0; i < selectdCats.length; i++) {
-                  var obj = selectdCats[i];
+                  const obj = selectdCats[i];
                   const id = obj.id;
                   const az_name = obj.name;
                   console.log('hollq!', id);
                   await serviceGuy.deleteCategory(id.toString()).then(res => {
-                    var resp = <any>res;
+                    const resp = res as any;
                     if (resp.success) {
                       return resp;
                     }
                   })
-                  .then(resp=>{
+                  .then(resp => {
                     // console.log('b4 Gosh', resp);
                     resultMsg.push({
                       username: az_name,
                       msg: resp
                     });
-                  })
+                  });
                 }
                 resolve(resultMsg);
               })();
-            })
-            aProm.then(res=>{
-              var resp = <any[]>res;
+            });
+            aProm.then(res => {
+              const resp = res as any[];
               // console.log('Gosh!', resp);
               if (resp) {
-                var messageFails = [];
-                messageFails = resp.filter(r=> r.msg === false);
+                let messageFails = [];
+                messageFails = resp.filter(r => r.msg === false);
 
-                var msgType = '', msgText = '', msgHtml = '';
+                let msgType = '', msgText = '', msgHtml = '';
 
                 if (messageFails && messageFails.length === 0) {
                   msgText = 'Your selected record(s) have been deleted! 🙂';
                   msgType = 'success';
                 } else if (messageFails.length > 0) {
-                  var output = '';
+                  let output = '';
 
-                  for (let i = 0; i < messageFails.length; i++) {						
-                  var 	mf = messageFails[i];
-                    output += '<li><p="text-capitalize">'+  mf.username + '</strong> was not deleted - <em>'+ mf.msg +'</em>.</p></li>'
+                  for (let i = 0; i < messageFails.length; i++) {
+                  const 	mf = messageFails[i];
+                  output += '<li><p="text-capitalize">' +  mf.username + '</strong> was not deleted - <em>' + mf.msg + '</em>.</p></li>';
                   }
 
-                  msgText = (resp.length > messageFails.length) ?'Your selected record(s) have been deleted except the following:' : '';
+                  msgText = (resp.length > messageFails.length) ? 'Your selected record(s) have been deleted except the following:' : '';
                   msgHtml = msgText + '<br><ol>' + output + '</ol>';
                   msgType = 'warning';
                 }
@@ -199,31 +199,31 @@ export class CategoryListComponent implements OnInit {
                 Swal.fire({
                   title: 'Done!',
                   text: msgText,
-                  icon: (msgType == 'success') ? "success": "warning" ,
+                  icon: (msgType == 'success') ? 'success' : 'warning' ,
                   html: msgHtml,
-                  buttonsStyling:false,
+                  buttonsStyling: false,
                   confirmButtonText: 'OK'
                 })
-                .then(()=> location.reload())
+                .then(() => location.reload());
                 // .then(()=> loadFn());
-              }	
-            })
-            
+              }
+            });
+
           } catch (error) {
             console.error(error);
             Swal.fire({
               title: 'Error Occurred!',
-              icon: "error",
+              icon: 'error',
               buttonsStyling: false,
               confirmButtonText: 'Reload',
             })
-            .then(()=> document.location.reload());
+            .then(() => document.location.reload());
           }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           Swal.fire({
             title: 'Cancelled',
             text: 'You selected record(s) have not been deleted! :)',
-            icon: "error",
+            icon: 'error',
             buttonsStyling: false,
             confirmButtonText: 'OK',
           });

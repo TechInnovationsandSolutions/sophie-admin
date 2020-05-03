@@ -7,27 +7,27 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./category.component.scss']
 })
 export class CategoryComponent implements OnInit {
-  isAddCategory:boolean = false;
+  isAddCategory = false;
 
   constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    if(this.route.snapshot.params){
-      var fn = this.route.snapshot.params['fn'];
+    if (this.route.snapshot.params) {
+      let fn = this.route.snapshot.params.fn;
       if (fn == 'add' || fn == 'edit') {
-        this.isAddCategory = true
+        this.isAddCategory = true;
       } else {
         this.router.navigate(['/categories']);
       }
     }
   }
 
-  showAddCategory(){
+  showAddCategory() {
     // this.isAddCategory = true;
     this.router.navigate(['/category/add']);
   }
 
-  hideAddCategory(){
+  hideAddCategory() {
     // this.isAddCategory = false;
     this.router.navigate(['/categories']);
   }

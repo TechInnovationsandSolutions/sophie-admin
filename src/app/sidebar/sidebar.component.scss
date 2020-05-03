@@ -8,9 +8,21 @@ nav{
 
     a.nav-link{
         color: #a7a7a7;
-    
+
         &.active{
-           color: #fff; 
+           color: #fff;
         }
+    }
+
+    .logout .btn-danger{
+      position: absolute;
+      bottom: 10px;
+      width: calc(100% - 14px);
+      transition: 0.2s ease-in;
+      background-color: transparent;
+
+      &:hover {
+        background-color: #dc3545;
+      }
     }
 }

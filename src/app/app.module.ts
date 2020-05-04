@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DataTablesModule } from 'angular-datatables';
+import { BlockUIModule } from 'ng-block-ui';
 
 import { AppComponent } from './app.component';
 import { CommonModule } from '@angular/common';
@@ -39,7 +40,8 @@ import { CollapsibleComponent } from './collapsible/collapsible.component';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    DataTablesModule
+    DataTablesModule,
+    BlockUIModule.forRoot()
   ],
   declarations: [
     AppComponent,

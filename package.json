@@ -27,6 +27,7 @@
     "datatables.net-bs4": "^1.10.20",
     "datatables.net-dt": "^1.10.20",
     "jquery": "^3.4.1",
+    "ng-block-ui": "^2.1.8",
     "ng2-file-upload": "^1.4.0",
     "ngx-bootstrap": "^5.5.0",
     "rxjs": "~6.4.0",

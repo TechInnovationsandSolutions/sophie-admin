@@ -30,8 +30,6 @@ import { CreateTagsComponent } from './tags/create-tags/create-tags.component';
 import { ListTagsComponent } from './tags/list-tags/list-tags.component';
 import { CollapsibleComponent } from './collapsible/collapsible.component';
 
-// const swal = window['swal'];
-
 @NgModule({
   imports: [
     BrowserModule,
@@ -66,10 +64,6 @@ import { CollapsibleComponent } from './collapsible/collapsible.component';
   ],
   providers: [
     AuthService
-    // {
-    //   provide: SWAL_TOKEN,
-    //   useValue: swal
-    // }
   ],
   bootstrap: [AppComponent]
 })

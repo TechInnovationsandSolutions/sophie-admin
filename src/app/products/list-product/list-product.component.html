@@ -1,5 +1,5 @@
-<div *ngIf="!showPreloader" class="product-list-sect">
-    <div class="d-flex flex-wrap py-2">
+<div *ngIf="!showPreloader" class="product-list-sect p-0">
+    <div class="d-flex flex-wrap py-2 px-0">
         <form class="form-inline my-2 my-lg-0 ml-auto" #searchProduct = "ngForm"  (ngSubmit) = "onSearch()">
             <input class="form-control" name="searchText" type="search" placeholder="Search" aria-label="Search Products" [(ngModel)]="searchText" required>
             <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">
@@ -9,7 +9,7 @@
             </button>
         </form>
     </div>
-    <div class="col-sm-12 container py-2">
+    <div class="col-sm-12 container py-2 px-0">
         <!-- table of products  -->
         <table id="product-table" class="table hover">
             <thead class="thead-dark">
@@ -83,7 +83,7 @@
             </tbody>
         </table>
     </div>
-    <div class="pagination py-2 d-flex" *ngIf="products.length">
+    <div class="pagination py-2 d-flex px-0" *ngIf="products.length">
         <div class="flex flex-wrap m-auto">
             <span class="pagination-nav prev"
             *ngIf="currentPage !== 1"

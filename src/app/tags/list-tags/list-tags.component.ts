@@ -91,7 +91,11 @@ export class ListTagsComponent implements OnInit {
   }
 
   productTagList(tag: ITag) {
-    this.router.navigate(['/tag', tag.id, 'products'], {queryParams: {page: 1}});
-    // location.reload();
+    this.router.navigate(['/tag', tag.id, 'products'], {
+      queryParams: {
+        page: 1,
+        tagName: tag.name
+      }
+    });
   }
 }

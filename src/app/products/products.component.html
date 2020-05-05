@@ -1,19 +1,17 @@
 <app-app-layout>
     <p app-title>Product works!</p>
-    <div app-body>
-        <div class="d-flex flex-wrap col-sm-12 col-md-11 mx-auto container">
-            <div class="d-flex flex-wrap col-sm-12 py-3 mx-auto">
-                <button *ngIf="!isAddProduct" class="mr-auto btn btn-outline-success" (click)="showAddProduct()">
-                    Add Product
-                </button>
-                <button *ngIf="isAddProduct" class="ml-auto btn btn-outline-danger" (click)="hideAddProduct()">
-                    &times;
-                </button>
-            </div>
-            <div class="col-sm-12 py-2">
-                <app-list-product *ngIf="!isAddProduct"></app-list-product>
-                <app-create-product *ngIf="isAddProduct"></app-create-product>
-            </div>
-        </div>
+    <div class="col-sm-12 p-0" app-body>
+      <div class="d-flex flex-wrap col-sm-12 py-3 mx-auto">
+        <button *ngIf="!isAddProduct" class="mr-auto btn btn-outline-success" (click)="showAddProduct()">
+            Add Product
+        </button>
+        <button *ngIf="isAddProduct" class="ml-auto btn btn-outline-danger" (click)="hideAddProduct()">
+            &times;
+        </button>
+      </div>
+      <div class="col-sm-12 py-2">
+        <app-list-product *ngIf="!isAddProduct"></app-list-product>
+        <app-create-product *ngIf="isAddProduct"></app-create-product>
+      </div>
     </div>
 </app-app-layout>

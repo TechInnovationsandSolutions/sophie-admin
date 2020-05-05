@@ -3,19 +3,20 @@
         <div class="side-menu-wrapper col-md-2 col-lg-2 pl-0">
             <app-sidebar></app-sidebar>
         </div>
-        <div  class="container py-3 col-md-10 col-lg-10 col-sm-12 app-content">
+        <div  class="container py-3 col-sm-12 col-xl-10 app-content">
             <div class="col-sm-12 app-title">
                <h2 class="col-sm-12 header-sec text-success text-center text-capitalize">
                     <ng-content select = '[app-title]'></ng-content>
-                </h2> 
+                </h2>
             </div>
-            
+
             <div class="col-sm-12 app-body">
+              <div class="d-flex flex-wrap col-sm-12 col-xl-11 mx-auto container">
                 <ng-content select = '[app-body]'></ng-content>
+              </div>
             </div>
         </div>
     </div>
-  
+
 </div>
-  
-  
+

@@ -27,7 +27,6 @@ export class ListProductComponent implements OnInit {
         queryParams: {
           page: 1
         },
-        queryParamsHandling: 'merge'
       });
     }
 

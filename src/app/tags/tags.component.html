@@ -1,19 +1,17 @@
 <app-app-layout>
     <p app-title>dashboard works!</p>
-    <div app-body>
-        <div class="d-flex flex-wrap col-sm-12 col-md-10 col-lg-10 mx-auto container">
-            <div class="d-flex flex-wrap col-sm-12 py-3 mx-auto">
-                <button *ngIf="!isAddTag" class="mr-auto btn btn-outline-success" (click)="showAddTag()">
-                    Add Tag
-                </button>
-                <button *ngIf="isAddTag" class="ml-auto btn btn-outline-danger" (click)="hideAddTag()">
-                    &times;
-                </button>
-            </div>
-            <div class="col-sm-12 py-2">
-                <app-list-tags *ngIf="!isAddTag"></app-list-tags>
-                <app-create-tags *ngIf="isAddTag"></app-create-tags>
-            </div>
-        </div>
+    <div class="col-sm-12 p-0" app-body>
+      <div class="d-flex flex-wrap col-sm-12 py-3 mx-auto">
+        <button *ngIf="!isAddTag" class="mr-auto btn btn-outline-success" (click)="showAddTag()">
+            Add Tag
+        </button>
+        <button *ngIf="isAddTag" class="ml-auto btn btn-outline-danger" (click)="hideAddTag()">
+            &times;
+        </button>
+      </div>
+      <div class="col-sm-12 py-2">
+        <app-list-tags *ngIf="!isAddTag"></app-list-tags>
+        <app-create-tags *ngIf="isAddTag"></app-create-tags>
+      </div>
     </div>
 </app-app-layout>

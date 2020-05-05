@@ -20,6 +20,8 @@ textarea{
 table{
     background-color: transparent !important;
     transition: 0.7s ease-in;
+    padding: 1em 2em;
+    box-shadow: 2px 2px 4px rgba($color: #000000, $alpha: 0.25), -2px -2px 4px rgba($color: #000000, $alpha: 0.25);
 
     th{
         text-transform: capitalize;
@@ -35,10 +37,44 @@ table{
     }
 }
 
+.pagination{
+  width: 100%;
+  border-radius: 10px;
+  padding: 0.75em;
+  box-shadow: 1px 1px 1px rgba($color: #000000, $alpha: 0.15), -1px -1px 1px rgba($color: #000000, $alpha: 0.15, );
+
+  span.pagination-nav{
+      $pd:1em;
+      $py: $pd * 0.5;
+      $px: $pd;
+      padding: $py $px;
+      cursor: pointer;
+      transition: 0.2s ease-in;
+      border-bottom: 1px solid transparent;
+      margin: auto 0.5em;
+
+      &.active{
+        background-color: $warning;
+        color: $dark;
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: default;
+
+        &:hover{
+          border-bottom: 1px solid transparent;
+        }
+      }
+
+      &:hover{
+        border-bottom: 1px solid $warning;
+      }
+  }
+}
+
 .sticky {
   position: sticky;
   top: 0;
-  background-color: whitesmoke;
+  background-color: #ffffff;
   box-shadow: 0.1px 0.1px 0.1px rgba($color: #000000, $alpha: 0.1);
   padding: 50px;
   font-size: 20px;

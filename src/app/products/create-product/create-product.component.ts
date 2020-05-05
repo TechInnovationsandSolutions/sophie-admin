@@ -2,7 +2,8 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ICategory, DashboardServService, IProduct, ITag } from './../../shared';
 import { FormBuilder, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-create-product',
@@ -10,9 +11,6 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./create-product.component.scss']
 })
 export class CreateProductComponent implements OnInit {
-
-  constructor(private fb: FormBuilder, private cd: ChangeDetectorRef, private route: ActivatedRoute, private serv: DashboardServService) { }
-
   productForm = this.fb.group({
     id: [0],
     productName: ['', Validators.required],
@@ -33,6 +31,17 @@ export class CreateProductComponent implements OnInit {
   updateProductTag: string[] = [];
 
   invalid: any[] = [];
+  showPreloader = true;
+  isOnView = false;
+  @BlockUI() blockUI: NgBlockUI;
+
+  constructor(
+    private fb: FormBuilder,
+    private cd: ChangeDetectorRef,
+    private route: ActivatedRoute,
+    private serv: DashboardServService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.serv.getAllTags().then(res => {
@@ -54,20 +63,23 @@ export class CreateProductComponent implements OnInit {
       this.productCatgories = res as ICategory[];
     }).then(() => {
       console.log(this.route.snapshot.queryParams);
-      if (this.route.snapshot.params.fn == 'edit' && this.route.snapshot.queryParams.product) {
+      if (
+        (this.route.snapshot.params.fn === 'edit' || this.route.snapshot.params.fn === 'view')
+        &&
+        this.route.snapshot.queryParams.product) {
         this.serv.getProduct(this.route.snapshot.queryParams.product.toString()).then(res => {
           const theProduct = res as IProduct;
           console.log('the Prd', theProduct);
           this.productForm.patchValue({
-            id: theProduct.id,
-            productName: theProduct.name,
-            productImg: theProduct.images[0].url,
-            productDescription: theProduct.description,
-            productPrice: theProduct.cost,
-            productCategory: theProduct.category,
-            productPromoPrice: theProduct.reduced_cost,
-            productExcerpt: theProduct.excerpt,
-            productQuantity: theProduct.quantity,
+            id: theProduct.id ? theProduct.id : null,
+            productName: theProduct.name ? theProduct.name : null,
+            productImg: (theProduct.images.length && theProduct.images[0].url) ? theProduct.images[0].url : null,
+            productDescription: theProduct.description ? theProduct.description : null,
+            productPrice: theProduct.cost ? theProduct.cost : null,
+            productCategory: (theProduct.category && theProduct.category.name) ? theProduct.category : null,
+            productPromoPrice: theProduct.reduced_cost ? theProduct.reduced_cost : null,
+            productExcerpt: theProduct.excerpt ? theProduct.excerpt : null,
+            productQuantity: theProduct.quantity ? theProduct.quantity : null,
           });
           console.log('product tag', theProduct.tags);
           if (theProduct && theProduct.tags) {
@@ -80,20 +92,70 @@ export class CreateProductComponent implements OnInit {
           setTimeout(() => {
             const imgElem = document.getElementById('imgPreview') as HTMLImageElement;
             console.log('imhh', imgElem);
-            imgElem.src = theProduct.images[0].url;
-            this.showInputFile = false;
+            if (imgElem && theProduct.images.length && theProduct.images[0].url) {
+              imgElem.src = theProduct.images[0].url;
+              this.showInputFile = false;
+            }
           }, 500);
 
-          console.log(this.productForm.value, this.productForm.valid);
+          console.log( this.productForm.valid, this.productForm.value);
 
+          this.showPreloader = false;
           this.isCreate = false;
+          this.isOnView = (this.route.snapshot.params.fn === 'view');
         }, err => console.error(err));
+      } else {
+        this.showPreloader = false;
       }
     });
   }
 
   compareFn(c1: ICategory, c2: ICategory): boolean {
       return c1 && c2 ? c1.id === c2.id : c1 === c2;
+  }
+
+  enableEdit() {
+    this.router.navigate(['/product/edit'], {
+     queryParamsHandling: 'merge'
+    });
+    this.isOnView = false;
+  }
+
+  enableView(product: IProduct) {
+    this.router.navigate(['/product/view'], {
+      queryParams: {
+        product: product.id
+      },
+     queryParamsHandling: 'merge'
+    });
+    this.isOnView = true;
+    this.isCreate = false;
+    this.productForm.reset({
+      id: product.id ? product.id : null,
+      productName: product.name ? product.name : null,
+      productImg: (product.images.length && product.images[0].url) ? product.images[0].url : null,
+      productDescription: product.description ? product.description : null,
+      productPrice: product.cost ? product.cost : null,
+      productCategory: (product.category && product.category.name) ? product.category : null,
+      productPromoPrice: product.reduced_cost ? product.reduced_cost : null,
+      productExcerpt: product.excerpt ? product.excerpt : null,
+      productQuantity: product.quantity ? product.quantity : null,
+    });
+
+    setTimeout(() => {
+      const imgElem = document.getElementById('imgPreview') as HTMLImageElement;
+      console.log('imhh', imgElem);
+      if (imgElem && product.images.length && product.images[0].url) {
+        imgElem.src = product.images[0].url;
+        this.showInputFile = false;
+      }
+    }, 500);
+  }
+
+  productDiscount() {
+    // tslint:disable-next-line: max-line-length
+    const discount: number = (this.productForm.value.productPrice -  this.productForm.value.productPromoPrice) / this.productForm.value.productPrice;
+    return discount === 1 ? 0 : discount;
   }
 
   onFileChange(event) {
@@ -136,7 +198,8 @@ export class CreateProductComponent implements OnInit {
 
     this.showInputFile = true;
 
-    document.getElementById('imgPreview').setAttribute('value', '') as unknown as HTMLInputElement;
+    const imgElem = document.getElementById('imgPreview') as HTMLInputElement;
+    imgElem.setAttribute('value', '');
 
     console.log('frm', this.productForm.value);
   }
@@ -152,12 +215,18 @@ export class CreateProductComponent implements OnInit {
         cancelButtonText: 'No, cancel!',
       }).then((result) => {
         if (result.value) {
-          this.serv.createProduct(product).then(res => console.log(res)).then(() => {
+          this.blockUI.start('Creating Product ' + product.name + '...');
+          this.serv.createProduct(product).then(
+            (res: any) => {
+            this.blockUI.stop();
             Swal.fire(
-              'Updated!',
-              'Category ' + product.name + 'has been created successfully.',
+              'Created!',
+              'Product ' + product.name + ' has been created successfully.',
               'success'
-              );
+            );
+            console.log('new res', res);
+            product = res.data;
+            this.enableView(product);
             // ).then(()=>location.reload())
           }).catch(err => Swal.fire({
             title: 'Error',
@@ -184,19 +253,23 @@ export class CreateProductComponent implements OnInit {
     try {
       Swal.fire({
         title: 'Confirmation',
-        text: 'You want to update a new Product by name - ' + product.name + '?',
+        text: 'You want to update product - ' + product.name + '?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, Update!',
         cancelButtonText: 'No, cancel!',
       }).then((result) => {
         if (result.value) {
-          this.serv.updateProduct(product).then(res => console.log(res)).then(() => {
+          this.blockUI.start('Updating Product ' + product.name + '...');
+          this.serv.updateProduct(product).then((res: any) => {
+            this.blockUI.stop();
             Swal.fire(
               'Updated!',
               'Product ' + product.name + 'has been updated successfully.',
               'success'
-              );
+            );
+            product = res.data;
+            this.enableView(product);
             // ).then(()=>location.reload())
           }).catch(err => Swal.fire({
             title: 'Error',
@@ -235,12 +308,11 @@ export class CreateProductComponent implements OnInit {
       console.log(event.target.name  + ' was unchecked');
 
       formArray.controls.forEach((ctrl: FormControl) => {
-        if (ctrl.value == event.target.value) {
+        if (ctrl.value === event.target.value) {
           // Remove the unselected element from the arrayForm
           formArray.removeAt(i);
           return;
         }
-
         i++;
       });
     }
@@ -272,27 +344,13 @@ export class CreateProductComponent implements OnInit {
 
   onSubmit(formValue: any) {
     try {
+      // tslint:disable-next-line: variable-name
       const _discount = ((formValue.productPrice - formValue.productPromoPrice) / formValue.productPrice);
       formValue.discount = _discount;
 
       console.log('formValue', formValue);
 
-      // var _form = new FormData();
-      // _form.append('id', this.isCreate ? formValue.id : null);
-      // _form.append('name', formValue.productName);
-      // _form.append('images', formValue.productImg);
-      // _form.append('category_id', formValue.productCategory.id);
-      // _form.append('cost', formValue.productPrice);
-      // _form.append('reduced_cost', formValue.productPromoPrice);
-      // _form.append('description', formValue.productDescription);
-      // _form.append('excerpt', formValue.productExcerpt);
-      // _form.append('quantity', formValue.productQuantity);
-      // _form.append('discount', formValue.discount);
-
-
-      // console.log('_form', _form);
-
-
+      // tslint:disable-next-line: variable-name
       const _product: IProduct = {
         id: formValue.id ? formValue.id : null,
         name: formValue.productName,
@@ -317,21 +375,4 @@ export class CreateProductComponent implements OnInit {
       console.error(error);
     }
   }
-
-  // public findInvalidControls() {
-  //   const controls = this.productForm.controls;
-  //   for (const name in controls) {
-  //       // if (controls[name].invalid) {
-  //           this.invalid.push({
-  //             name: name,
-  //             value: controls[name].value,
-  //             invalidity: controls[name].invalid ? 'invalid' : 'valid',
-  //             pristinity: controls[name].pristine ? 'pristine' : 'dirty',
-  //             touched: controls[name].touched ? 'touched' : 'untouched'
-  //           });
-  //       // }
-  //   }
-
-  //   // console.log('findIn', invalid) ;
-  // }
 }

@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
 import { DashboardServService, ITag } from 'src/app/shared';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-create-tags',
@@ -17,24 +18,12 @@ export class CreateTagsComponent implements OnInit {
     name: ['', Validators.required],
     id: [''],
   });
-
+  showPreloader = true;
   isCreate =  true;
+  @BlockUI() blockUI: NgBlockUI;
 
   ngOnInit() {
-    // if(this.route.snapshot.params.fn == 'edit' && this.route.snapshot.queryParams.category){
-    //   this.serv.getTag(this.route.snapshot.queryParams.tag.toString()).then(res=>{
-    //     const theTag = <ITag>res;
-    //     this.tagForm.patchValue({
-    //       name: theTag.name,
-    //     });
-
-    //     //  console.log(this.tagForm.value, this.tagForm.valid);
-
-    //     this.isCreate = false;
-    //   }, err=>console.error(err));
-    // }
-
-    if (this.route.snapshot.params.fn == 'edit' && this.serv._tag) {
+    if (this.route.snapshot.params.fn === 'edit' && this.serv._tag) {
       const theTag: ITag = this.serv._tag;
       this.serv._tag = null;
 
@@ -42,6 +31,9 @@ export class CreateTagsComponent implements OnInit {
         name: theTag.name,
       });
       this.isCreate = false;
+      this.showPreloader = false;
+    } else if (this.route.snapshot.params.fn === 'add') {
+      this.showPreloader = false;
     }
   }
 
@@ -56,7 +48,9 @@ export class CreateTagsComponent implements OnInit {
       cancelButtonText: 'No, cancel!',
     }).then((result) => {
       if (result.value) {
-        this.serv.createTag(tag.name).then(res => console.log(res)).then(() => {
+        this.blockUI.start('Creating new tag - ' + tag.name);
+        this.serv.createTag(tag.name).then(res => {
+          this.blockUI.stop();
           Swal.fire(
             'Created!',
             'tag ' + tag.name + 'has been successfully created.',
@@ -68,7 +62,6 @@ export class CreateTagsComponent implements OnInit {
           text: err
         }));
       } else if (
-        /* Read more about handling dismissals below */
         result.dismiss === Swal.DismissReason.cancel
       ) {
         Swal.fire(
@@ -90,7 +83,10 @@ export class CreateTagsComponent implements OnInit {
       cancelButtonText: 'No, cancel!',
     }).then((result) => {
       if (result.value) {
-        this.serv.updateTag(tag.name).then(res => console.log(res)).then(() => {
+        this.blockUI.start('Updating tag - ' + tag.name);
+        this.serv.updateTag(tag.name).then(res => {
+          this.blockUI.stop();
+
           Swal.fire(
             'Updated!',
             'tag ' + tag.name + 'has been successfully update.',
@@ -102,7 +98,6 @@ export class CreateTagsComponent implements OnInit {
           text: err
         }));
       } else if (
-        /* Read more about handling dismissals below */
         result.dismiss === Swal.DismissReason.cancel
       ) {
         Swal.fire(
@@ -115,9 +110,6 @@ export class CreateTagsComponent implements OnInit {
   }
 
   onSubmit(formValue) {
-    // e.preventDefault();
-    // console.log(this.swal)
-
     this.isCreate ? this.createNewTag(formValue) : this.updateNewTag(formValue);
   }
 }

@@ -7,16 +7,18 @@ import { DashboardServService } from '../shared';
   styleUrls: ['./orders.component.scss']
 })
 export class OrdersComponent implements OnInit {
+  orders: any[] = [];
+  showPreloader = true;
 
   constructor(private serv: DashboardServService) { }
 
-  orders: any[] = [];
-
   ngOnInit() {
-    this.serv.getAllOrders().then(res => {
+    this.serv.getAllOrders()
+    .then(res => {
       this.orders = res as any[];
-      console.log('All orders', this.orders);
-    });
+      this.showPreloader = false;
+    })
+    .catch(rej => console.error(rej));
   }
 
 }

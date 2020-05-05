@@ -14,12 +14,9 @@ export class ProductsComponent implements OnInit {
   ngOnInit() {
     if (this.route.snapshot.params) {
       const fn = this.route.snapshot.params.fn;
-      if (fn == 'add' || fn == 'edit') {
+      if (fn === 'add' || fn === 'edit' || fn === 'view') {
         this.isAddProduct = true;
       }
-      // else {
-      //   this.router.navigate(['/products']);
-      // }
     }
   }
 

@@ -1,5 +1,16 @@
 img#imgPreview{
-    width: 150px;
-    height: 150px;
-    object-fit: contain;
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+}
+
+form {
+  transition: 0.2s ease-in;
+
+  fieldset:disabled {
+    * {
+      border: 0;
+      background: transparent;
+    }
+  }
 }

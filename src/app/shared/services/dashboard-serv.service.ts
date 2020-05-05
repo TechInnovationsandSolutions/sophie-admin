@@ -212,10 +212,13 @@ export class DashboardServService {
         params: new HttpParams().set('page', param)
       }).subscribe(
         res => {
-          console.log(res);
-          if (res.status == 'success') {
-            res.data.pg = this.numberOfProductPages(res.data.total);
-            resolve(res.data);
+          // console.log('opo', res);
+          if (res.status === 'success') {
+            const response = res.data;
+            // console.log('response', response);
+            response.pg = this.numberOfProductPages(response.total);
+            // console.log('kajd', response);
+            resolve(response);
           }
         },
         (err: HttpErrorResponse) => {

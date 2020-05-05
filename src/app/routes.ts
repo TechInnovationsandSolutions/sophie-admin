@@ -117,5 +117,10 @@ export const appRoutes: Routes = [
         path: 'categories/:id',
         redirectTo: 'categories',
         pathMatch: 'full'
+    },
+    {
+      path: '**',
+      redirectTo: 'dashboard',
+      pathMatch: 'full'
     }
 ];

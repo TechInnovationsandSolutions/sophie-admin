@@ -1,74 +1,84 @@
-<div>
-    <div [ngClass]="{'d-none': !selectedCheckbox.length}" class="btn-bulk-wrapper px-0 py-2 mb-2 col-sm-12">
-      <button class="btn bulk-delete ml-auto" (click)="bulkDelete()">
-        Delete Selected
-      </button>
-    </div>
-    <div *ngIf="categories.length">
-        <!-- <div *ngFor="let category of categories">
-            <p>Name: <strong>{{ category.name }}</strong></p>
-            <img src="{{ category.image }}" alt="image of {{ category.name }}">
-        </div> -->
-        <table id="category-table" class="table table-borderless row-border hover">
-          <caption>List of categories</caption>
-          <thead class="thead-dark">
-            <tr>
-              <th></th>
-              <th>Name</th>
-              <th></th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let category of categories; let i = index">
-              <td data-field="id">
-                <span class="d-flex flex-wrap p-2">
-                  <span class="m-auto">
-                    <div>
-                      <label for="category-checkbox" class="sr-only">
-                        check for bulk actions like delete
-                      </label>
-                      <input type="checkbox" name="category-checkbox" id="category-checkbox" (change) ="onCategoryChecked(category, $event)">
-                    </div>
-                   
-                  </span>
-                </span>
-              </td>
-              <td data-field="name">
-                  <div class="d-flex flex-wrap p-2">
-                      <!-- <img src="{{ category.image }}" alt="Image of {{ category.name }}" class="category-img"> Slow system down--> 
-                      <p class="category-name text-capitalize px-2 my-auto">
-                          {{ category.name }}
-                      </p>
+<div *ngIf="!showPreloader">
+  <div [ngClass]="{'d-none': !selectedCheckbox.length}" class="btn-bulk-wrapper px-0 py-2 mb-2 col-sm-12 sticky">
+    <button class="btn bulk-delete ml-auto" (click)="bulkDelete()">
+      Delete Selected
+    </button>
+  </div>
+  <div *ngIf="categories.length">
+      <!-- <div *ngFor="let category of categories">
+          <p>Name: <strong>{{ category.name }}</strong></p>
+          <img src="{{ category.image }}" alt="image of {{ category.name }}">
+      </div> -->
+      <table id="category-table" class="table table-borderless row-border hover">
+        <caption>List of categories</caption>
+        <thead class="thead-dark">
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let category of categories; let i = index">
+            <td data-field="id">
+              <span class="d-flex flex-wrap p-2">
+                <span class="m-auto">
+                  <div>
+                    <label for="category-checkbox" class="sr-only">
+                      check for bulk actions like delete
+                    </label>
+                    <input type="checkbox" name="category-checkbox" id="category-checkbox" (change) ="onCategoryChecked(category, $event)">
                   </div>
-              </td>
-              <td data-field="edit">
-                <div class="d-flex p-2">
-                  <button class="btn m-auto btn-category-edit" (click)="editCategory(this.category)" title="Click to Edit Category details">
-                    <i class="fas fa-pencil-alt"></i>
-                  </button>
+
+                </span>
+              </span>
+            </td>
+            <td data-field="name">
+                <div class="d-flex flex-wrap p-2">
+                    <!-- <img src="{{ category.image }}" alt="Image of {{ category.name }}" class="category-img"> Slow system down-->
+                    <p class="category-name text-capitalize px-2 my-auto">
+                        {{ category.name }}
+                    </p>
                 </div>
-              </td>
-              <td data-field="delete">
-                <div class="d-flex p-2">
-                  <button class="btn m-auto btn-category-delete" (click)="deleteCategory(this.category)" title="Click to delete Category details">
-                    <i class="fas fa-trash-alt"></i>
-                  </button>
-                </div>
-              </td>
-              <td data-field="see_products">
-                <div class="d-flex p-2">
-                  <button class="btn m-auto btn-category-product_list" (click)="productCatList(this.category)" title="Click to see Category product list">
-                    <i class="fas fa-list"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-    </div>
-    <div *ngIf="!categories.length">
-        <p>No Category Yet. Click  <strong>Add Category</strong> to create categories.</p>
-    </div>
+            </td>
+            <td data-field="edit">
+              <div class="d-flex p-2">
+                <button class="btn m-auto btn-category-edit" (click)="editCategory(this.category)" title="Click to Edit Category details">
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
+              </div>
+            </td>
+            <td data-field="see_products">
+              <div class="d-flex p-2">
+                <button class="btn m-auto btn-category-product_list" (click)="productCatList(this.category)" title="Click to see Category product list">
+                  <i class="fas fa-list"></i>
+                </button>
+              </div>
+            </td>
+            <td data-field="delete">
+              <div class="d-flex p-2">
+                <button class="btn m-auto btn-category-delete" (click)="deleteCategory(this.category)" title="Click to delete Category details">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+  <div *ngIf="!categories.length">
+      <p>No Category Yet. Click  <strong>Add Category</strong> to create categories.</p>
+  </div>
+</div>
+<div class="preloader col-md-12 py-5 px-2" *ngIf="showPreloader">
+  <div class="d-flex flex-wrap mx-auto my-2">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: rgb(255, 255, 255); display: block; shape-rendering: auto;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+      <circle cx="50" cy="50" fill="none" stroke="#28A745" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138" transform="rotate(340.749 50 50)">
+        <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+      </circle>
+        <!-- [ldio] generated by https://loading.io/ -->
+    </svg>
+  </div>
 </div>

@@ -5,6 +5,7 @@ import 'datatables.net';
 import 'datatables.net-bs4';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-list-tags',
@@ -14,6 +15,8 @@ import Swal from 'sweetalert2';
 export class ListTagsComponent implements OnInit {
   tags: ITag[] = [];
   dataTable: any;
+  showPreloader = true;
+  @BlockUI() blockUI: NgBlockUI;
 
   constructor(private serv: DashboardServService, private chRef: ChangeDetectorRef, private router: Router) { }
 
@@ -31,6 +34,7 @@ export class ListTagsComponent implements OnInit {
         responsive: true,
         ordering: false
       });
+      this.showPreloader = false;
     }).catch(err => console.error(err));
   }
 
@@ -58,7 +62,9 @@ export class ListTagsComponent implements OnInit {
       cancelButtonColor: '#28a745'
     }).then((result) => {
       if (result.value) {
-        this.serv.deleteTag(tag.id).then(res => console.log(res)).then(() => {
+        this.blockUI.start('Deleting tag ' + tag.name);
+        this.serv.deleteTag(tag.id).then(res => {
+          this.blockUI.stop();
           Swal.fire(
             'Deleted!',
             'Tag ' + tag.name + 'has been deleted.',

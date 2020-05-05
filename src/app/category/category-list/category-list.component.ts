@@ -1,6 +1,5 @@
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ICategory } from 'src/app/shared';
-import { DataTableDirective } from 'angular-datatables';
 
 import * as $ from 'jquery';
 import 'datatables.net';
@@ -8,6 +7,7 @@ import 'datatables.net-bs4';
 import { DashboardServService } from 'src/app/shared/services/dashboard-serv.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 
 @Component({
@@ -17,10 +17,10 @@ import { Router } from '@angular/router';
 })
 export class CategoryListComponent implements OnInit {
   categories: ICategory[] = [];
-  // dtElement: DataTableDirective;
-  // dtOptions:DataTables.Settings = {};
   dataTable: any;
-  private selectedCheckbox: ICategory[] = [];
+  selectedCheckbox: ICategory[] = [];
+  showPreloader = true;
+  @BlockUI() blockUI: NgBlockUI;
 
   constructor(private serv: DashboardServService, private chRef: ChangeDetectorRef, private router: Router) { }
 
@@ -39,23 +39,9 @@ export class CategoryListComponent implements OnInit {
         responsive: true,
         ordering: false
       });
+      this.showPreloader = false;
     }).catch(err => console.error(err));
-    // this.dtOptions = {
-    //   pagingType: 'full_numbers',
-    //   responsive: true,
-    //   serverSide: true,
-    //   processing: true,
-    //   columns: [{ data: 'id' }, { data: 'Name' }]
-    // };
   }
-
-  // ngAfterViewInit(): void {
-  //   this.dtElement.dtInstance.then((dtInstance: any) => {
-  //     console.info("foobar");
-  //     dtInstance.columns.adjust()
-  //        .responsive.recalc();
-  //   });
-  // }
 
   editCategory(cat: ICategory) {
     console.log(cat);
@@ -81,13 +67,16 @@ export class CategoryListComponent implements OnInit {
       cancelButtonColor: '#28a745'
     }).then((result) => {
       if (result.value) {
-        this.serv.deleteCategory(cat.id.toString()).then(res => console.log(res)).then(() => {
+        this.blockUI.start('Deleting Category ' + cat.name + ' ...');
+        this.serv.deleteCategory(cat.id.toString()).then(res => {
+          this.blockUI.stop();
+
           Swal.fire(
-            'Deleted!',
+            'Deleted Successfully!',
             'Category ' + cat.name + 'has been deleted.',
             'success'
           ).then(() => {
-            location.reload();
+            this.router.navigate(['/category']);
           });
         }).catch(err => Swal.fire({
           title: 'Error',
@@ -95,7 +84,6 @@ export class CategoryListComponent implements OnInit {
           text: err
         }));
       } else if (
-        /* Read more about handling dismissals below */
         result.dismiss === Swal.DismissReason.cancel
       ) {
         Swal.fire(
@@ -117,11 +105,11 @@ export class CategoryListComponent implements OnInit {
     const isInCheckList = this.selectedCheckbox.indexOf(categoryId);
     console.log('isInCheckList', isInCheckList, 'then', !isInCheckList);
 
-    if (e.target.checked == true && isInCheckList === -1) {
+    if (e.target.checked === true && isInCheckList === -1) {
       this.selectedCheckbox.push(categoryId);
     }
 
-    if (e.target.checked == false && isInCheckList > -1) {
+    if (e.target.checked === false && isInCheckList > -1) {
       this.selectedCheckbox.splice(isInCheckList, 1);
     }
 
@@ -141,17 +129,22 @@ export class CategoryListComponent implements OnInit {
         showCancelButton: true,
         confirmButtonText: 'Yes, Delete!',
         cancelButtonText: 'No, cancel'
+      // tslint:disable-next-line: only-arrow-functions
       }).then(function(result) {
         if (result.value) {
           try {
 
+            // tslint:disable-next-line: only-arrow-functions
             const aProm = new Promise(function(resolve, reject) {
               const resultMsg = [];
+              // tslint:disable-next-line: only-arrow-functions
               (async function() {
                 console.log('async', selectdCats);
+                // tslint:disable-next-line: prefer-for-of
                 for (let i = 0; i < selectdCats.length; i++) {
                   const obj = selectdCats[i];
                   const id = obj.id;
+                  // tslint:disable-next-line: variable-name
                   const az_name = obj.name;
                   console.log('hollq!', id);
                   await serviceGuy.deleteCategory(id.toString()).then(res => {
@@ -178,6 +171,7 @@ export class CategoryListComponent implements OnInit {
                 let messageFails = [];
                 messageFails = resp.filter(r => r.msg === false);
 
+                // tslint:disable-next-line: one-variable-per-declaration
                 let msgType = '', msgText = '', msgHtml = '';
 
                 if (messageFails && messageFails.length === 0) {
@@ -186,6 +180,7 @@ export class CategoryListComponent implements OnInit {
                 } else if (messageFails.length > 0) {
                   let output = '';
 
+                  // tslint:disable-next-line: prefer-for-of
                   for (let i = 0; i < messageFails.length; i++) {
                   const 	mf = messageFails[i];
                   output += '<li><p="text-capitalize">' +  mf.username + '</strong> was not deleted - <em>' + mf.msg + '</em>.</p></li>';
@@ -199,7 +194,7 @@ export class CategoryListComponent implements OnInit {
                 Swal.fire({
                   title: 'Done!',
                   text: msgText,
-                  icon: (msgType == 'success') ? 'success' : 'warning' ,
+                  icon: (msgType === 'success') ? 'success' : 'warning' ,
                   html: msgHtml,
                   buttonsStyling: false,
                   confirmButtonText: 'OK'

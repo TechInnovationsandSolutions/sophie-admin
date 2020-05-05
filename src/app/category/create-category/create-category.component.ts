@@ -1,8 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardServService, ICategory } from 'src/app/shared';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-create-category',
@@ -10,8 +11,6 @@ import { DashboardServService, ICategory } from 'src/app/shared';
   styleUrls: ['./create-category.component.scss']
 })
 export class CreateCategoryComponent implements OnInit {
-
-  constructor(private fb: FormBuilder, private cd: ChangeDetectorRef, private route: ActivatedRoute, private serv: DashboardServService) { }
 
   categoryForm = this.fb.group({
     name: ['', Validators.required],
@@ -21,9 +20,19 @@ export class CreateCategoryComponent implements OnInit {
 
   isCreate =  true;
   showInputFile =  true;
+  showPreloader = true;
+  @BlockUI() blockUI: NgBlockUI;
+
+  constructor(
+    private fb: FormBuilder,
+    private cd: ChangeDetectorRef,
+    private route: ActivatedRoute,
+    private serv: DashboardServService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
-    if (this.route.snapshot.params.fn == 'edit' && this.route.snapshot.queryParams.category) {
+    if (this.route.snapshot.params.fn === 'edit' && this.route.snapshot.queryParams.category) {
       this.serv.getCatgory(this.route.snapshot.queryParams.category.toString()).then(res => {
         const theCategory = res as ICategory;
         this.categoryForm.patchValue({
@@ -41,13 +50,16 @@ export class CreateCategoryComponent implements OnInit {
 
         console.log(this.categoryForm.value, this.categoryForm.valid);
 
+        this.showPreloader = false;
         this.isCreate = false;
       }, err => console.error(err));
+    } else if (this.route.snapshot.params.fn === 'add') {
+      this.showPreloader = false;
     }
   }
 
-  getSlug(cat_name: string) {
-    return cat_name.split(' ').join('-').toLowerCase();
+  getSlug(catName: string) {
+    return catName.split(' ').join('-').toLowerCase();
   }
 
   onFileChange(event) {
@@ -88,43 +100,49 @@ export class CreateCategoryComponent implements OnInit {
 
     this.showInputFile = true;
 
-    document.getElementById('imgPreview').setAttribute('value', '') as unknown as HTMLInputElement;
+    const imgElem = document.getElementById('imgPreview') as HTMLInputElement;
+    imgElem.setAttribute('value', '');
 
     console.log('frm', this.categoryForm.value);
   }
 
   createNewCategory(category: ICategory) {
-    Swal.fire({
-      title: 'Confirmation',
-      text: 'You want to create a new Category by name - ' + category.name + '?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, Create!',
-      cancelButtonText: 'No, cancel!',
-    }).then((result) => {
-      if (result.value) {
-        this.serv.createCategory(category).then(res => console.log(res)).then(() => {
+    if (this.categoryForm.valid) {
+
+      Swal.fire({
+        title: 'Confirmation',
+        text: 'You want to create a new Category by name - ' + category.name + '?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Create!',
+        cancelButtonText: 'No, cancel!',
+      }).then((result) => {
+        if (result.value) {
+          this.blockUI.start('Creating new Category - ' + category.name);
+          this.serv.createCategory(category).then(res => {
+            this.blockUI.stop();
+
+            Swal.fire(
+              'Created!',
+              'Category ' + category.name + ' has been successfully created.',
+              'success'
+            ).then(() => this.router.navigate(['/category']));
+          }).catch(err => Swal.fire({
+            title: 'Error',
+            icon: 'error',
+            text: err
+          }));
+        } else if (
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
           Swal.fire(
-            'Created!',
-            'Category ' + category.name + 'has been successfully created.',
-            'success'
-          ).then(() => location.reload());
-        }).catch(err => Swal.fire({
-          title: 'Error',
-          icon: 'error',
-          text: err
-        }));
-      } else if (
-        /* Read more about handling dismissals below */
-        result.dismiss === Swal.DismissReason.cancel
-      ) {
-        Swal.fire(
-          'Cancelled',
-          'operation aborted',
-          'info'
-        );
-      }
-    });
+            'Cancelled',
+            'operation aborted',
+            'info'
+          );
+        }
+      });
+    }
   }
 
   updateNewCategory(category: ICategory) {
@@ -137,19 +155,21 @@ export class CreateCategoryComponent implements OnInit {
       cancelButtonText: 'No, cancel!',
     }).then((result) => {
       if (result.value) {
-        this.serv.updateCategory(category).then(res => console.log(res)).then(() => {
+        this.blockUI.start('Updating Category ' + category.name);
+        this.serv.updateCategory(category).then(res => {
+          this.blockUI.stop();
+
           Swal.fire(
             'Updated!',
             'Category ' + category.name + 'has been successfully update.',
             'success'
-          ).then(() => location.reload());
+          ).then(() => this.router.navigate(['/category']));
         }).catch(err => Swal.fire({
           title: 'Error',
           icon: 'error',
           text: err
         }));
       } else if (
-        /* Read more about handling dismissals below */
         result.dismiss === Swal.DismissReason.cancel
       ) {
         Swal.fire(

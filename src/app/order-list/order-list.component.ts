@@ -8,6 +8,7 @@ import { IOrder } from '../shared/model/order.model';
   styleUrls: ['./order-list.component.scss']
 })
 export class OrderListComponent implements OnInit {
+  @Input() ordersInp: IOrder[];
   @Input() set isUserOrder(val) {
     this.isNotPersonalOrder = val ? false : true;
   }
@@ -16,15 +17,10 @@ export class OrderListComponent implements OnInit {
   showPreloader = true;
   isNotPersonalOrder = true;
 
-  constructor(private serv: DashboardServService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.serv.getAllOrders()
-    .then(res => {
-      this.orders = res as any[];
-      this.showPreloader = false;
-    })
-    .catch(rej => console.error(rej));
+    this.orders = this.ordersInp;
   }
 
 }

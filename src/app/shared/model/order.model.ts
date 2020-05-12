@@ -1,15 +1,4 @@
-import { ICustomer } from './customer.model';
-
-export interface IUSerAddress {
-  id: number;
-  first_name: string;
-  last_name: string;
-  state_id: number;
-  lga_id: number;
-  city: string;
-  address: string;
-  phone: string;
-}
+import { ICustomer, ICustomerAddress } from './customer.model';
 
 export interface IOrderImage {
   thumbnail: string;
@@ -39,7 +28,7 @@ export interface IOrderItem {
 
 export interface IOrder {
   id: number;
-  address: IUSerAddress;
+  address: ICustomerAddress;
   cost: string;
   created_at: string;
   deleted_at: string;

@@ -24,10 +24,35 @@
         }
       }
 
+      .order-status {
+        align-items: center;
+
+        span {
+          padding: 0 0.375em;
+          font-size: 0.85em;
+          margin-left: 0.5em;
+          border-radius: 2px;
+
+          &.is-success {
+            border: 1px solid transparent;
+            background-color: #ffffff;
+            color: $limeGreen;
+          }
+
+          &.is-failed {
+            border: 1px solid $warning;
+            background-color: $warning;
+            font-weight: bold;
+            color: #000000;
+          }
+        }
+      }
+
       .order-ref, .order-amt {
         font-size: 1.2em;
 
         span {
+          color: $success;
           font-weight: bold;
         }
       }

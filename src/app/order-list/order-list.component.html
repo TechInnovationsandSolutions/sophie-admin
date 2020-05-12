@@ -8,8 +8,12 @@
                 <div class="col-sm-12 d-flex flex-wrap order mb-4 mx-auto py-2" *ngFor="let order of orders; let i = index">
                   <app-collapsible class="col-sm-12 p-0">
                     <div well-title>
-                      <div class="order-date col-sm-12 text-right p-0">
-                        <p class="col-sm-12 d-flex flex-wrap p-0">
+                      <div class="col-sm-12 p-0 d-flex flex-wrap">
+                        <p class="order-status col-md-6 d-flex flex-wrap p-0">
+                          Status:
+                          <span [ngClass]="order.payment.status ? 'is-success':'is-failed'">{{order.payment.status ? 'Paid':'Unpaid'}}</span>
+                        </p>
+                        <p class="order-date col-md-6 d-flex flex-wrap p-0 text-right">
                           <span class="mr-0 ml-auto">
                             {{order.created_at | date:'longDate'}}
                           </span>
@@ -17,21 +21,21 @@
                       </div>
                       <div class="col-sm-12 d-flex flex-wrap px-0">
                         <p class="order-ref col-sm-12 col-md-6 p-0 text-left ml-0 mr-auto">
-                          Ref Code: <span>{{order.id}}</span>
+                          Ref Code: <span>{{order.payment.reference}}</span>
                         </p>
                         <p class="order-amt col-sm-12 col-md-6 p-0 text-right mr-0 ml-auto">
                           Total Amount: <span>{{order.cost | currency:"NGN":"₦"}}</span>
                         </p>
                       </div>
                       <div class="col-sm-12 p-0">
-                        <p class="col-sm-12 p-0 order-customer">
+                        <p class="col-sm-12 p-0 order-customer" *ngIf="isNotPersonalOrder">
                           Customer Name: <span>
                             <a href="#">
                               {{order.user.first_name}} {{order.user.last_name}}
                             </a>
                           </span>
                         </p>
-                        <p class="text-left">
+                        <p class="col-sm-12 p-0 text-left">
                           Address: <span>{{order.address.address}}</span>
                         </p>
                       </div>
@@ -49,7 +53,7 @@
                             <div class="order-item-img-name-container">
                               <div class="d-flex flex-wrap">
                                 <img src="{{item?.images[0]?.thumbnail || '/assets/images/product-1.png' }}" alt="image of {{ 'item.produc' }}">
-                                <a [routerLink]='["/product", item?.id]' class="order-item-name text-capitalize">
+                                <a [routerLink]='["/product", item?.product_id]' class="order-item-name text-capitalize">
                                   {{ item?.product }}
                                 </a>
                               </div>

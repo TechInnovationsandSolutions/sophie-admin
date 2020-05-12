@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CategoryComponent } from './category/category.component';
-import { OrdersComponent } from './orders/orders.component';
 import { CustomersComponent } from './customers/customers.component';
 import { TransactionsComponent } from './transactions/transactions.component';
 import { ReviewsComponent } from './reviews/reviews.component';
@@ -9,6 +8,7 @@ import { ProductsComponent } from './products/products.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuardGuard } from './shared';
 import { TagsComponent } from './tags/tags.component';
+import { AllOrdersComponent } from './all-orders/all-orders.component';
 
 export const appRoutes: Routes = [
     {
@@ -32,7 +32,7 @@ export const appRoutes: Routes = [
     },
     {
         path: 'orders',
-        component: OrdersComponent,
+        component: AllOrdersComponent,
         canActivate: [AuthGuardGuard]
     },
     {

@@ -5,6 +5,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DataTablesModule } from 'angular-datatables';
 import { BlockUIModule } from 'ng-block-ui';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { CommonModule } from '@angular/common';
@@ -18,7 +19,7 @@ import { LoginComponent } from './login/login.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { AppLayoutComponent } from './app-layout/app-layout.component';
 import { appRoutes } from './routes';
-import { OrdersComponent } from './orders/orders.component';
+import { OrderListComponent } from './order-list/order-list.component';
 import { CreateCategoryComponent } from './category/create-category/create-category.component';
 import { CategoryListComponent } from './category/category-list/category-list.component';
 import { CreateProductComponent } from './products/create-product/create-product.component';
@@ -71,6 +72,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { AllOrdersComponent } from './all-orders/all-orders.component';
 
 const matModule = [
   MatAutocompleteModule,
@@ -127,7 +129,9 @@ const matModule = [
     FormsModule,
     HttpClientModule,
     DataTablesModule,
-    BlockUIModule.forRoot()
+    BrowserAnimationsModule,
+    BlockUIModule.forRoot(),
+    ...matModule
   ],
   declarations: [
     AppComponent,
@@ -140,7 +144,7 @@ const matModule = [
     LoginComponent,
     SidebarComponent,
     AppLayoutComponent,
-    OrdersComponent,
+    OrderListComponent,
     CreateCategoryComponent,
     CategoryListComponent,
     CreateProductComponent,
@@ -148,7 +152,8 @@ const matModule = [
     TagsComponent,
     CreateTagsComponent,
     ListTagsComponent,
-    CollapsibleComponent
+    CollapsibleComponent,
+    AllOrdersComponent
   ],
   providers: [
     AuthService

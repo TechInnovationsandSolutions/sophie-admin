@@ -73,6 +73,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AllOrdersComponent } from './all-orders/all-orders.component';
+import { CustomerPageComponent } from './customer-page/customer-page.component';
 
 const matModule = [
   MatAutocompleteModule,
@@ -153,7 +154,8 @@ const matModule = [
     CreateTagsComponent,
     ListTagsComponent,
     CollapsibleComponent,
-    AllOrdersComponent
+    AllOrdersComponent,
+    CustomerPageComponent
   ],
   providers: [
     AuthService

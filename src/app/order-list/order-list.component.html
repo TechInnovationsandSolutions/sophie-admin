@@ -1,81 +1,168 @@
 <div class="col-sm-12 py-2">
-  <div class="col-sm-12 d-flex flex-wrap py-3 my-2 orders" *ngIf="orders.length">
-    <div class="col-sm-12 d-flex flex-wrap order mb-4 mx-auto py-2" *ngFor="let order of orders; let i = index">
-      <app-collapsible class="col-sm-12 p-0">
-        <div well-title>
-          <div class="col-sm-12 p-0 d-flex flex-wrap">
-            <p class="order-status col-md-6 d-flex flex-wrap p-0">
-              Status:
-              <span [ngClass]="order.payment.status ? 'is-success':'is-failed'">{{order.payment.status ? 'Paid':'Unpaid'}}</span>
-            </p>
-            <p class="order-date col-md-6 d-flex flex-wrap p-0 text-right">
-              <span class="mr-0 ml-auto">
-                {{order.created_at | date:'longDate'}}
+  <div class="col-sm-12 d-flex flex-wrap py-2 orders" *ngIf="orderSorted.length">
+    <div class="col-sm-12 py-2 d-flex flex-wrap set-fn-sect">
+      <div class="col-sm-12 py-2">
+        <form class="form-inline my-2 my-lg-0" #searchForm = "ngForm" (ngSubmit) = "searchFormSubmit()">
+          <label class="pr-2" for="searchTextID">Search with First Name, Last Name or Reference Code</label>
+          <input class="form-control" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="searchText" id="searchTextID"  name="searchTextID" #searchTextID="ngModel">
+          <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" title="click to search input">
+              <span>
+                <i class="fas fa-search"></i>
               </span>
-            </p>
-          </div>
-          <div class="col-sm-12 d-flex flex-wrap px-0">
-            <p class="order-ref col-sm-12 col-md-6 p-0 text-left ml-0 mr-auto">
-              Ref Code: <span>{{order.payment.reference}}</span>
-            </p>
-            <p class="order-amt col-sm-12 col-md-6 p-0 text-right mr-0 ml-auto">
-              Total Amount: <span>{{order.cost | currency:"NGN":"₦"}}</span>
-            </p>
-          </div>
-          <div class="col-sm-12 p-0">
-            <p class="col-sm-12 p-0 order-customer" *ngIf="isNotPersonalOrder">
-              Customer Name: <span>
-                <a href="#">
-                  {{order.user.first_name}} {{order.user.last_name}}
-                </a>
-              </span>
-            </p>
-            <p class="col-sm-12 p-0 text-left">
-              Address: <span>{{order.address.address}}</span>
-            </p>
-          </div>
+          </button>
+        </form>
+      </div>
+      <div class="col-sm-12 py-2 d-flex flex-wrap">
+        <div class="col-md-2 px-0">
+          <p class="set-fn-title">
+            Group By:
+          </p>
         </div>
-        <div well-body *ngIf="order.items.length">
-          <div class="order-items col-sm-12 p-0 d-flex flex-wrap" title="Click to toggle Product display">
-            <div class="order-product-title">
-              <p class="title-detail">Product</p>
-              <p class="title-price">Price</p>
-              <p class="title-quantity">Quantity</p>
-              <p class="title-total">Total</p>
+        <div class="col-md-10 px-0 d-flex flex-wrap">
+          <button class="btn-set-fn btn-set-fn__groupby" [class.active]='groupBy === "day"' (click)="setGroupBy('day')">
+            day
+          </button>
+          <button class="btn-set-fn btn-set-fn__groupby" [class.active]='groupBy === "week"' (click)="setGroupBy('week')">
+            week
+          </button>
+          <button class="btn-set-fn btn-set-fn__groupby" [class.active]='groupBy === "month"' (click)="setGroupBy('month')">
+            month
+          </button>
+          <button class="btn-set-fn btn-set-fn__groupby" [class.active]='groupBy === "year"' (click)="setGroupBy('year')">
+            year
+          </button>
+          <button class="btn-set-fn btn-set-fn__groupby" [class.active]='groupBy === "users"' (click)="setGroupBy('users')">
+            users
+          </button>
+          <button class="btn-set-fn btn-set-fn__groupby" [class.active]='groupBy === "firstNameLetter"' (click)="setGroupBy('firstNameLetter')">
+            First Name Letters
+          </button>
+          <button class="btn-set-fn btn-set-fn__groupby" [class.active]='!groupBy' (click)="setGroupBy('')">
+            None
+          </button>
+        </div>
+      </div>
+      <div class="col-sm-12 py-2 d-flex flex-wrap">
+        <div class="col-md-2 px-0">
+          <p class="set-fn-title">
+            Filter By:
+          </p>
+        </div>
+        <div class="col-md-10 px-0 d-flex flex-wrap">
+          <button class="btn-set-fn btn-set-fn__filterby" [class.active]='!filterBy || filterBy === "all"' (click)="setFilterBy('all')">
+            all
+          </button>
+          <button class="btn-set-fn btn-set-fn__filterby" [class.active]='filterBy === "paid"' (click)="setFilterBy('paid')">
+            paid
+          </button>
+          <button class="btn-set-fn btn-set-fn__filterby" [class.active]='filterBy === "unpaid"' (click)="setFilterBy('unpaid')">
+            unpaid
+          </button>
+        </div>
+      </div>
+      <div class="col-sm-12 py-2 d-flex flex-wrap">
+        <div class="col-md-2 px-0">
+          <p class="set-fn-title">
+            Sort By:
+          </p>
+        </div>
+        <div class="col-md-10 px-0 d-flex flex-wrap">
+          <button class="btn-set-fn btn-set-fn__filterby" [class.active]='sortBy === "asc"' (click)="setSortBy('asc')">
+            asc
+          </button>
+          <button class="btn-set-fn btn-set-fn__sortBy" [class.active]='!sortBy || sortBy === "desc"' (click)="setSortBy('desc')">
+            desc
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12 d-flex flex-wrap py-3 my-2 mb-4 mx-auto px-0" *ngFor="let sortOrder of orderSorted">
+      <div *ngIf="showGroupLabel" class="col-sm-12 px-0 d-flex flex-wrap criteria-sect text-center">
+        <div class="col-md-6 px-0 d-flex flex-wrap">
+          <p class="criteria m-auto col-sm-12">{{sortOrder.criteria}}</p>
+        </div>
+        <div class="col-md-6 px-0 d-flex flex-wrap">
+          <p class="col-sm-12 amount">Amount: <span class="text-success">{{sortOrder.totAmt | currency:"NGN":"₦"}}</span></p>
+          <p class="col-sm-12 no-order">Number of Orders: <span class="text-primary">{{sortOrder.orders.length}}</span></p>
+        </div>
+      </div>
+      <div class="col-sm-12 d-flex flex-wrap order mx-auto py-2 mb-4" *ngFor="let orderDateStamp of sortOrder.orders">
+        <app-collapsible class="col-sm-12 p-0">
+          <div well-title>
+            <div class="col-sm-12 p-0 d-flex flex-wrap">
+              <p class="order-status col-md-6 d-flex flex-wrap p-0">
+                Status:
+                <span [ngClass]="orderDateStamp.order.payment.status ? 'is-success':'is-failed'">{{orderDateStamp.order.payment.status ? 'Paid':'Unpaid'}}</span>
+              </p>
+              <p class="order-date col-md-6 d-flex flex-wrap p-0 text-right">
+                <span class="mr-0 ml-auto">
+                  {{orderDateStamp.order.created_at | date:'longDate'}}
+                </span>
+              </p>
             </div>
-            <div class="d-flex flex-wrap order-product-container">
-              <div class="order-item-detail" *ngFor="let item of order.items">
-                <div class="order-item-img-name-container">
-                  <div class="d-flex flex-wrap">
-                    <img src="{{item?.images[0]?.thumbnail || '/assets/images/product-1.png' }}" alt="image of {{ 'item.produc' }}">
-                    <a [routerLink]='["/product", item?.product_id]' class="order-item-name text-capitalize">
-                      {{ item?.product }}
-                    </a>
+            <div class="col-sm-12 d-flex flex-wrap px-0">
+              <p class="order-ref col-sm-12 col-md-6 p-0 text-left ml-0 mr-auto">
+                Ref Code: <span>{{orderDateStamp.order.payment.reference}}</span>
+              </p>
+              <p class="order-amt col-sm-12 col-md-6 p-0 text-right mr-0 ml-auto">
+                Total Amount: <span>{{orderDateStamp.order.cost | currency:"NGN":"₦"}}</span>
+              </p>
+            </div>
+            <div class="col-sm-12 p-0">
+              <p class="col-sm-12 p-0 order-customer" *ngIf="isNotPersonalOrder && !groupedByUsername">
+                Customer Name: <span>
+                  <a>
+                    {{orderDateStamp.order.user.first_name}} {{orderDateStamp.order.user.last_name}}
+                  </a>
+                </span>
+              </p>
+              <p class="col-sm-12 p-0 text-left">
+                Address: <span>{{orderDateStamp.order.address.address}}</span>
+              </p>
+            </div>
+          </div>
+          <div well-body *ngIf="orderDateStamp.order.items.length">
+            <div class="order-items col-sm-12 p-0 d-flex flex-wrap" title="Click to toggle Product display">
+              <div class="order-product-title">
+                <p class="title-detail">Product</p>
+                <p class="title-price">Price</p>
+                <p class="title-quantity">Quantity</p>
+                <p class="title-total">Total</p>
+              </div>
+              <div class="d-flex flex-wrap order-product-container">
+                <div class="order-item-detail" *ngFor="let item of orderDateStamp.order.items">
+                  <div class="order-item-img-name-container">
+                    <div class="d-flex flex-wrap">
+                      <img src="{{item?.images[0]?.thumbnail || '/assets/images/product-1.png' }}" alt="image of {{ 'item.produc' }}">
+                      <a [routerLink]='["/product", item?.product_id]' class="order-item-name text-capitalize">
+                        {{ item?.product }}
+                      </a>
+                    </div>
                   </div>
-                </div>
-                <div class="order-item-price-container">
-                    <p class="order-item-current">
-                      {{ item?.amount | currency:"NGN":"₦" }}
+                  <div class="order-item-price-container">
+                      <p class="order-item-current">
+                        {{ item?.amount | currency:"NGN":"₦" }}
+                      </p>
+                  </div>
+                  <div class="order-item-quantity-container">
+                    <p class="col-sm-12 p-0">
+                      {{item?.quantity}}
                     </p>
-                </div>
-                <div class="order-item-quantity-container">
-                  <p class="col-sm-12 p-0">
-                    {{item?.quantity}}
-                  </p>
-                </div>
-                <div class="order-item-total-container">
-                  <p class="order-item-total">
-                    {{ (item?.amount * item?.quantity) | currency:"NGN":"₦" }}
-                  </p>
-                </div>
-            </div>
+                  </div>
+                  <div class="order-item-total-container">
+                    <p class="order-item-total">
+                      {{ (item?.amount * item?.quantity) | currency:"NGN":"₦" }}
+                    </p>
+                  </div>
+              </div>
+              </div>
             </div>
           </div>
-        </div>
-      </app-collapsible>
+        </app-collapsible>
+      </div>
     </div>
   </div>
-  <div class="col-sm-10 col-md-6 d-flex flex-wrap mx-auto py-3 px-0" *ngIf="!orders.length">
+  <div class="col-sm-10 col-md-6 d-flex flex-wrap mx-auto py-3 px-0" *ngIf="!orderSorted.length">
       <div class="no-result">
           <div class="col-sm-12 col-md-10 mx-auto d-flex flex-wrap p-3">
               <span class="m-auto col-sm-12 d-flex flex-wrap">

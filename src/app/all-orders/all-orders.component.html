@@ -3,7 +3,7 @@
   <div class="col-sm-12 p-0" app-body>
     <div class="all-orders col-sm-12 d-flex flex-wrap p-2" *ngIf="!showPreloader">
       <div class="d-flex flex-wrap col-sm-12 mx-auto container">
-        <app-order-list [ordersInp]="orders" [isUserOrder]="true"></app-order-list>
+        <app-order-list [ordersInp]="orders"></app-order-list>
       </div>
     </div>
     <div class="preloader col-md-12 py-5 px-2" *ngIf="showPreloader">

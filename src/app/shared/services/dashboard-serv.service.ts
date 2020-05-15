@@ -630,12 +630,64 @@ export class DashboardServService {
     });
   }
 
+  getCustomer(id: number) {
+    return new Promise(resolve => {
+      const token = this.getToken();
+      this.http.get<any>(this._url + 'users',
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      })
+      .subscribe(
+        res => {
+          console.log(res);
+          if (res.status === 'success') {
+            const customers = res.data.filter(r => !r.is_admin && r.id === id);
+            resolve(customers);
+          }
+        },
+        (err: HttpErrorResponse) => {
+          console.log(err);
+          if (err.status === 401) {
+            this.removeToken();
+            // route guard handles the redirection
+            this.backToLogin();
+          }
+        }
+      );
+    });
+  }
+
 
   // Orders
   getAllOrders() {
     return new Promise(resolve => {
       const token = this.getToken();
       this.http.get<any>(this._url + 'orders-all',
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      })
+      .subscribe(
+        res => {
+          console.log(res);
+          if (res.status === 'success') {
+            resolve(res.data);
+          }
+        },
+        (err: HttpErrorResponse) => {
+          console.log(err);
+          if (err.status === 401) {
+            this.removeToken();
+            this.backToLogin();
+          }
+        }
+      );
+    });
+  }
+
+  getUserOrders(userId: number | string) {
+    return new Promise(resolve => {
+      const token = this.getToken();
+      this.http.get<any>(this._url + 'users/' + userId + '/orders',
       {
         headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
       })

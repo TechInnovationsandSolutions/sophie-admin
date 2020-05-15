@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuardGuard } from './shared';
 import { TagsComponent } from './tags/tags.component';
 import { AllOrdersComponent } from './all-orders/all-orders.component';
+import { CustomerPageComponent } from './customer-page/customer-page.component';
 
 export const appRoutes: Routes = [
     {
@@ -34,6 +35,16 @@ export const appRoutes: Routes = [
         path: 'orders',
         component: AllOrdersComponent,
         canActivate: [AuthGuardGuard]
+    },
+    {
+      path: 'customer/:id',
+      component: CustomerPageComponent,
+      canActivate: [AuthGuardGuard]
+    },
+    {
+      path: 'customer',
+      redirectTo: 'customers',
+      pathMatch: 'full'
     },
     {
         path: 'customers',

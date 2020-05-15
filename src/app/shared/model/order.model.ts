@@ -12,7 +12,7 @@ export interface IOrderPayment {
   deleted_at?: Date;
   id?: number;
   order_id?: number;
-  reference?: number;
+  reference?: string;
   status?: boolean;
   updated_at?: Date;
 }
@@ -37,4 +37,18 @@ export interface IOrder {
   status: number;
   payment: IOrderPayment;
   user: ICustomer;
+}
+
+export interface IOrderDatestamp {
+  order: IOrder;
+  day?: string;
+  week?: number;
+  month?: string;
+  year?: number;
+}
+
+export interface IOrderSort {
+  criteria: string;
+  totAmt: number;
+  orders: IOrderDatestamp[];
 }

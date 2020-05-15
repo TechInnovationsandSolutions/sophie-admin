@@ -2,67 +2,130 @@
     <p app-title>List of Users</p>
     <div class="col-sm-12 p-0" app-body>
       <div *ngIf="!showPreloader" class="d-flex flex-wrap col-sm-12 mx-auto container">
-            <div class="col-sm-12 py-2">
-                <table class="table" id="customer-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>email</th>
-                            <th>phone number</th>
-                            <th>address</th>
-                            <th>registration date</th>
-                            <th>orders</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let customer of customers">
-                            <td data-field="customer-name">
-                                <span class="text-capitalize">
-                                    <span>
-                                        {{ customer.first_name }}
-                                    </span> <span>
-                                        {{ customer.last_name }}
-                                    </span>
-                                </span>
-                            </td>
-                            <td data-field="customer-email">
+        <div class="col-sm-12 py-2">
+            <!-- <table class="table" id="customer-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>email</th>
+                        <th>phone number</th>
+                        <th>address</th>
+                        <th>registration date</th>
+                        <th>orders</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let customer of customers">
+                        <td data-field="customer-name">
+                            <span class="text-capitalize">
                                 <span>
-                                    {{ customer.email }} <span *ngIf="customer.email_verified_at" class="text-success" title="email is verified">
-                                        <i class="fas fa-check-circle"></i>
-                                    </span>
+                                    {{ customer.first_name }}
+                                </span> <span>
+                                    {{ customer.last_name }}
                                 </span>
-                                </td>
-                            <td data-field="customer-phone_number">
-                                <span>
-                                    {{ customer.phone || '-' }}
+                            </span>
+                        </td>
+                        <td data-field="customer-email">
+                            <span>
+                                {{ customer.email }} <span *ngIf="customer.email_verified_at" class="text-success" title="email is verified">
+                                    <i class="fas fa-check-circle"></i>
                                 </span>
+                            </span>
+                        </td>
+                        <td data-field="customer-phone_number">
+                            <span>
+                                {{ customer.phone || '-' }}
+                            </span>
+                        </td>
+                        <td data-field="customer-address">
+                            <span>
+                                {{ customer.address  || '-' }}
+                            </span>
                             </td>
-                            <td data-field="customer-address">
-                                <span>
-                                   {{ customer.address  || '-' }}
-                                </span>
-                                </td>
-                            <td data-field="customer-registration_date">
-                                <span>
-                                    {{ customer.created_at | date}}
-                                </span>
-                            </td>
-                            <td data-field="customer-orders">
-                                <button class="btn btn-customer-product_list" title="see all orders by this customer" (click)="getCustomerOrders(customer)">
-                                    <i class="fas fa-th-list"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr *ngIf="!customers.length">
-                            <div class="d-flex p-2 w-100">
-                                <p class="mx-auto text-center text-capitalize">
-                                    No customer
-                                </p>
-                            </div>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                        <td data-field="customer-registration_date">
+                            <span>
+                                {{ customer.created_at | date}}
+                            </span>
+                        </td>
+                        <td data-field="customer-orders">
+                            <button class="btn btn-customer-product_list" title="see all orders by this customer" (click)="getCustomerOrders(customer)">
+                                <i class="fas fa-th-list"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!customers.length">
+                        <div class="d-flex p-2 w-100">
+                            <p class="mx-auto text-center text-capitalize">
+                                No customer
+                            </p>
+                        </div>
+                    </tr>
+                </tbody>
+            </table> -->
+
+            <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="first_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                <td mat-cell *matCellDef="let customer">
+                  <a [routerLink]="['/customer', customer.id]">
+                    <span class="text-capitalize">
+                      <span>
+                        {{ customer.first_name }}
+                      </span> <span>
+                        {{ customer.last_name }}
+                      </span>
+                    </span>
+                  </a>
+                </td>
+              </ng-container>
+
+              <!-- Email Column -->
+              <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+                <td mat-cell *matCellDef="let customer">
+                  <span>
+                    {{ customer.email }} <span *ngIf="customer.email_verified_at" class="text-success" title="email is verified">
+                      <i class="fas fa-check-circle"></i>
+                    </span>
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- Phone Column -->
+              <ng-container matColumnDef="phone">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone Number </th>
+                <td mat-cell *matCellDef="let customer">
+                  <span>
+                    {{ customer.phone || '-' }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="created_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Registration Date </th>
+                <td mat-cell *matCellDef="let customer">
+                  {{customer.created_at | date}}
+                </td>
+              </ng-container>
+
+              <!-- Order Icon Column -->
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef>  </th>
+                <td mat-cell *matCellDef="let customer">
+                  <button class="btn btn-customer-product_list" title="see all orders by this customer" (click)="getCustomerOrders(customer)">
+                    <i class="fas fa-th-list"></i>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="tableHeader"></tr>
+              <tr mat-row *matRowDef="let row; columns: tableHeader;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          </div>
       </div>
       <div class="preloader col-md-12 py-5 px-2" *ngIf="showPreloader">
         <div class="d-flex flex-wrap mx-auto my-2">

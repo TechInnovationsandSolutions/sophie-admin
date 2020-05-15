@@ -13,12 +13,16 @@ export class DashboardServService {
   private pageNoOfProduct = 20;
   constructor(private http: HttpClient, private router: Router) { }
 
+  // tslint:disable-next-line: variable-name
   _url = 'https://tis-bandb.herokuapp.com/api/v1/'; // Base URL
   cloudinary = cloudinaryConfig;
 
   // Temporary data
+  // tslint:disable-next-line: variable-name
   _category: ICategory;
+  // tslint:disable-next-line: variable-name
   _product: IProduct;
+  // tslint:disable-next-line: variable-name
   _tag: ITag;
 
   setToken(token: string): void {

@@ -36,58 +36,60 @@ export class OrderListComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(q => {
-      if (Object.keys(q).length) {
-        this.sortBy = q.sortBy ? q.sortBy : '';
-        this.filterBy = q.filterBy ? q.filterBy : '';
-        this.groupBy = q.groupBy ? q.groupBy : '';
-      }
-
-      const aProm = new Promise((r) => {
-        // Sort
-        this.theOrders = this.sortByfn(this.ordersInp);
-        r(this.theOrders);
-      });
-
-      aProm.then(() => {
-        // Filter
-        const deOrders = this.filterByFn();
-        return deOrders;
-      })
-      .then((res) => {
-        if (q.searchhTerm) {
-          this.searchText = q.searchhTerm;
-          const searchArr = res.filter(r => {
-            const isInFirstName = r.user.first_name.indexOf(this.searchText);
-            const isInLastName = r.user.last_name.indexOf(this.searchText);
-            const isInRef = r.payment.reference.indexOf(this.searchText);
-
-            if (isInFirstName > -1 || isInLastName > -1 || isInRef > -1) {
-              return r;
-            }
-          });
-          return searchArr;
+      if (this.ordersInp.length) {
+        if (Object.keys(q).length) {
+          this.sortBy = q.sortBy ? q.sortBy : '';
+          this.filterBy = q.filterBy ? q.filterBy : '';
+          this.groupBy = q.groupBy ? q.groupBy : '';
         }
-        return res;
-      })
-      .then((res) => {
-        // Convert to data to have day, year, etc stamp
-        this.ordersWithDateStamp = res.map(o => {
-          const orderDateStamp: IOrderDatestamp = {
-            order: o,
-            day: this.calcDay(o.created_at),
-            week: this.calcWeekNo(o.created_at),
-            month: this.calcMonth(o.created_at),
-            year: this.calcYear(o.created_at)
-          };
 
-          return orderDateStamp;
+        const aProm = new Promise((r) => {
+          // Sort
+          this.theOrders = this.sortByfn(this.ordersInp);
+          r(this.theOrders);
         });
-        return this.ordersWithDateStamp;
-      })
-      .then(() => {
-        // Group by
-        this.groupByFn();
-      });
+
+        aProm.then(() => {
+          // Filter
+          const deOrders = this.filterByFn();
+          return deOrders;
+        })
+        .then((res) => {
+          if (q.searchhTerm) {
+            this.searchText = q.searchhTerm;
+            const searchArr = res.filter(r => {
+              const isInFirstName = r.user.first_name.indexOf(this.searchText);
+              const isInLastName = r.user.last_name.indexOf(this.searchText);
+              const isInRef = r.payment.reference.indexOf(this.searchText);
+
+              if (isInFirstName > -1 || isInLastName > -1 || isInRef > -1) {
+                return r;
+              }
+            });
+            return searchArr;
+          }
+          return res;
+        })
+        .then((res) => {
+          // Convert to data to have day, year, etc stamp
+          this.ordersWithDateStamp = res.map(o => {
+            const orderDateStamp: IOrderDatestamp = {
+              order: o,
+              day: this.calcDay(o.created_at),
+              week: this.calcWeekNo(o.created_at),
+              month: this.calcMonth(o.created_at),
+              year: this.calcYear(o.created_at)
+            };
+
+            return orderDateStamp;
+          });
+          return this.ordersWithDateStamp;
+        })
+        .then(() => {
+          // Group by
+          this.groupByFn();
+        });
+      }
     });
   }
 

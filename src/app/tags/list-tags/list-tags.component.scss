@@ -1,35 +1,21 @@
-@import './../../app.component.scss';
+@import "./../../app.component.scss";
 
-#tag-table{
-
-    thead, tbody, td, tr, th{
-       div{
-           @include maxWidth();
-           height: 100%;
-       }
+#tag-table {
+  thead,
+  tbody,
+  td,
+  tr,
+  th {
+    div {
+      @include maxWidth();
+      height: 100%;
     }
+  }
 
-    .tag-img{
-        $d: 50px;
-        height: $d;
-        width: $d;
-        object-fit: contain;
-    }
-
-    .btn-tag-edit{
-        @include invertOnHover(#fff, $dark)
-    }
-
-    .btn-tag-delete{
-        @include invertOnHover(#fff, $danger)
-    }
-
-    .btn-tag-product_list{
-        @include invertOnHover(#fff, $orange)
-    }
-
-    .btn-tag-edit,.btn-tag-delete, .btn-tag-product_list{
-        border-radius: 100%;
-    }
-
+  .tag-img {
+    $d: 50px;
+    height: $d;
+    width: $d;
+    object-fit: contain;
+  }
 }

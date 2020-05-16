@@ -1,29 +1,12 @@
-@import './../../app.component.scss';
+@import "./../../app.component.scss";
 
-#product-table{
-    tbody tr td{
-       span{
-           @include maxWidthFlexWrap();
-           height: 100%;
-           margin-top: auto;
-           margin-bottom: auto;
-       }
+#product-table {
+  tbody tr td {
+    span {
+      @include maxWidthFlexWrap();
+      height: 100%;
+      margin-top: auto;
+      margin-bottom: auto;
     }
-
-    .btn-product-edit{
-        @include invertOnHover(#fff, $dark)
-    }
-
-    .btn-product-delete{
-        @include invertOnHover(#fff, $danger)
-    }
-
-    .btn-product-view{
-        @include invertOnHover(#fff, $teal)
-    }
-
-    .btn-product-edit,.btn-product-delete, .btn-product-view{
-        border-radius: 100%;
-    }
-
+  }
 }

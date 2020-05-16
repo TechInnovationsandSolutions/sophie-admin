@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
+// import { DashboardComponent } from './dashboard/dashboard.component';
 import { CategoryComponent } from './category/category.component';
 import { CustomersComponent } from './customers/customers.component';
-import { TransactionsComponent } from './transactions/transactions.component';
-import { ReviewsComponent } from './reviews/reviews.component';
+// import { TransactionsComponent } from './transactions/transactions.component';
+// import { ReviewsComponent } from './reviews/reviews.component';
 import { ProductsComponent } from './products/products.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuardGuard } from './shared';
@@ -12,11 +12,11 @@ import { AllOrdersComponent } from './all-orders/all-orders.component';
 import { CustomerPageComponent } from './customer-page/customer-page.component';
 
 export const appRoutes: Routes = [
-    {
-        path: 'dashboard',
-        component: DashboardComponent,
-        canActivate: [AuthGuardGuard]
-    },
+    // {
+    //     path: 'dashboard',
+    //     component: DashboardComponent,
+    //     canActivate: [AuthGuardGuard]
+    // },
     {
         path: 'categories',
         component: CategoryComponent,
@@ -51,16 +51,16 @@ export const appRoutes: Routes = [
         component: CustomersComponent,
         canActivate: [AuthGuardGuard]
     },
-    {
-        path: 'transactions',
-        component: TransactionsComponent,
-        canActivate: [AuthGuardGuard]
-    },
-    {
-        path: 'reviews',
-        component: ReviewsComponent,
-        canActivate: [AuthGuardGuard]
-    },
+    // {
+    //     path: 'transactions',
+    //     component: TransactionsComponent,
+    //     canActivate: [AuthGuardGuard]
+    // },
+    // {
+    //     path: 'reviews',
+    //     component: ReviewsComponent,
+    //     canActivate: [AuthGuardGuard]
+    // },
     {
         path: 'products/:fn',
         component: ProductsComponent,
@@ -101,7 +101,7 @@ export const appRoutes: Routes = [
     },
     {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'orders',
         pathMatch: 'full'
     },
     {
@@ -131,7 +131,7 @@ export const appRoutes: Routes = [
     },
     {
       path: '**',
-      redirectTo: 'dashboard',
+      redirectTo: 'orders',
       pathMatch: 'full'
     }
 ];

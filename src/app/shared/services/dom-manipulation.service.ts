@@ -9,13 +9,16 @@ export class DomManipulationService {
 
   constructor() { }
 
-  initialBulkAction(max: number) {
+  initialBulkAction(max: number, action?: string) {
+    action = action ? action + ' ' : '';
     if (max > 0) {
-      this.blockUI.start();
+      this.blockUI.start('Processing');
       const blockElemDiv = document.querySelector('.block-ui-spinner .message');
 
+      console.log('blockElemDiv', blockElemDiv);
       const p = document.createElement('p');
-      p.innerHTML = 'Processing <span class = "min">0</span> of <span class = "max">' + max + '</span>';
+      p.classList.add('messager');
+      p.innerHTML = action + '<span class = "min">0</span> of <span class = "max">' + max + '</span>';
       blockElemDiv.append(p);
     }
   }
@@ -27,6 +30,7 @@ export class DomManipulationService {
   }
 
   terminateBulkAction() {
+    document.querySelector('.block-ui-spinner .message p.messager').remove();
     this.blockUI.stop();
   }
 }

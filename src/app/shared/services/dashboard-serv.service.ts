@@ -109,14 +109,14 @@ export class DashboardServService {
         console.log('cloudy', response);
 
         // tslint:disable-next-line: max-line-length
-        const img_thumbnail = (response.eager && response.eager[0].secure_url) ? response.eager[0].secure_url : response.secure_url.split('upload/').join('upload/c_scale,w_150/');
+        const imgThumbnail = (response.eager && response.eager[0].secure_url) ? response.eager[0].secure_url : response.secure_url.split('upload/').join('upload/c_scale,w_150/');
 
         const token = this.getToken();
         this.http.post<any>(this._url + 'categories', {
           name: category.name,
           picture: {
             url: response.secure_url,
-            thumbnail: img_thumbnail
+            thumbnail: imgThumbnail
           }
         },
         {
@@ -151,14 +151,14 @@ export class DashboardServService {
         console.log('cloudy', response);
 
         // tslint:disable-next-line: max-line-length
-        const img_thumbnail = (response.eager && response.eager[0].secure_url) ? response.eager[0].secure_url : response.secure_url.split('upload/').join('upload/c_scale,w_150/');
+        const imgThumbnail = (response.eager && response.eager[0].secure_url) ? response.eager[0].secure_url : response.secure_url.split('upload/').join('upload/c_scale,w_150/');
 
         const token = this.getToken();
         this.http.put<any>(this._url + 'categories/' + category.id, {
           name: category.name,
           picture: [{
             url: response.secure_url,
-            thumbnail: img_thumbnail
+            thumbnail: imgThumbnail
           }]
         },
         {
@@ -180,6 +180,29 @@ export class DashboardServService {
           }
         );
       });
+    });
+  }
+
+  checkIfCategoryhasProducts(id) {
+    return new Promise(resolve => {
+      this.http.get<any>(this._url + 'categories/' + id + '/products', {
+        params: new HttpParams().set('page', '1')
+      }).subscribe(
+        res => {
+          console.log(res);
+          if (res.status === 'success') {
+            resolve(res.data);
+          }
+        },
+        (err: HttpErrorResponse) => {
+          console.log(err);
+          if (err.status === 401) {
+            this.removeToken();
+            // route guard handles the redirection
+            this.backToLogin();
+          }
+        }
+      );
     });
   }
 
@@ -347,7 +370,8 @@ export class DashboardServService {
         const response = resp as any;
         console.log('cloudy', response);
 
-        const img_thumbnail = (response.eager && response.eager[0].secure_url) ? response.eager[0].secure_url : response.secure_url.split('upload/').join('upload/c_scale,w_150/');
+        // tslint:disable-next-line: max-line-length
+        const imgThumbnail = (response.eager && response.eager[0].secure_url) ? response.eager[0].secure_url : response.secure_url.split('upload/').join('upload/c_scale,w_150/');
 
         const token = this.getToken();
         this.http.post<any>(this._url + 'products', {
@@ -360,7 +384,7 @@ export class DashboardServService {
           image: {
             url: response.secure_url,
             title: response.public_id,
-            thumbnail: img_thumbnail
+            thumbnail: imgThumbnail
           },
           quantity: product.quantity,
           tags: product.formTags
@@ -396,7 +420,8 @@ export class DashboardServService {
         const response = resp as any;
         console.log('cloudy', response);
 
-        const img_thumbnail = (response.eager && response.eager[0].secure_url) ? response.eager[0].secure_url : response.secure_url.split('upload/').join('upload/c_scale,w_150/');
+        // tslint:disable-next-line: max-line-length
+        const imgThumbnail = (response.eager && response.eager[0].secure_url) ? response.eager[0].secure_url : response.secure_url.split('upload/').join('upload/c_scale,w_150/');
 
         const token = this.getToken();
         this.http.put<any>(this._url + 'products/' + product.id, {
@@ -408,8 +433,7 @@ export class DashboardServService {
           discount: Math.floor(+product.discount * 100),
           image: {
             url: response.secure_url,
-            title: response.public_id,
-            thumbnail: img_thumbnail
+            thumbnail: imgThumbnail
           },
           quantity: product.quantity,
           tags: product.formTags
@@ -429,6 +453,36 @@ export class DashboardServService {
           }
         );
       });
+    });
+  }
+
+  updateProductCategory(product: IProduct, newCategoryId: number) {
+    return new Promise(resolve => {
+      const token = this.getToken();
+      this.http.put<any>(this._url + 'products/' + product.id, {
+        name: product.name,
+        category_id: newCategoryId,
+        description: product.description,
+        excerpts: product.excerpt,
+        cost: product.cost,
+        discount: +product.discount.substring(0, product.discount.length - 1),
+        quantity: product.quantity ? product.quantity : 0,
+        tags: product.formTags
+      },
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      })
+      .subscribe(
+        res => {
+          console.log(res);
+          if (res.status === 'success') {
+            resolve(res);
+          }
+        },
+        (err: HttpErrorResponse) => {
+          console.log(err.error);
+        }
+      );
     });
   }
 

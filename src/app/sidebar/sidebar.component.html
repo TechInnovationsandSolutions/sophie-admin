@@ -1,12 +1,12 @@
 <nav class="col-xs-12 d-md-block bg-dark sidebar py-3 px-2">
     <div class="sidebar-sticky">
       <ul class="nav flex-column">
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" [routerLink]='["/dashboard"]' routerLinkActive="active">
             <i class="fas fa-home"></i>
             Dashboard <span class="sr-only">(current)</span>
           </a>
-        </li>
+        </li> -->
         <li class="nav-item">
             <a class="nav-link" [routerLink]='["/orders"]' routerLinkActive="active">
               <i class="fas fa-file-alt"></i>
@@ -37,16 +37,22 @@
             Customers
           </a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" [routerLink]='["/transactions"]' routerLinkActive="active">
             <i class="fas fa-cash-register"></i>
             Transactions
           </a>
-        </li>
-        <li class="nav-item">
+        </li> -->
+        <!-- <li class="nav-item">
           <a class="nav-link" [routerLink]='["/reviews"]' routerLinkActive="active">
             <i class="fas fa-comment-alt"></i>
             Reviews
+          </a>
+        </li> -->
+        <li class="nav-item logout" (click)="logout()">
+          <a class="btn btn-danger text-white col-sm-12 text-center" role="button">
+            <i class="fas fa-power-off"></i>
+            Log out
           </a>
         </li>
       </ul>

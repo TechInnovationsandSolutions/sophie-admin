@@ -1,8 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
 import { DashboardServService, ITag } from 'src/app/shared';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-create-tags',
@@ -11,113 +12,104 @@ import { DashboardServService, ITag } from 'src/app/shared';
 })
 export class CreateTagsComponent implements OnInit {
 
-  constructor(private fb:FormBuilder, private cd: ChangeDetectorRef, private route:ActivatedRoute, private serv:DashboardServService) { }
+  constructor(private fb: FormBuilder, private cd: ChangeDetectorRef, private route: ActivatedRoute, private serv: DashboardServService) { }
 
   tagForm = this.fb.group({
-    name:['', Validators.required],
+    name: ['', Validators.required],
     id: [''],
-  })
-
-  isCreate:boolean =  true;
+  });
+  showPreloader = true;
+  isCreate =  true;
+  @BlockUI() blockUI: NgBlockUI;
 
   ngOnInit() {
-    // if(this.route.snapshot.params.fn == 'edit' && this.route.snapshot.queryParams.category){
-    //   this.serv.getTag(this.route.snapshot.queryParams.tag.toString()).then(res=>{
-    //     const theTag = <ITag>res;
-    //     this.tagForm.patchValue({
-    //       name: theTag.name,
-    //     });
-
-    //     //  console.log(this.tagForm.value, this.tagForm.valid);
-
-    //     this.isCreate = false;
-    //   }, err=>console.error(err));
-    // }
-
-    if(this.route.snapshot.params.fn == 'edit' && this.serv._tag){
-      const theTag:ITag = this.serv._tag;
+    if (this.route.snapshot.params.fn === 'edit' && this.serv._tag) {
+      const theTag: ITag = this.serv._tag;
       this.serv._tag = null;
 
       this.tagForm.patchValue({
         name: theTag.name,
       });
       this.isCreate = false;
+      this.showPreloader = false;
+    } else if (this.route.snapshot.params.fn === 'add') {
+      this.showPreloader = false;
     }
   }
 
-  
-  createNewTag(tag:ITag){
+
+  createNewTag(tag: ITag) {
     Swal.fire({
       title: 'Confirmation',
-      text: "You want to create a new tag by name - " + tag.name + "?",
+      text: 'You want to create a new tag by name - ' + tag.name + '?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, Create!',
       cancelButtonText: 'No, cancel!',
     }).then((result) => {
       if (result.value) {
-        this.serv.createTag(tag.name).then(res=>console.log(res)).then(()=>{
+        this.blockUI.start('Creating new tag - ' + tag.name);
+        this.serv.createTag(tag.name).then(res => {
+          this.blockUI.stop();
           Swal.fire(
             'Created!',
-            'tag '+ tag.name + 'has been successfully created.',
+            'tag ' + tag.name + 'has been successfully created.',
             'success'
-          ).then(()=>location.reload())
-        }).catch(err=>Swal.fire({
+          ).then(() => location.reload());
+        }).catch(err => Swal.fire({
           title: 'Error',
           icon: 'error',
-          text:err
-        }))
+          text: err
+        }));
       } else if (
-        /* Read more about handling dismissals below */
         result.dismiss === Swal.DismissReason.cancel
       ) {
         Swal.fire(
           'Cancelled',
           'operation aborted',
           'info'
-        )
+        );
       }
-    })
+    });
   }
 
-  updateNewTag(tag:ITag){
+  updateNewTag(tag: ITag) {
     Swal.fire({
       title: 'Confirmation',
-      text: "You want to update the details of " + tag.name + "?",
+      text: 'You want to update the details of ' + tag.name + '?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, Update!',
       cancelButtonText: 'No, cancel!',
     }).then((result) => {
       if (result.value) {
-        this.serv.updateTag(tag.name).then(res=>console.log(res)).then(()=>{
+        this.blockUI.start('Updating tag - ' + tag.name);
+        this.serv.updateTag(tag.name).then(res => {
+          this.blockUI.stop();
+
           Swal.fire(
             'Updated!',
-            'tag '+ tag.name + 'has been successfully update.',
+            'tag ' + tag.name + 'has been successfully update.',
             'success'
-          ).then(()=>location.reload())
-        }).catch(err=>Swal.fire({
+          ).then(() => location.reload());
+        }).catch(err => Swal.fire({
           title: 'Error',
           icon: 'error',
-          text:err
-        }))
+          text: err
+        }));
       } else if (
-        /* Read more about handling dismissals below */
         result.dismiss === Swal.DismissReason.cancel
       ) {
         Swal.fire(
           'Cancelled',
           'operation aborted',
           'info'
-        )
+        );
       }
-    })
+    });
   }
 
-  onSubmit(formValue){
-    // e.preventDefault();
-    // console.log(this.swal)
-
+  onSubmit(formValue) {
     this.isCreate ? this.createNewTag(formValue) : this.updateNewTag(formValue);
   }
 }

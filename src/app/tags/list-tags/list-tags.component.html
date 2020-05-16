@@ -1,58 +1,83 @@
-<div>
+<div *ngIf="!showPreloader">
+  <div class="col-sm-12 px-0 d-flex flex-wrap px-0 py-2 mb-2 col-sm-12 sticky">
+    <div *ngIf="selectedCheckbox.length" class="btn-bulk-wrapper mr-0 ml-auto">
+      <button class="btn btn-bulk-fn bulk-unselect ml-auto mr-2" (click)="unCheckChecked()" title="Delete all checked tags">
+        Unselect
+      </button>
+      <button *ngIf="selectedCheckbox.length > 1" class="btn btn-bulk-fn bulk-delete ml-auto mr-2" (click)="bulkDelete()" title="Delete all checked tags">
+        Delete Selected
+      </button>
+    </div>
+  </div>
     <div *ngIf="tags.length">
-        <table id="tag-table" class="table table-borderless row-border hover">
-          <caption>List of tags</caption>
-          <thead class="thead-dark">
-            <tr>
-              <th>S/N</th>
-              <th>Name</th>
-              <th></th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let tag of tags; let i = index">
-              <td data-field="id">
-                <span class="d-flex flex-wrap p-2">
-                  <span class="m-auto">
-                    {{ i + 1 }}
-                  </span>
-                </span>
-              </td>
-              <td data-field="name">
-                  <div class="d-flex flex-wrap p-2">
-                      <p class="tag-name text-capitalize px-2 my-auto">
-                          {{ tag.name }}
-                      </p>
+      <table datatable id="tag-table" class="table table-borderless row-border hover">
+        <caption>List of tags</caption>
+        <thead class="thead-dark">
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tag of tags; let i = index">
+            <td data-field="id">
+              <span class="d-flex flex-wrap p-2">
+                <span class="m-auto">
+                  <div>
+                    <label for="tag-checkbox" class="sr-only">
+                      check for bulk actions like delete
+                    </label>
+                    <input type="checkbox" class="tag-chb" name="tag-checkbox" [id]="'tag-checkbox-' + tag.id" (change) ="onTagChecked(tag, $event)">
                   </div>
-              </td>
-              <td data-field="edit">
-                <div class="d-flex p-2">
-                  <button class="btn m-auto btn-tag-edit" (click)="editTag(this.tag)" title="Click to Edit tag details">
-                    <i class="fas fa-pencil-alt"></i>
-                  </button>
+                </span>
+              </span>
+            </td>
+            <td data-field="name">
+                <div class="d-flex flex-wrap p-2">
+                    <p class="tag-name text-capitalize px-2 my-auto">
+                        {{ tag.name }}
+                    </p>
                 </div>
-              </td>
-              <td data-field="delete">
-                <div class="d-flex p-2">
-                  <button class="btn m-auto btn-tag-delete" (click)="deleteTag(this.tag)" title="Click to delete tag details">
-                    <i class="fas fa-trash-alt"></i>
-                  </button>
-                </div>
-              </td>
-              <td data-field="see_products">
-                <div class="d-flex p-2">
-                  <button class="btn m-auto btn-tag-product_list" (click)="productTagList(this.tag)" title="Click to see tag product list">
-                    <i class="fas fa-list"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+            </td>
+            <td data-field="edit">
+              <div class="d-flex p-2">
+                <button class="btn m-auto btn-item-edit" (click)="editTag(this.tag)" title="Click to Edit tag details">
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
+              </div>
+            </td>
+            <td data-field="delete">
+              <div class="d-flex p-2">
+                <button class="btn m-auto btn-item-delete" (click)="deleteTag(this.tag)" title="Click to delete tag details">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            </td>
+            <td data-field="see_products">
+              <div class="d-flex p-2">
+                <button class="btn m-auto btn-item-product_list" (click)="productTagList(this.tag)" title="Click to see tag product list">
+                  <i class="fas fa-list"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div *ngIf="!tags.length">
-        <p>No tag Yet. Click  <strong>Add tag</strong> to create tags.</p>
+      <p>No tag Yet. Click  <strong>Add tag</strong> to create tags.</p>
     </div>
+</div>
+<div class="preloader col-md-12 py-5 px-2" *ngIf="showPreloader">
+  <div class="d-flex flex-wrap mx-auto my-2">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: rgb(255, 255, 255); display: block; shape-rendering: auto;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+      <circle cx="50" cy="50" fill="none" stroke="#28A745" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138" transform="rotate(340.749 50 50)">
+        <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+      </circle>
+        <!-- [ldio] generated by https://loading.io/ -->
+    </svg>
+  </div>
 </div>

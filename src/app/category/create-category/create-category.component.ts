@@ -1,8 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import Swal from 'sweetalert2'
-import { ActivatedRoute } from '@angular/router';
+import Swal from 'sweetalert2';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardServService, ICategory } from 'src/app/shared';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-create-category',
@@ -10,22 +11,30 @@ import { DashboardServService, ICategory } from 'src/app/shared';
   styleUrls: ['./create-category.component.scss']
 })
 export class CreateCategoryComponent implements OnInit {
-  
-  constructor(private fb:FormBuilder, private cd: ChangeDetectorRef, private route:ActivatedRoute, private serv:DashboardServService) { }
 
   categoryForm = this.fb.group({
-    name:['', Validators.required],
+    name: ['', Validators.required],
     image: ['', Validators.required],
     id: [''],
-  })
+  });
 
-  isCreate:boolean =  true;
-  showInputFile:boolean =  true;
+  isCreate =  true;
+  showInputFile =  true;
+  showPreloader = true;
+  @BlockUI() blockUI: NgBlockUI;
+
+  constructor(
+    private fb: FormBuilder,
+    private cd: ChangeDetectorRef,
+    private route: ActivatedRoute,
+    private serv: DashboardServService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
-    if(this.route.snapshot.params.fn == 'edit' && this.route.snapshot.queryParams.category){
-      this.serv.getCatgory(this.route.snapshot.queryParams.category.toString()).then(res=>{
-        const theCategory = <ICategory>res;
+    if (this.route.snapshot.params.fn === 'edit' && this.route.snapshot.queryParams.category) {
+      this.serv.getCatgory(this.route.snapshot.queryParams.category.toString()).then(res => {
+        const theCategory = res as ICategory;
         this.categoryForm.patchValue({
           name: theCategory.name,
           image: theCategory.image,
@@ -33,135 +42,146 @@ export class CreateCategoryComponent implements OnInit {
         });
 
         setTimeout(() => {
-          const imgElem = <HTMLImageElement>document.getElementById('imgPreview');
-          console.log('imhh', imgElem)
+          const imgElem = document.getElementById('imgPreview') as HTMLImageElement;
+          console.log('imhh', imgElem);
           imgElem.src = theCategory.image;
           this.showInputFile = false;
          }, 500);
 
-         console.log(this.categoryForm.value, this.categoryForm.valid)
+        console.log(this.categoryForm.value, this.categoryForm.valid);
 
+        this.showPreloader = false;
         this.isCreate = false;
-      }, err=>console.error(err));
+      }, err => console.error(err));
+    } else if (this.route.snapshot.params.fn === 'add') {
+      this.showPreloader = false;
     }
   }
 
-  getSlug(cat_name:string){
-    return cat_name.split(' ').join('-').toLowerCase();
+  getSlug(catName: string) {
+    return catName.split(' ').join('-').toLowerCase();
   }
 
   onFileChange(event) {
     const reader = new FileReader();
- 
-    if(event.target.files && event.target.files.length) {
+
+    if (event.target.files && event.target.files.length) {
       const [file] = event.target.files;
       reader.readAsDataURL(file);
 
       // console.log('file',file)
       // console.log('reader',reader)
-      console.log('file URL',URL.createObjectURL(file))
-  
+      console.log('file URL', URL.createObjectURL(file));
+
       reader.onload = () => {
         this.categoryForm.patchValue({
           image: reader.result
        });
 
-       console.log('frm', this.categoryForm.value);
+        console.log('frm', this.categoryForm.value);
 
-       setTimeout(() => {
-        const imgElem = <HTMLImageElement>document.getElementById('imgPreview');
-        console.log('imhh', imgElem)
+        setTimeout(() => {
+        const imgElem = document.getElementById('imgPreview') as HTMLImageElement;
+        console.log('imhh', imgElem);
         imgElem.src = URL.createObjectURL(file);
         this.showInputFile = false;
        }, 500);
-      
+
         // need to run CD since file load runs outside of zone
         this.cd.markForCheck();
       };
     }
   }
 
-  removeImg(){
+  removeImg() {
     this.categoryForm.patchValue({
       image: null
     });
 
     this.showInputFile = true;
 
-    <HTMLInputElement><unknown>document.getElementById('imgPreview').setAttribute('value', '')
+    const imgElem = document.getElementById('imgPreview') as HTMLInputElement;
+    imgElem.setAttribute('value', '');
 
-   console.log('frm', this.categoryForm.value);
+    console.log('frm', this.categoryForm.value);
   }
 
-  createNewCategory(category:ICategory){
-    Swal.fire({
-      title: 'Confirmation',
-      text: "You want to create a new Category by name - " + category.name + "?",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, Create!',
-      cancelButtonText: 'No, cancel!',
-    }).then((result) => {
-      if (result.value) {
-        this.serv.createCategory(category).then(res=>console.log(res)).then(()=>{
+  createNewCategory(category: ICategory) {
+    if (this.categoryForm.valid) {
+
+      Swal.fire({
+        title: 'Confirmation',
+        text: 'You want to create a new Category by name - ' + category.name + '?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Create!',
+        cancelButtonText: 'No, cancel!',
+      }).then((result) => {
+        if (result.value) {
+          this.blockUI.start('Creating new Category - ' + category.name);
+          this.serv.createCategory(category).then(res => {
+            this.blockUI.stop();
+
+            Swal.fire(
+              'Created!',
+              'Category ' + category.name + ' has been successfully created.',
+              'success'
+            ).then(() => this.router.navigate(['/category']));
+          }).catch(err => Swal.fire({
+            title: 'Error',
+            icon: 'error',
+            text: err
+          }));
+        } else if (
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
           Swal.fire(
-            'Created!',
-            'Category '+ category.name + 'has been successfully created.',
-            'success'
-          ).then(()=>location.reload())
-        }).catch(err=>Swal.fire({
-          title: 'Error',
-          icon: 'error',
-          text:err
-        }))
-      } else if (
-        /* Read more about handling dismissals below */
-        result.dismiss === Swal.DismissReason.cancel
-      ) {
-        Swal.fire(
-          'Cancelled',
-          'operation aborted',
-          'info'
-        )
-      }
-    })
+            'Cancelled',
+            'operation aborted',
+            'info'
+          );
+        }
+      });
+    }
   }
 
-  updateNewCategory(category:ICategory){
+  updateNewCategory(category: ICategory) {
     Swal.fire({
       title: 'Confirmation',
-      text: "You want to update the details of " + category.name + "?",
+      text: 'You want to update the details of ' + category.name + '?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, Update!',
       cancelButtonText: 'No, cancel!',
     }).then((result) => {
       if (result.value) {
-        this.serv.updateCategory(category).then(res=>console.log(res)).then(()=>{
+        this.blockUI.start('Updating Category ' + category.name);
+        this.serv.updateCategory(category).then(res => {
+          this.blockUI.stop();
+
           Swal.fire(
             'Updated!',
-            'Category '+ category.name + 'has been successfully update.',
+            'Category ' + category.name + 'has been successfully update.',
             'success'
-          ).then(()=>location.reload())
-        }).catch(err=>Swal.fire({
+          ).then(() => this.router.navigate(['/category']));
+        }).catch(err => Swal.fire({
           title: 'Error',
           icon: 'error',
-          text:err
-        }))
+          text: err
+        }));
       } else if (
-        /* Read more about handling dismissals below */
         result.dismiss === Swal.DismissReason.cancel
       ) {
         Swal.fire(
           'Cancelled',
           'operation aborted',
           'info'
-        )
+        );
       }
-    })
+    });
   }
 
-  onSubmit(formValue){
+  onSubmit(formValue) {
     // e.preventDefault();
     // console.log(this.swal)
     formValue.slug = this.getSlug(formValue.name);

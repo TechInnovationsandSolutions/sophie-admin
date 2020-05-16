@@ -1,68 +1,74 @@
 <app-app-layout>
-    <p app-title>List of Users</p>
-    <div app-body>
-        <div class="d-flex flex-wrap col-sm-12 col-md-10 col-lg-10 mx-auto container">
-            <div class="col-sm-12 py-2">
-                <table class="table" id="customer-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>email</th>
-                            <th>phone number</th>
-                            <th>address</th>
-                            <th>registration date</th>
-                            <th>orders</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let customer of customers">
-                            <td data-field="customer-name">
-                                <span class="text-capitalize">
-                                    <span>
-                                        {{ customer.first_name }}
-                                    </span> <span>
-                                        {{ customer.last_name }}
-                                    </span>
-                                </span>
-                            </td>
-                            <td data-field="customer-email">
-                                <span>
-                                    {{ customer.email }} <span *ngIf="customer.email_verified_at" class="text-success" title="email is verified">
-                                        <i class="fas fa-check-circle"></i>
-                                    </span>
-                                </span>
-                                </td>
-                            <td data-field="customer-phone_number">
-                                <span>
-                                    {{ customer.phone || '-' }}
-                                </span>
-                            </td>
-                            <td data-field="customer-address">
-                                <span>
-                                   {{ customer.address  || '-' }} 
-                                </span>
-                                </td>
-                            <td data-field="customer-registration_date">
-                                <span>
-                                    {{ customer.created_at | date}}
-                                </span>
-                            </td>
-                            <td data-field="customer-orders">
-                                <button class="btn btn-customer-product_list" title="see all orders by this customer" (click)="getCustomerOrders(customer)">
-                                    <i class="fas fa-th-list"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr *ngIf="!customers.length">
-                            <div class="d-flex p-2 w-100">
-                                <p class="mx-auto text-center text-capitalize">
-                                    No customer
-                                </p>
-                            </div>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <p app-title>List of Customers</p>
+    <div class="col-sm-12 p-0" app-body>
+      <div *ngIf="!showPreloader" class="d-flex flex-wrap col-sm-12 mx-auto container">
+        <div class="col-sm-12 py-2">
+            <table datatable class="table" id="customer-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>email</th>
+                  <th>phone number</th>
+                  <th>registration date</th>
+                  <th>orders</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let customer of customers">
+                  <td data-field="customer-name">
+                    <a [routerLink]="['/customer', customer.id]" class="text-capitalize">
+                      <span class="text-capitalize">
+                        <span>
+                          {{ customer.first_name }}
+                        </span> <span>
+                          {{ customer.last_name }}
+                        </span>
+                      </span>
+                    </a>
+                  </td>
+                  <td data-field="customer-email">
+                    <span>
+                      {{ customer.email }} <span *ngIf="customer.email_verified_at" class="text-success" title="email is verified">
+                          <i class="fas fa-check-circle"></i>
+                      </span>
+                    </span>
+                  </td>
+                  <td data-field="customer-phone_number">
+                    <span>
+                      {{ customer.phone || '-' }}
+                    </span>
+                  </td>
+                  <td data-field="customer-registration_date">
+                    <span>
+                      {{ customer.created_at | date}}
+                    </span>
+                  </td>
+                  <td data-field="customer-orders">
+                    <a [routerLink]="['/customer', customer.id]" role="button" class="btn btn-customer-product_list" title="see all orders by this customer">
+                      <i class="fas fa-th-list"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr *ngIf="!customers.length">
+                  <div class="d-flex p-2 w-100">
+                    <p class="mx-auto text-center text-capitalize">
+                      No customer
+                    </p>
+                  </div>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+      <div class="preloader col-md-12 py-5 px-2" *ngIf="showPreloader">
+        <div class="d-flex flex-wrap mx-auto my-2">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: rgb(255, 255, 255); display: block; shape-rendering: auto;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+            <circle cx="50" cy="50" fill="none" stroke="#28A745" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138" transform="rotate(340.749 50 50)">
+              <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+            </circle>
+              <!-- [ldio] generated by https://loading.io/ -->
+          </svg>
         </div>
+      </div>
     </div>
 </app-app-layout>

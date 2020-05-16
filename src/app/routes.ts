@@ -1,21 +1,22 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
+// import { DashboardComponent } from './dashboard/dashboard.component';
 import { CategoryComponent } from './category/category.component';
-import { OrdersComponent } from './orders/orders.component';
 import { CustomersComponent } from './customers/customers.component';
-import { TransactionsComponent } from './transactions/transactions.component';
-import { ReviewsComponent } from './reviews/reviews.component';
+// import { TransactionsComponent } from './transactions/transactions.component';
+// import { ReviewsComponent } from './reviews/reviews.component';
 import { ProductsComponent } from './products/products.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuardGuard } from './shared';
 import { TagsComponent } from './tags/tags.component';
+import { AllOrdersComponent } from './all-orders/all-orders.component';
+import { CustomerPageComponent } from './customer-page/customer-page.component';
 
-export const appRoutes:Routes =[
-    {
-        path: 'dashboard',
-        component: DashboardComponent,
-        canActivate: [AuthGuardGuard]
-    },
+export const appRoutes: Routes = [
+    // {
+    //     path: 'dashboard',
+    //     component: DashboardComponent,
+    //     canActivate: [AuthGuardGuard]
+    // },
     {
         path: 'categories',
         component: CategoryComponent,
@@ -31,25 +32,35 @@ export const appRoutes:Routes =[
         component: ProductsComponent
     },
     {
-        path:'orders',
-        component: OrdersComponent,
+        path: 'orders',
+        component: AllOrdersComponent,
         canActivate: [AuthGuardGuard]
+    },
+    {
+      path: 'customer/:id',
+      component: CustomerPageComponent,
+      canActivate: [AuthGuardGuard]
+    },
+    {
+      path: 'customer',
+      redirectTo: 'customers',
+      pathMatch: 'full'
     },
     {
         path: 'customers',
         component: CustomersComponent,
         canActivate: [AuthGuardGuard]
     },
-    {
-        path: 'transactions',
-        component: TransactionsComponent,
-        canActivate: [AuthGuardGuard]
-    },
-    {
-        path: 'reviews',
-        component: ReviewsComponent,
-        canActivate: [AuthGuardGuard]
-    },
+    // {
+    //     path: 'transactions',
+    //     component: TransactionsComponent,
+    //     canActivate: [AuthGuardGuard]
+    // },
+    // {
+    //     path: 'reviews',
+    //     component: ReviewsComponent,
+    //     canActivate: [AuthGuardGuard]
+    // },
     {
         path: 'products/:fn',
         component: ProductsComponent,
@@ -90,32 +101,37 @@ export const appRoutes:Routes =[
     },
     {
         path: '',
-        redirectTo:'dashboard',
+        redirectTo: 'orders',
         pathMatch: 'full'
     },
     {
         path: 'category',
-        redirectTo:'categories',
+        redirectTo: 'categories',
         pathMatch: 'full'
     },
     {
         path: 'categories/add',
-        redirectTo:'categories',
+        redirectTo: 'categories',
         pathMatch: 'full'
     },
     {
         path: 'categories/edit',
-        redirectTo:'categories',
+        redirectTo: 'categories',
         pathMatch: 'full'
     },
     {
         path: 'category/:id',
-        redirectTo:'categories',
+        redirectTo: 'categories',
         pathMatch: 'full'
     },
     {
         path: 'categories/:id',
-        redirectTo:'categories',
+        redirectTo: 'categories',
         pathMatch: 'full'
+    },
+    {
+      path: '**',
+      redirectTo: 'orders',
+      pathMatch: 'full'
     }
-]
+];

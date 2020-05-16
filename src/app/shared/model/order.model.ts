@@ -29,7 +29,7 @@ export interface IOrderItem {
 export interface IOrder {
   id: number;
   address: ICustomerAddress;
-  cost: string;
+  cost: number;
   created_at: string;
   deleted_at: string;
   items: IOrderItem[];

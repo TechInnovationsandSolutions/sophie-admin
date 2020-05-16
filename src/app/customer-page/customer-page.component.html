@@ -3,7 +3,49 @@
   <div class="col-sm-12 p-0" app-body>
     <div *ngIf="!showPreloader" class="d-flex flex-wrap col-sm-12 mx-auto container">
       <div class="col-sm-12 py-2">
-        <p>customer-page works!</p>
+        <div class="col-md-12 d-flex flex-wrap px-0">
+          <div class="col-md-3">
+            <div class="img-container">
+              <p class="m-auto">
+                {{customer.first_name[0] + customer.last_name[0] | uppercase}}
+              </p>
+            </div>
+            <p class="col-sm-12 text-center">
+              <span class="first-name text-capitalize">
+                {{customer.first_name}}
+              </span>
+              <span class="last-name text-capitalize">
+                {{customer.last_name}}
+              </span>
+            </p>
+          </div>
+          <div class="col-md-9">
+            <div class="col-sm-12 px-0">
+              <p class="d-flex flex-wrap col-sm-12" data-type="email">
+                <span class="user-detail__prefix">
+                  <i class="far fa-envelope"></i>
+                </span>
+                <span class="span_email">
+                  {{customer.email}}
+                </span>
+                <span *ngIf="customer.email_verified_at" class="text-success" title="email is verified">
+                  <i class="fas fa-check-circle"></i>
+                </span>
+              </p>
+            </div>
+            <div class="col-sm-12 px-0">
+              <p class="d-flex flex-wrap col-sm-12" data-type="phone">
+                <span class="user-detail__prefix">
+                  <i class="fas fa-mobile-alt"></i>
+                </span>
+                <span class="span_phone">
+                  {{customer.phone}}
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <hr class="col-md-12 px-0">
         <app-order-list [ordersInp]="customerOrders" [isUserOrder]=true></app-order-list>
       </div>
     </div>

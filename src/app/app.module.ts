@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { DataTablesModule } from 'angular-datatables';
 import { BlockUIModule } from 'ng-block-ui';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ChartsModule } from 'ng2-charts';
 
 import { AppComponent } from './app.component';
 import { CommonModule } from '@angular/common';
@@ -132,6 +133,7 @@ const matModule = [
     DataTablesModule,
     BrowserAnimationsModule,
     BlockUIModule.forRoot(),
+    ChartsModule,
     ...matModule
   ],
   declarations: [

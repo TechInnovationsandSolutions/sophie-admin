@@ -1,10 +1,5 @@
 @import './../app.component.scss';
 
-.btn-set-fn.active {
-  background-color: cadetblue;
-  color: red;
-}
-
 .orders {
   .order {
     box-shadow: 1px 1px 2px rgba($color: #000000, $alpha: 0.25), -1px -1px 2px rgba($color: #000000, $alpha: 0.25);
@@ -84,6 +79,61 @@
           color: $primary;
         }
       }
+    }
+  }
+
+  .set-fn-sect {
+    .set-fn-title {
+      font-weight: bold;
+      margin: auto 0;
+    }
+
+    .btn-set-fn_container {
+      $br: 10px;
+      box-shadow: 2px 2px 3px rgba(0,0,0,0.25);
+      border-radius: $br;
+
+      .btn-set-fn {
+        border: 0;
+        background-color: white;
+        color: black;
+        font-size: 12px;
+        transition: 0.3s ease-in;
+        padding: 0.375em 1em;
+        outline: none;
+        text-transform: capitalize;
+
+        &:first-of-type {
+          border-top-left-radius: $br;
+          border-bottom-left-radius: $br;
+        }
+
+        &:last-of-type {
+          border-top-right-radius: $br;
+          border-bottom-right-radius: $br;
+        }
+
+        &.active {
+          background-color: $success;
+          color: white;
+        }
+
+        &:hover {
+          box-shadow: inset 0 -2px 1px $success;
+        }
+      }
+    }
+  }
+
+  .criteria-sect {
+    font-size: 1.2em;
+
+    .criteria {
+      padding: 0.375em 1em;
+      background-color: $success;
+      color: white;
+      text-transform: capitalize;
+      margin: auto;
     }
   }
 }

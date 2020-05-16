@@ -1,4 +1,18 @@
 <div class="col-sm-12 py-2">
+  <div class="col-sm-12 d-flex flex-wrap py-2 text-center">
+    <h3 class="col-sm-6">
+      Sum Total Amount:<br>
+      <span class="text-success p-2">
+        {{sumTotalAmt | currency:"NGN":"₦"}}
+      </span>
+    </h3>
+    <h3 class="col-sm-6">
+      Overall Orders Number:<br>
+      <span class="p-2">
+        {{totalOrders}}
+      </span>
+    </h3>
+  </div>
   <div class="col-sm-12 d-flex flex-wrap py-2 orders" *ngIf="orderSorted.length">
     <div class="col-sm-12 py-2 d-flex flex-wrap set-fn-sect">
       <div class="col-sm-12 py-2">
@@ -18,7 +32,7 @@
             Group By:
           </p>
         </div>
-        <div class="col-md-10 px-0 d-flex flex-wrap">
+        <div class="btn-set-fn_container px-0 d-flex flex-wrap">
           <button class="btn-set-fn btn-set-fn__groupby" [class.active]='groupBy === "day"' (click)="setGroupBy('day')">
             day
           </button>
@@ -48,7 +62,7 @@
             Filter By:
           </p>
         </div>
-        <div class="col-md-10 px-0 d-flex flex-wrap">
+        <div class="btn-set-fn_container px-0 d-flex flex-wrap">
           <button class="btn-set-fn btn-set-fn__filterby" [class.active]='!filterBy || filterBy === "all"' (click)="setFilterBy('all')">
             all
           </button>
@@ -66,7 +80,7 @@
             Sort By:
           </p>
         </div>
-        <div class="col-md-10 px-0 d-flex flex-wrap">
+        <div class="btn-set-fn_container px-0 d-flex flex-wrap">
           <button class="btn-set-fn btn-set-fn__filterby" [class.active]='sortBy === "asc"' (click)="setSortBy('asc')">
             asc
           </button>
@@ -75,6 +89,14 @@
           </button>
         </div>
       </div>
+    </div>
+    <div class="col-sm-12 py-2">
+      <canvas baseChart
+        [labels]="chartLabels"
+        [options]="chartOptions"
+        [chartType]="chartType"
+        [datasets]="chartData">
+      </canvas>
     </div>
     <div class="col-sm-12 d-flex flex-wrap py-3 my-2 mb-4 mx-auto px-0" *ngFor="let sortOrder of orderSorted">
       <div *ngIf="showGroupLabel" class="col-sm-12 px-0 d-flex flex-wrap criteria-sect text-center">

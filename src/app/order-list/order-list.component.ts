@@ -23,11 +23,27 @@ export class OrderListComponent implements OnInit {
   sortBy: string;
   searchhTerm: string;
 
+  sumTotalAmt = 0;
+  totalOrders = 0;
+
   theOrders: IOrder[] = [];
   ordersWithDateStamp: IOrderDatestamp[] = [];
   orderSorted: IOrderSort[] = [];
   showPreloader = true;
   isNotPersonalOrder = true;
+
+  chartOptions = {
+    scaleShowVerticalLines: false,
+    responsive: true
+  };
+  chartLabels = [];
+  chartType = 'line';
+  chartData = [
+    {
+      data: [],
+      label: ''
+    }
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -72,6 +88,8 @@ export class OrderListComponent implements OnInit {
         })
         .then((res) => {
           // Convert to data to have day, year, etc stamp
+          this.totalOrders = res.length;
+          this.sumTotalAmt = this.sumTotal(res);
           this.ordersWithDateStamp = res.map(o => {
             const orderDateStamp: IOrderDatestamp = {
               order: o,
@@ -88,6 +106,7 @@ export class OrderListComponent implements OnInit {
         .then(() => {
           // Group by
           this.groupByFn();
+          this.populateChart();
         });
       }
     });
@@ -191,14 +210,14 @@ export class OrderListComponent implements OnInit {
       case 'week':
       case 'month':
       case 'year':
-        this.groupByPeriod(this.groupBy);
+        this.orderSorted = this.groupByPeriod(this.groupBy);
         break;
       case 'firstNameLetter':
-        this.groupByUserFirstLetter();
+        this.orderSorted = this.groupByUserFirstLetter();
         break;
       case 'users':
         this.groupedByUsername = true;
-        this.groupByUser();
+        this.orderSorted = this.groupByUser();
         break;
       default:
         this.showGroupLabel = false;
@@ -233,7 +252,7 @@ export class OrderListComponent implements OnInit {
       });
       yy.push(
         new Object({
-          criteria: alpha,
+          criteria: period + ' ' + alpha,
           orders : ee,
           totAmt: sumOfItems
         })
@@ -241,7 +260,7 @@ export class OrderListComponent implements OnInit {
       // console.log(yy);
     });
 
-    this.orderSorted = yy as IOrderSort[];
+    return yy as IOrderSort[];
   }
 
   groupByUser() {
@@ -268,7 +287,7 @@ export class OrderListComponent implements OnInit {
       // console.log(yy);
     });
 
-    this.orderSorted = yy as IOrderSort[];
+    return yy as IOrderSort[];
   }
 
   groupByUserFirstLetter() {
@@ -287,7 +306,7 @@ export class OrderListComponent implements OnInit {
       });
       yy.push(
         new Object({
-          criteria: alpha,
+          criteria: (alpha as string).toUpperCase(),
           orders : ee,
           totAmt: sumOfItems
         })
@@ -295,7 +314,7 @@ export class OrderListComponent implements OnInit {
       // console.log(yy);
     });
 
-    this.orderSorted = yy as IOrderSort[];
+    return yy as IOrderSort[];
   }
 
   setGroupBy(val: string) {
@@ -333,6 +352,38 @@ export class OrderListComponent implements OnInit {
         },
         queryParamsHandling: 'merge'
       });
+    }
+  }
+
+  sumTotal(arr: IOrder[]) {
+    let totAmt = 0;
+    arr.map(a => {
+      totAmt += +a.cost;
+    });
+
+    return totAmt;
+  }
+
+  populateChart() {
+    console.log('ee', this.orderSorted);
+    if (this.orderSorted.length) {
+      let ords = this.orderSorted.slice(0);
+      if (this.orderSorted.length === 1 && !this.orderSorted[0].criteria) {
+        ords = this.groupByPeriod('day');
+      }
+      const criteria = ords.map(o => o.criteria);
+      const val = ords.map(o => o.totAmt);
+
+      this.chartLabels = criteria.length ? criteria : ['orders'];
+      this.chartData = [
+        {
+          data: val,
+          label: this.groupBy ? this.groupBy[0].toUpperCase() + this.groupBy.substring(1) : ''
+        }
+      ];
+
+      console.log('this.chartLabels', this.chartLabels);
+      console.log('this.chartData', this.chartData);
     }
   }
 }

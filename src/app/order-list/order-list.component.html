@@ -31,10 +31,10 @@
           <button class="btn-set-fn btn-set-fn__groupby" [class.active]='groupBy === "year"' (click)="setGroupBy('year')">
             year
           </button>
-          <button class="btn-set-fn btn-set-fn__groupby" [class.active]='groupBy === "users"' (click)="setGroupBy('users')">
+          <button *ngIf="isNotPersonalOrder" class="btn-set-fn btn-set-fn__groupby" [class.active]='groupBy === "users"' (click)="setGroupBy('users')">
             users
           </button>
-          <button class="btn-set-fn btn-set-fn__groupby" [class.active]='groupBy === "firstNameLetter"' (click)="setGroupBy('firstNameLetter')">
+          <button *ngIf="isNotPersonalOrder" class="btn-set-fn btn-set-fn__groupby" [class.active]='groupBy === "firstNameLetter"' (click)="setGroupBy('firstNameLetter')">
             First Name Letters
           </button>
           <button class="btn-set-fn btn-set-fn__groupby" [class.active]='!groupBy' (click)="setGroupBy('')">

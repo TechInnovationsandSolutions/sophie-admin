@@ -87,6 +87,7 @@ textarea{
 
 button {
   font-family: 'Lato', sans-serif;
+  outline: none;
 
   &:disabled,
   &[disabled],
@@ -151,6 +152,10 @@ table{
   padding: 1em 2em;
   box-shadow: 2px 2px 4px rgba($color: #000000, $alpha: 0.25), -2px -2px 4px rgba($color: #000000, $alpha: 0.25);
   font-size: 14px;
+
+  button {
+    outline: none;
+  }
 
   .btn-item-edit,.btn-item-delete, .btn-item-product_list, .btn-item-move {
     border-radius: 100%;

@@ -8,7 +8,7 @@
     <fieldset [disabled]="isOnView">
       <div class="form-group">
         <label for="productName">Products Name <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" id="productName" placeholder="eg. Cream" formControlName="productName"
+        <input type="text" class="form-control" id="productName" placeholder="eg. Cream" formControlName="productName" [readOnly]="isOnView"
           required>
       </div>
       <div class="form-group">
@@ -22,12 +22,12 @@
       <div class="form-row">
         <div class="form-group col-md-5">
           <label for="productPrice">Product Price <span class="text-danger">*</span></label>
-          <input type="number" class="form-control" id="productPrice" placeholder="eg. 5,000"
+          <input type="number" [readOnly]="isOnView" class="form-control" id="productPrice" placeholder="eg. 5,000"
             formControlName="productPrice" min="0" required>
         </div>
         <div class="form-group col-md-5">
           <label for="productPromoPrice">Promo Price  <small class="text-danger">Leave as <strong>0</strong> if no promo price</small></label>
-          <input type="number" class="form-control" id="productPromoPrice"
+          <input [readOnly]="isOnView" type="number" class="form-control" id="productPromoPrice"
             placeholder="if no promo price, enter the product price" formControlName="productPromoPrice" min="0" required>
         </div>
         <div class="form-group col-md-2 d-flex flex-wrap">
@@ -42,17 +42,17 @@
       </div>
       <div class="form-group">
         <label for="productDescription">Product Description <span class="text-danger">*</span></label>
-        <textarea class="form-control" id="productDescription" placeholder="Product Description"
+        <textarea [readOnly]="isOnView" class="form-control" id="productDescription" placeholder="Product Description"
           formControlName="productDescription" required></textarea>
       </div>
       <div class="form-group">
         <label for="productExcerpt">Product Excerpt <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" id="productExcerpt" placeholder="" maxlength="75"
+        <input [readOnly]="isOnView" type="text" class="form-control" id="productExcerpt" placeholder="" maxlength="75"
           formControlName="productExcerpt" required>
       </div>
       <div class="form-group">
         <label for="productQuantity">Product Quantity <span class="text-danger">*</span></label>
-        <input type="number" min="0" class="form-control" id="productQuantity" placeholder="eg. 10"
+        <input [readOnly]="isOnView" type="number" min="0" class="form-control" id="productQuantity" placeholder="eg. 10"
           formControlName="productQuantity" required>
       </div>
       <div class="form-group" formArrayName="productTags">

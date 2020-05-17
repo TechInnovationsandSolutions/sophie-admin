@@ -15,12 +15,22 @@ export class CreateProductComponent implements OnInit {
     id: [0],
     productName: ['', Validators.required],
     productImg: ['', Validators.required],
-    productCategory: [''],
-    productPrice: ['0', Validators.required],
-    productPromoPrice: ['0'],
+    productCategory: ['', Validators.required],
+    productPrice: ['0', [
+      Validators.required,
+      Validators.min(0)]
+    ],
+    productPromoPrice: ['0', [
+      Validators.required,
+      Validators.min(0)]
+    ],
     productDescription: ['', Validators.required],
     productExcerpt: ['', Validators.required],
-    productQuantity: ['0', Validators.required],
+    productQuantity: ['0', [
+      Validators.required,
+      Validators.required,
+      Validators.min(0)]
+    ],
     productTags: this.fb.array([], this.validateTagFormArray)
   });
 
@@ -150,6 +160,10 @@ export class CreateProductComponent implements OnInit {
         this.showInputFile = false;
       }
     }, 500);
+
+    // const $0 = document.querySelector('fieldset');
+
+    // $0.querySelectorAll('input').forEach(r => r.setAttribute('readonly','true') );
   }
 
   productDiscount() {

@@ -16,11 +16,11 @@ export class CreateProductComponent implements OnInit {
     productName: ['', Validators.required],
     productImg: ['', Validators.required],
     productCategory: [''],
-    productPrice: ['', Validators.required],
-    productPromoPrice: ['', Validators.required],
+    productPrice: ['0', Validators.required],
+    productPromoPrice: ['0'],
     productDescription: ['', Validators.required],
     productExcerpt: ['', Validators.required],
-    productQuantity: ['', Validators.required],
+    productQuantity: ['0', Validators.required],
     productTags: this.fb.array([], this.validateTagFormArray)
   });
 
@@ -75,11 +75,11 @@ export class CreateProductComponent implements OnInit {
             productName: theProduct.name ? theProduct.name : null,
             productImg: (theProduct.images.length && theProduct.images[0].url) ? theProduct.images[0].url : null,
             productDescription: theProduct.description ? theProduct.description : null,
-            productPrice: theProduct.cost ? theProduct.cost : null,
+            productPrice: theProduct.cost ? theProduct.cost : 0,
             productCategory: (theProduct.category && theProduct.category.name) ? theProduct.category : null,
-            productPromoPrice: theProduct.reduced_cost ? theProduct.reduced_cost : null,
+            productPromoPrice: theProduct.reduced_cost ? theProduct.reduced_cost : 0,
             productExcerpt: theProduct.excerpt ? theProduct.excerpt : null,
-            productQuantity: theProduct.quantity ? theProduct.quantity : null,
+            productQuantity: theProduct.quantity ? theProduct.quantity : 0,
           });
           console.log('product tag', theProduct.tags);
           if (theProduct && theProduct.tags) {
@@ -361,7 +361,7 @@ export class CreateProductComponent implements OnInit {
         ],
         category: formValue.productCategory,
         cost: formValue.productPrice,
-        reduced_cost: formValue.productPromoPrice,
+        reduced_cost: formValue.productPromoPrice ?formValue.productPromoPrice : 0,
         description: formValue.productDescription,
         excerpt: formValue.productExcerpt,
         quantity: formValue.productQuantity,

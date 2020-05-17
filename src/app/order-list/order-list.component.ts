@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { DashboardServService } from '../shared';
 import { IOrder, IOrderDatestamp, IOrderSort } from '../shared/model/order.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-order-list',
@@ -34,6 +34,26 @@ export class OrderListComponent implements OnInit {
 
   chartOptions = {
     scaleShowVerticalLines: false,
+    tooltips: {
+      callbacks: {
+        label(t, d) {
+          const xLabel = d.datasets[t.datasetIndex].label;
+          const yLabel = t.yLabel >= 1000 ? '₦' + t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '₦' + t.yLabel;
+          return xLabel + ': ' + yLabel;
+        }
+      }
+    },
+    scales: {
+      yAxes: [{
+        ticks: {
+          userCallback(value) {
+            value = value.toFixed(2);
+            value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            return '₦' + value;
+          }
+        }
+      }],
+    },
     responsive: true
   };
   chartLabels = [];
@@ -382,6 +402,7 @@ export class OrderListComponent implements OnInit {
         ords = this.groupByPeriod('day');
       }
       const criteria = ords.map(o => o.criteria);
+      // const val = ords.map(o => this.currencyPipe.transform(o.totAmt, '₦ '));
       const val = ords.map(o => o.totAmt);
 
       this.chartLabels = criteria.length ? criteria : ['orders'];

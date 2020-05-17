@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { DashboardServService } from '../shared';
 import { IOrder, IOrderDatestamp, IOrderSort } from '../shared/model/order.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-order-list',
@@ -34,6 +34,26 @@ export class OrderListComponent implements OnInit {
 
   chartOptions = {
     scaleShowVerticalLines: false,
+    tooltips: {
+      callbacks: {
+        label(t, d) {
+          const xLabel = d.datasets[t.datasetIndex].label;
+          const yLabel = t.yLabel >= 1000 ? '₦' + t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '₦' + t.yLabel;
+          return xLabel + ': ' + yLabel;
+        }
+      }
+    },
+    scales: {
+      yAxes: [{
+        ticks: {
+          userCallback(value) {
+            value = value.toFixed(2);
+            value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            return '₦' + value;
+          }
+        }
+      }],
+    },
     responsive: true
   };
   chartLabels = [];
@@ -73,16 +93,7 @@ export class OrderListComponent implements OnInit {
         .then((res) => {
           if (q.searchhTerm) {
             this.searchText = q.searchhTerm;
-            const searchArr = res.filter(r => {
-              const isInFirstName = r.user.first_name.indexOf(this.searchText);
-              const isInLastName = r.user.last_name.indexOf(this.searchText);
-              const isInRef = r.payment.reference.indexOf(this.searchText);
-
-              if (isInFirstName > -1 || isInLastName > -1 || isInRef > -1) {
-                return r;
-              }
-            });
-            return searchArr;
+            return this.searchFn(res);
           }
           return res;
         })
@@ -90,6 +101,7 @@ export class OrderListComponent implements OnInit {
           // Convert to data to have day, year, etc stamp
           this.totalOrders = res.length;
           this.sumTotalAmt = this.sumTotal(res);
+          console.log('ordersWithDateStamp b4', res);
           this.ordersWithDateStamp = res.map(o => {
             const orderDateStamp: IOrderDatestamp = {
               order: o,
@@ -170,6 +182,27 @@ export class OrderListComponent implements OnInit {
     return new Date(dataStamp).getFullYear();
   }
 
+  searchFn(orders: IOrder[]) {
+    if (this.searchText) {
+      const searchArr = orders.filter(r => {
+        const search = this.searchText.toLowerCase();
+        const uFirstName = r.user.first_name.toLowerCase();
+        const uLastName = r.user.last_name.toLowerCase();
+        const uName = uFirstName + ' ' + uLastName;
+        const isInFirstName = uFirstName.indexOf(search);
+        const isInLastName = uLastName.indexOf(search);
+        const isInName = uName.indexOf(search);
+        const isInRef = r.payment.reference.indexOf(this.searchText);
+
+        if (isInFirstName > -1 || isInLastName > -1 || isInName > -1  || isInRef > -1) {
+          return r;
+        }
+      });
+      return searchArr;
+    }
+    return orders;
+  }
+
   filterByFn() {
     if (!this.filterBy || this.filterBy === 'all') {
       return this.theOrders.slice(0);
@@ -192,10 +225,7 @@ export class OrderListComponent implements OnInit {
   }
 
   sortByDateAsc(arr: IOrder[]) {
-    const sortedArr = arr.sort((a, b) =>
-      new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-    );
-    return sortedArr;
+    return this.sortByDateDesc(arr).reverse();
   }
 
   groupByFn() {
@@ -238,14 +268,14 @@ export class OrderListComponent implements OnInit {
 
   groupByPeriod(period: string) {
     const pk = new Set();
-    this.ordersWithDateStamp.map(t => pk.add(t[period]));
+    this.ordersWithDateStamp.slice(0).map(t => pk.add(t[period]));
     const pkArr = Array.from(pk);
-    let sumOfItems = 0;
     const yy = [];
     pkArr.forEach(pky => {
       const alpha = pky;
+      let sumOfItems = 0;
 
-      const ee = this.ordersWithDateStamp.filter(t => t[period] === alpha);
+      const ee = this.ordersWithDateStamp.slice(0).filter(t => t[period] === alpha);
       const ff = ee.map(e => e.order);
       ff.forEach(element => {
           sumOfItems += +element.cost; // Turn the string to number
@@ -267,10 +297,10 @@ export class OrderListComponent implements OnInit {
     const pk = new Set();
     this.ordersWithDateStamp.map(t => pk.add(t.order.user.first_name + ' ' + t.order.user.last_name));
     const pkArr = Array.from(pk);
-    let sumOfItems = 0;
     const yy = [];
     pkArr.forEach(pky => {
       const alpha = pky;
+      let sumOfItems = 0;
 
       const ee = this.ordersWithDateStamp.filter(t => (t.order.user.first_name + ' ' + t.order.user.last_name) === alpha);
       const ff = ee.map(e => e.order);
@@ -294,10 +324,10 @@ export class OrderListComponent implements OnInit {
     const pk = new Set();
     this.ordersWithDateStamp.map(t => pk.add(t.order.user.first_name[0].toLocaleLowerCase()));
     const pkArr = Array.from(pk);
-    let sumOfItems = 0;
     const yy = [];
     pkArr.forEach(pky => {
       const alpha = pky;
+      let sumOfItems = 0;
 
       const ee = this.ordersWithDateStamp.filter(t => t.order.user.first_name[0].toLocaleLowerCase() === alpha);
       const ff = ee.map(e => e.order);
@@ -345,14 +375,14 @@ export class OrderListComponent implements OnInit {
   }
 
   searchFormSubmit() {
-    if (this.searchText) {
-      this.router.navigate([], {
-        queryParams: {
-          searchhTerm: this.searchText,
-        },
-        queryParamsHandling: 'merge'
-      });
-    }
+    // if (this.searchText) {
+    this.router.navigate([], {
+      queryParams: {
+        searchhTerm: this.searchText,
+      },
+      queryParamsHandling: 'merge'
+    });
+    // }
   }
 
   sumTotal(arr: IOrder[]) {
@@ -372,6 +402,7 @@ export class OrderListComponent implements OnInit {
         ords = this.groupByPeriod('day');
       }
       const criteria = ords.map(o => o.criteria);
+      // const val = ords.map(o => this.currencyPipe.transform(o.totAmt, '₦ '));
       const val = ords.map(o => o.totAmt);
 
       this.chartLabels = criteria.length ? criteria : ['orders'];

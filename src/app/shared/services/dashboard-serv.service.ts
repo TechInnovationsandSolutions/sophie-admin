@@ -50,6 +50,12 @@ export class DashboardServService {
     return new Array(no).fill(1); // Thank you Leonardo Giroto
   }
 
+  makeThumbnail(response: any) {
+    // tslint:disable-next-line: max-line-length
+    const thumbnail = (response.eager && response.eager[0].secure_url) ? response.eager[0].secure_url : response.secure_url.split('upload/').join('upload/c_scale,w_150/');
+    return thumbnail;
+  }
+
   // Category fns
   getCatgory(id) {
     return new Promise((resolve, reject) => {
@@ -109,7 +115,7 @@ export class DashboardServService {
         console.log('cloudy', response);
 
         // tslint:disable-next-line: max-line-length
-        const imgThumbnail = (response.eager && response.eager[0].secure_url) ? response.eager[0].secure_url : response.secure_url.split('upload/').join('upload/c_scale,w_150/');
+        const imgThumbnail = this.makeThumbnail(response);
 
         const token = this.getToken();
         this.http.post<any>(this._url + 'categories', {
@@ -151,15 +157,15 @@ export class DashboardServService {
         console.log('cloudy', response);
 
         // tslint:disable-next-line: max-line-length
-        const imgThumbnail = (response.eager && response.eager[0].secure_url) ? response.eager[0].secure_url : response.secure_url.split('upload/').join('upload/c_scale,w_150/');
+        const imgThumbnail = this.makeThumbnail(response);
 
         const token = this.getToken();
         this.http.put<any>(this._url + 'categories/' + category.id, {
           name: category.name,
-          picture: [{
+          picture: {
             url: response.secure_url,
             thumbnail: imgThumbnail
-          }]
+          }
         },
         {
           headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
@@ -371,7 +377,7 @@ export class DashboardServService {
         console.log('cloudy', response);
 
         // tslint:disable-next-line: max-line-length
-        const imgThumbnail = (response.eager && response.eager[0].secure_url) ? response.eager[0].secure_url : response.secure_url.split('upload/').join('upload/c_scale,w_150/');
+        const imgThumbnail = this.makeThumbnail(response);
 
         const token = this.getToken();
         this.http.post<any>(this._url + 'products', {
@@ -421,7 +427,7 @@ export class DashboardServService {
         console.log('cloudy', response);
 
         // tslint:disable-next-line: max-line-length
-        const imgThumbnail = (response.eager && response.eager[0].secure_url) ? response.eager[0].secure_url : response.secure_url.split('upload/').join('upload/c_scale,w_150/');
+        const imgThumbnail = this.makeThumbnail(response);
 
         const token = this.getToken();
         this.http.put<any>(this._url + 'products/' + product.id, {

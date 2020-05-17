@@ -87,6 +87,17 @@ textarea{
 
 button {
   font-family: 'Lato', sans-serif;
+
+  &:disabled,
+  &[disabled],
+  .btn:disabled,
+  .btn[disabled] {
+    opacity: 0.5;
+
+    &:hover {
+      cursor: not-allowed;
+    }
+  }
 }
 
 button.btn-dt-refresh {

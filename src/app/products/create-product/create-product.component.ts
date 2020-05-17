@@ -361,7 +361,7 @@ export class CreateProductComponent implements OnInit {
         ],
         category: formValue.productCategory,
         cost: formValue.productPrice,
-        reduced_cost: formValue.productPromoPrice ?formValue.productPromoPrice : 0,
+        reduced_cost: formValue.productPromoPrice ? formValue.productPromoPrice : 0,
         description: formValue.productDescription,
         excerpt: formValue.productExcerpt,
         quantity: formValue.productQuantity,

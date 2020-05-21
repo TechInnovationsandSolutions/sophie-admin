@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ICategory, DashboardServService, IProduct, ITag } from './../../shared';
-import { FormBuilder, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
+import { FormBuilder, Validators, FormArray, FormControl, ValidatorFn, FormGroup } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
@@ -11,28 +11,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
   styleUrls: ['./create-product.component.scss']
 })
 export class CreateProductComponent implements OnInit {
-  productForm = this.fb.group({
-    id: [0],
-    productName: ['', Validators.required],
-    productImg: ['', Validators.required],
-    productCategory: ['', Validators.required],
-    productPrice: ['0', [
-      Validators.required,
-      Validators.min(0)]
-    ],
-    productPromoPrice: ['0', [
-      Validators.required,
-      Validators.min(0)]
-    ],
-    productDescription: ['', Validators.required],
-    productExcerpt: ['', Validators.required],
-    productQuantity: ['0', [
-      Validators.required,
-      Validators.required,
-      Validators.min(0)]
-    ],
-    productTags: this.fb.array([], this.validateTagFormArray)
-  });
+  productForm: FormGroup;
 
   isCreate =  true;
   showInputFile =  true;
@@ -54,6 +33,29 @@ export class CreateProductComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.productForm = this.fb.group({
+      id: [0],
+      productName: ['', Validators.required],
+      productImg: ['', Validators.required],
+      productCategory: ['', Validators.required],
+      productPrice: ['0', [
+        Validators.required,
+        Validators.min(0)]
+      ],
+      productPromoPrice: ['0', [
+        Validators.required,
+        Validators.min(0)]
+      ],
+      productDescription: ['', Validators.required],
+      productExcerpt: ['', Validators.required],
+      productQuantity: ['0', [
+        Validators.required,
+        Validators.required,
+        Validators.min(0)]
+      ],
+      productTags: this.fb.array([], this.validateTagFormArray)
+    }, {validator: this.comparePromoPrice});
+
     this.serv.getAllTags().then(res => {
       this.theProductTags = res as ITag[];
     }).then(() => {
@@ -170,6 +172,12 @@ export class CreateProductComponent implements OnInit {
     // tslint:disable-next-line: max-line-length
     const discount: number = (this.productForm.value.productPrice -  this.productForm.value.productPromoPrice) / this.productForm.value.productPrice;
     return discount === 1 ? 0 : discount;
+  }
+
+  comparePromoPrice(formgroup: FormGroup) {
+    const promoPrice = formgroup.controls.productPromoPrice.value;
+    const price = formgroup.controls.productPrice.value;
+    return (promoPrice <= price ) ? null : {promoIsMore: true};
   }
 
   onFileChange(event) {

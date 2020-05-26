@@ -27,8 +27,9 @@
         </div>
         <div class="form-group col-md-5">
           <label for="productPromoPrice">Promo Price  <small class="text-danger">Leave as <strong>0</strong> if no promo price</small></label>
-          <input [readOnly]="isOnView" type="number" class="form-control" id="productPromoPrice"
+          <input [readOnly]="isOnView" type="number" class="form-control" id="productPromoPrice" [ngClass]="{'is-invalid': productForm.errors && productForm.errors.promoIsMore}"
             placeholder="if no promo price, enter the product price" formControlName="productPromoPrice" min="0" required>
+          <span *ngIf="productForm.errors && productForm.errors.promoIsMore" class="p-2 text-danger">Promo Price is greater than Price</span>
         </div>
         <div class="form-group col-md-2 d-flex flex-wrap">
           <p class="mb-2">Discount:</p>

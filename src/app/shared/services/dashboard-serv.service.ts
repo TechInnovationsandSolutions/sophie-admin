@@ -3,18 +3,21 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular
 import { Router } from '@angular/router';
 import { ICategory, IProduct, ITag } from '../model';
 import { cloudinaryConfig } from './../../configs';
-
-const TOKEN = 'x-admin-token';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardServService {
   private pageNoOfProduct = 20;
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(
+    private auth: AuthService,
+    private http: HttpClient,
+    private router: Router
+  ) { }
 
   // tslint:disable-next-line: variable-name
-  _url = 'https://tis-bandb.herokuapp.com/api/v1/'; // Base URL
+  _url = this.auth._url; // Base URL
   cloudinary = cloudinaryConfig;
 
   // Temporary data
@@ -25,20 +28,16 @@ export class DashboardServService {
   // tslint:disable-next-line: variable-name
   _tag: ITag;
 
-  setToken(token: string): void {
-    localStorage.setItem(TOKEN, token);
-  }
-
   getToken() {
-    return localStorage.getItem(TOKEN);
+    return this.auth.getToken();
   }
 
   removeToken() {
-    localStorage.removeItem(TOKEN);
+    this.auth.removeToken();
   }
 
   isLogged() {
-    return localStorage.getItem(TOKEN) != null;
+    return this.getToken() != null;
   }
 
   backToLogin() {

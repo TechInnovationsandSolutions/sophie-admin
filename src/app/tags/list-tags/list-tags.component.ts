@@ -29,7 +29,7 @@ export class ListTagsComponent implements OnInit {
   ngOnInit() {
     this.serv.getAllTags().then(res => {
       this.tags = res as ITag[];
-      console.log('this.tags', this.tags);
+      // console.log('this.tags', this.tags);
 
       this.chRef.detectChanges();
 
@@ -45,7 +45,7 @@ export class ListTagsComponent implements OnInit {
   }
 
   editTag(tag: ITag) {
-    console.log(tag);
+    // console.log(tag);
     this.serv._tag = tag;
     this.router.navigate(['/tag/edit'], {
       queryParams: {
@@ -55,7 +55,7 @@ export class ListTagsComponent implements OnInit {
   }
 
   deleteTag(tag: ITag) {
-    console.log(tag);
+    // console.log(tag);
 
     Swal.fire({
       title: 'Confirmation',
@@ -106,9 +106,9 @@ export class ListTagsComponent implements OnInit {
   }
 
   onTagChecked(categoryId: ITag, e) {
-    console.log(categoryId, e, e.target.checked);
+    // console.log(categoryId, e, e.target.checked);
     const isInCheckList = this.selectedCheckbox.indexOf(categoryId);
-    console.log('isInCheckList', isInCheckList, 'then', !isInCheckList);
+    // console.log('isInCheckList', isInCheckList, 'then', !isInCheckList);
 
     if (e.target.checked === true && isInCheckList === -1) {
       this.selectedCheckbox.push(categoryId);
@@ -118,7 +118,7 @@ export class ListTagsComponent implements OnInit {
       this.selectedCheckbox.splice(isInCheckList, 1);
     }
 
-    console.log('this.selectedCheckbox', this.selectedCheckbox);
+    // console.log('this.selectedCheckbox', this.selectedCheckbox);
   }
 
   unCheckChecked() {
@@ -155,7 +155,7 @@ export class ListTagsComponent implements OnInit {
               const resultMsg = [];
               // tslint:disable-next-line: only-arrow-functions
               (async function() {
-                console.log('async', selectdTags);
+                // console.log('async', selectdTags);
                 // tslint:disable-next-line: prefer-for-of
                 for (let i = 0; i < selectdTags.length; i++) {
                   domMan.updateBulkActionValue(i + 1);
@@ -165,7 +165,7 @@ export class ListTagsComponent implements OnInit {
                   const az_name = obj.name;
                   await serviceGuy.deleteTag(id)
                   .then(resp => {
-                    // console.log('b4 Gosh', resp);
+                    // // console.log('b4 Gosh', resp);
                     resultMsg.push({
                       username: az_name,
                       msg: resp
@@ -178,7 +178,7 @@ export class ListTagsComponent implements OnInit {
             aProm.then(res => {
               domMan.terminateBulkAction();
               const resp = res as any[];
-              // console.log('Gosh!', resp);
+              // // console.log('Gosh!', resp);
               if (resp) {
                 let messageFails = [];
                 messageFails = resp.filter(r => r.msg &&  r.msg.status !== 'success');

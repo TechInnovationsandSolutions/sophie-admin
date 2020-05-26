@@ -58,30 +58,19 @@ export class CreateProductComponent implements OnInit {
 
     this.serv.getAllTags().then(res => {
       this.theProductTags = res as ITag[];
-    }).then(() => {
-      // this.updateProductTag = ["necessitatibus", "vitae", "quos"];
-      // const formArray: FormArray = this.productForm.get('productTags') as FormArray;
-      // this.updateProductTag.forEach(tag => {
-      //   formArray.push(this.fb.control(tag))
-      // });
-      // this.productForm.get('productTags').patchValue(this.updateProductTag);
-      // this.productForm.reset();
-      // this.productForm.patchValue({
-      //   productTags: this.updateProductTag
-      // })
     });
 
     this.serv.getCatgories().then(res => {
       this.productCatgories = res as ICategory[];
     }).then(() => {
-      console.log(this.route.snapshot.queryParams);
+      // console.log(this.route.snapshot.queryParams);
       if (
         (this.route.snapshot.params.fn === 'edit' || this.route.snapshot.params.fn === 'view')
         &&
         this.route.snapshot.queryParams.product) {
         this.serv.getProduct(this.route.snapshot.queryParams.product.toString()).then(res => {
           const theProduct = res as IProduct;
-          console.log('the Prd', theProduct);
+          // console.log('the Prd', theProduct);
           this.productForm.patchValue({
             id: theProduct.id ? theProduct.id : null,
             productName: theProduct.name ? theProduct.name : null,
@@ -93,7 +82,7 @@ export class CreateProductComponent implements OnInit {
             productExcerpt: theProduct.excerpt ? theProduct.excerpt : null,
             productQuantity: theProduct.quantity ? theProduct.quantity : 0,
           });
-          console.log('product tag', theProduct.tags);
+          // console.log('product tag', theProduct.tags);
           if (theProduct && theProduct.tags) {
             const formArray: FormArray = this.productForm.get('productTags') as FormArray;
             theProduct.tags.forEach(tag => {
@@ -103,14 +92,14 @@ export class CreateProductComponent implements OnInit {
 
           setTimeout(() => {
             const imgElem = document.getElementById('imgPreview') as HTMLImageElement;
-            console.log('imhh', imgElem);
+            // console.log('imhh', imgElem);
             if (imgElem && theProduct.images.length && theProduct.images[0].url) {
               imgElem.src = theProduct.images[0].url;
               this.showInputFile = false;
             }
           }, 500);
 
-          console.log( this.productForm.valid, this.productForm.value);
+          // console.log( this.productForm.valid, this.productForm.value);
 
           this.showPreloader = false;
           this.isCreate = false;
@@ -156,7 +145,7 @@ export class CreateProductComponent implements OnInit {
 
     setTimeout(() => {
       const imgElem = document.getElementById('imgPreview') as HTMLImageElement;
-      console.log('imhh', imgElem);
+      // console.log('imhh', imgElem);
       if (imgElem && product.images.length && product.images[0].url) {
         imgElem.src = product.images[0].url;
         this.showInputFile = false;
@@ -187,9 +176,9 @@ export class CreateProductComponent implements OnInit {
       const [file] = event.target.files;
       reader.readAsDataURL(file);
 
-      // console.log('file',file)
-      // console.log('reader',reader)
-      console.log('file URL', URL.createObjectURL(file));
+      // // console.log('file',file)
+      // // console.log('reader',reader)
+      // console.log('file URL', URL.createObjectURL(file));
 
       reader.onload = () => {
         this.productForm.patchValue({
@@ -200,10 +189,8 @@ export class CreateProductComponent implements OnInit {
 
         setTimeout(() => {
         const imgElem = document.getElementById('imgPreview') as HTMLImageElement;
-        console.log('imhh', imgElem);
+        // console.log('imhh', imgElem);
         imgElem.src = URL.createObjectURL(file);
-
-        console.log('frm', 'validity => ' + this.productForm.valid, 'pristinility => ' + this.productForm.pristine, this.productForm.value);
 
         this.showInputFile = false;
        }, 500);
@@ -223,7 +210,7 @@ export class CreateProductComponent implements OnInit {
     const imgElem = document.getElementById('imgPreview') as HTMLInputElement;
     imgElem.setAttribute('value', '');
 
-    console.log('frm', this.productForm.value);
+    // console.log('frm', this.productForm.value);
   }
 
   createNewProduct(product: IProduct) {
@@ -246,7 +233,7 @@ export class CreateProductComponent implements OnInit {
               'Product ' + product.name + ' has been created successfully.',
               'success'
             );
-            console.log('new res', res);
+            // console.log('new res', res);
             product = res.data;
             this.enableView(product);
             // ).then(()=>location.reload())
@@ -315,19 +302,19 @@ export class CreateProductComponent implements OnInit {
   }
 
   onTagCheck(event) {
-    // console.log('event', event, this.updateProductTag);
+    // // console.log('event', event, this.updateProductTag);
     const formArray: FormArray = this.productForm.get('productTags') as FormArray;
 
   /* Selected */
     if (event.target.checked) {
       // Add a new control in the arrayForm
-      console.log(event.target.name  + ' was checked');
+      // console.log(event.target.name  + ' was checked');
       formArray.push(this.fb.control(event.target.value));
     } else {
       // find the unselected element
       let i = 0;
 
-      console.log(event.target.name  + ' was unchecked');
+      // console.log(event.target.name  + ' was unchecked');
 
       formArray.controls.forEach((ctrl: FormControl) => {
         if (ctrl.value === event.target.value) {
@@ -338,11 +325,11 @@ export class CreateProductComponent implements OnInit {
         i++;
       });
     }
-    console.log('form value', this.productForm.value);
+    // console.log('form value', this.productForm.value);
   }
 
   inTagArray(tag: string) {
-    // console.log('this upd', this.updateProductTag, tag, this.updateProductTag.includes(tag))
+    // // console.log('this upd', this.updateProductTag, tag, this.updateProductTag.includes(tag))
     const formArray: string[] = this.productForm.get('productTags').value;
     return formArray.includes(tag);
   }
@@ -357,7 +344,7 @@ export class CreateProductComponent implements OnInit {
         .reduce((prev, next) => next ? prev + next : prev, 0);
 
       // if the total is not greater than the minimum, return the error message
-      console.log(totalSelected, min, totalSelected >= min);
+      // console.log(totalSelected, min, totalSelected >= min);
       return totalSelected >= min ? null : { required: true };
     };
 
@@ -370,7 +357,7 @@ export class CreateProductComponent implements OnInit {
       const _discount = ((formValue.productPrice - formValue.productPromoPrice) / formValue.productPrice);
       formValue.discount = _discount;
 
-      console.log('formValue', formValue);
+      // console.log('formValue', formValue);
 
       // tslint:disable-next-line: variable-name
       const _product: IProduct = {
@@ -391,7 +378,7 @@ export class CreateProductComponent implements OnInit {
         tags: null,
         formTags: formValue.productTags
       };
-      console.log('trans-formValue', _product);
+      // console.log('trans-formValue', _product);
       this.isCreate ? this.createNewProduct(_product) : this.updateProduct(_product);
     } catch (error) {
       console.error(error);

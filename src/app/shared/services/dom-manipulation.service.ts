@@ -15,7 +15,7 @@ export class DomManipulationService {
       this.blockUI.start('Processing');
       const blockElemDiv = document.querySelector('.block-ui-spinner .message');
 
-      console.log('blockElemDiv', blockElemDiv);
+      // console.log('blockElemDiv', blockElemDiv);
       const p = document.createElement('p');
       p.classList.add('messager');
       p.innerHTML = action + '<span class = "min">0</span> of <span class = "max">' + max + '</span>';

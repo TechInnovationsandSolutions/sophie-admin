@@ -27,9 +27,9 @@ export class ListProductComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    // console.log(this.route.snapshot.queryParams.page);
+    // // console.log(this.route.snapshot.queryParams.page);
     if (!this.route.snapshot.queryParams.page) {
-      console.log('no product param');
+      // console.log('no product param');
       this.router.navigate(['/products'], {
         queryParams: {
           page: 1
@@ -50,11 +50,11 @@ export class ListProductComponent implements OnInit {
         const searchhTerm = this.route.snapshot.queryParams.searchhTerm ? this.route.snapshot.queryParams.searchhTerm : '';
         aProm = this.service.getSearchedProducts(searchhTerm, pg);
       } else {
-        // console.log('here');
+        // // console.log('here');
         aProm = this.service.getProducts(pg);
       }
       aProm.then(res => {
-        // console.log(pg, res);
+        // // console.log(pg, res);
         this.showPreloader = false;
         const resp = res as ProductResponse;
         this.pagesArray = resp.pg;
@@ -79,7 +79,7 @@ export class ListProductComponent implements OnInit {
 
   setProducts(pg) {
     this.service.getProducts(pg).then(res => {
-      // console.log(pg, res)
+      // // console.log(pg, res)
       const resp = res as ProductResponse;
       this.pagesArray = resp.pg;
       this.products = resp.data;
@@ -97,7 +97,7 @@ export class ListProductComponent implements OnInit {
   }
 
   editProduct(theproduct: IProduct) {
-    // console.log(theproduct);
+    // // console.log(theproduct);
     this.router.navigate(['/product/edit'], {
       queryParams: {
         currentPage: this.currentPage,
@@ -107,7 +107,7 @@ export class ListProductComponent implements OnInit {
   }
 
   deleteProduct(product: IProduct) {
-    // console.log(product);
+    // // console.log(product);
 
     Swal.fire({
       title: 'Confirmation',
@@ -121,7 +121,7 @@ export class ListProductComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.blockUI.start('Processing...');
-        this.service.deleteProduct(product.id.toString()).then(res => console.log(res)).then(() => {
+        this.service.deleteProduct(product.id.toString()).then(() => {
           this.blockUI.stop();
           Swal.fire(
             'Deleted!',
@@ -149,7 +149,7 @@ export class ListProductComponent implements OnInit {
   }
 
   viewProduct(product: IProduct) {
-    // console.log(product);
+    // // console.log(product);
     this.router.navigate(['/product/view'], {
       queryParams: {
         currentPage: this.currentPage,
@@ -223,7 +223,7 @@ export class ListProductComponent implements OnInit {
       const no = productList.length;
       const serviceGuy = this.service;
       const domMan = this.domManipulation;
-      console.log('productList', productList);
+      // console.log('productList', productList);
 
       this.domManipulation.initialBulkAction(no, 'Moving Products to ' + newCat.name);
       try {
@@ -239,15 +239,15 @@ export class ListProductComponent implements OnInit {
               const id = product.id;
               // tslint:disable-next-line: variable-name
               const prodName = product.name;
-              console.log('hollq!', id);
+              // console.log('hollq!', id);
               await serviceGuy.updateProductCategory(product, newCat.id).then(res => {
-                console.log('b4 Gosh Res updateProd', res);
+                // console.log('b4 Gosh Res updateProd', res);
                 if (res) {
                   return res;
                 }
               })
               .then(resp => {
-                // console.log('b4 Gosh', resp);
+                // // console.log('b4 Gosh', resp);
                 resultMsg.push({
                   username: prodName,
                   msg: resp
@@ -260,7 +260,7 @@ export class ListProductComponent implements OnInit {
         aProm.then(res => {
           domMan.terminateBulkAction();
           const resp = res as any[];
-          console.log('resultMsg Gosh!', resp);
+          // console.log('resultMsg Gosh!', resp);
           if (resp) {
             let messageFails = [];
             messageFails = resp.filter(r => r.msg.status !== 'success');
@@ -318,9 +318,9 @@ export class ListProductComponent implements OnInit {
   }
 
   onProductChecked(prod: IProduct, e) {
-    console.log(prod, e, e.target.checked);
+    // console.log(prod, e, e.target.checked);
     const isInCheckList = this.selectedCheckbox.indexOf(prod);
-    console.log('isInCheckList', isInCheckList, 'then', !isInCheckList);
+    // console.log('isInCheckList', isInCheckList, 'then', !isInCheckList);
 
     if (e.target.checked === true && isInCheckList === -1) {
       this.selectedCheckbox.push(prod);
@@ -330,7 +330,7 @@ export class ListProductComponent implements OnInit {
       this.selectedCheckbox.splice(isInCheckList, 1);
     }
 
-    console.log('this.selectedCheckbox', this.selectedCheckbox);
+    // console.log('this.selectedCheckbox', this.selectedCheckbox);
   }
 
   unCheckChecked() {
@@ -367,7 +367,7 @@ export class ListProductComponent implements OnInit {
               const resultMsg = [];
               // tslint:disable-next-line: only-arrow-functions
               (async function() {
-                console.log('async', selectedProd);
+                // console.log('async', selectedProd);
                 // tslint:disable-next-line: prefer-for-of
                 for (let i = 0; i < selectedProd.length; i++) {
                   domMan.updateBulkActionValue(i + 1);
@@ -375,10 +375,10 @@ export class ListProductComponent implements OnInit {
                   const id = obj.id;
                   // tslint:disable-next-line: variable-name
                   const az_name = obj.name;
-                  console.log('hollq!', id);
+                  // console.log('hollq!', id);
                   await serviceGuy.deleteProduct(id.toString())
                   .then(resp => {
-                    // console.log('b4 Gosh', resp);
+                    // // console.log('b4 Gosh', resp);
                     resultMsg.push({
                       username: az_name,
                       msg: resp
@@ -392,7 +392,7 @@ export class ListProductComponent implements OnInit {
             aProm.then(res => {
               domMan.terminateBulkAction();
               const resp = res as any[];
-              console.log('Gosh!', resp);
+              // console.log('Gosh!', resp);
               if (resp) {
                 let messageFails = [];
                 messageFails = resp.filter(r => r.msg &&  r.msg.status !== 'success');

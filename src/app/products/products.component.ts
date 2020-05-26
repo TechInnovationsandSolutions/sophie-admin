@@ -25,7 +25,7 @@ export class ProductsComponent implements OnInit {
   }
 
   hideAddProduct() {
-    console.log(this.route.snapshot.queryParams.currentPage);
+    // console.log(this.route.snapshot.queryParams.currentPage);
 
     if (this.route.snapshot.queryParams.currentPage) {
       this.router.navigate(['/products'], {

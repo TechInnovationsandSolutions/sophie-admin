@@ -43,12 +43,12 @@ export class CreateCategoryComponent implements OnInit {
 
         setTimeout(() => {
           const imgElem = document.getElementById('imgPreview') as HTMLImageElement;
-          console.log('imhh', imgElem);
+          // console.log('imhh', imgElem);
           imgElem.src = theCategory.image;
           this.showInputFile = false;
          }, 500);
 
-        console.log(this.categoryForm.value, this.categoryForm.valid);
+        // console.log(this.categoryForm.value, this.categoryForm.valid);
 
         this.showPreloader = false;
         this.isCreate = false;
@@ -69,20 +69,20 @@ export class CreateCategoryComponent implements OnInit {
       const [file] = event.target.files;
       reader.readAsDataURL(file);
 
-      // console.log('file',file)
-      // console.log('reader',reader)
-      console.log('file URL', URL.createObjectURL(file));
+      // // console.log('file',file)
+      // // console.log('reader',reader)
+      // console.log('file URL', URL.createObjectURL(file));
 
       reader.onload = () => {
         this.categoryForm.patchValue({
           image: reader.result
        });
 
-        console.log('frm', this.categoryForm.value);
+        // console.log('frm', this.categoryForm.value);
 
         setTimeout(() => {
         const imgElem = document.getElementById('imgPreview') as HTMLImageElement;
-        console.log('imhh', imgElem);
+        // console.log('imhh', imgElem);
         imgElem.src = URL.createObjectURL(file);
         this.showInputFile = false;
        }, 500);
@@ -103,7 +103,7 @@ export class CreateCategoryComponent implements OnInit {
     const imgElem = document.getElementById('imgPreview') as HTMLInputElement;
     imgElem.setAttribute('value', '');
 
-    console.log('frm', this.categoryForm.value);
+    // console.log('frm', this.categoryForm.value);
   }
 
   createNewCategory(category: ICategory) {
@@ -183,7 +183,7 @@ export class CreateCategoryComponent implements OnInit {
 
   onSubmit(formValue) {
     // e.preventDefault();
-    // console.log(this.swal)
+    // // console.log(this.swal)
     formValue.slug = this.getSlug(formValue.name);
 
     this.isCreate ? this.createNewCategory(formValue) : this.updateNewCategory(formValue);

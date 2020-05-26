@@ -101,7 +101,7 @@ export class OrderListComponent implements OnInit {
           // Convert to data to have day, year, etc stamp
           this.totalOrders = res.length;
           this.sumTotalAmt = this.sumTotal(res);
-          console.log('ordersWithDateStamp b4', res);
+          // console.log('ordersWithDateStamp b4', res);
           this.ordersWithDateStamp = res.map(o => {
             const orderDateStamp: IOrderDatestamp = {
               order: o,
@@ -233,7 +233,7 @@ export class OrderListComponent implements OnInit {
     this.groupedByUsername = false;
     this.orderSorted = [];
 
-    console.log('groupBy', this.groupBy);
+    // console.log('groupBy', this.groupBy);
 
     switch (this.groupBy) {
       case 'day':
@@ -287,7 +287,7 @@ export class OrderListComponent implements OnInit {
           totAmt: sumOfItems
         })
       );
-      // console.log(yy);
+      // // console.log(yy);
     });
 
     return yy as IOrderSort[];
@@ -314,7 +314,7 @@ export class OrderListComponent implements OnInit {
           totAmt: sumOfItems
         })
       );
-      // console.log(yy);
+      // // console.log(yy);
     });
 
     return yy as IOrderSort[];
@@ -341,7 +341,7 @@ export class OrderListComponent implements OnInit {
           totAmt: sumOfItems
         })
       );
-      // console.log(yy);
+      // // console.log(yy);
     });
 
     return yy as IOrderSort[];
@@ -395,7 +395,7 @@ export class OrderListComponent implements OnInit {
   }
 
   populateChart() {
-    console.log('ee', this.orderSorted);
+    // console.log('ee', this.orderSorted);
     if (this.orderSorted.length) {
       let ords = this.orderSorted.slice(0);
       if (this.orderSorted.length === 1 && !this.orderSorted[0].criteria) {
@@ -413,8 +413,8 @@ export class OrderListComponent implements OnInit {
         }
       ];
 
-      console.log('this.chartLabels', this.chartLabels);
-      console.log('this.chartData', this.chartData);
+      // console.log('this.chartLabels', this.chartLabels);
+      // console.log('this.chartData', this.chartData);
     }
   }
 }

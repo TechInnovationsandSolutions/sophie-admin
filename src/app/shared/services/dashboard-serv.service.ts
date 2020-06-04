@@ -146,12 +146,16 @@ export class DashboardServService {
     });
   }
 
-  updateCategory(category: ICategory) {
+  updateCategory(category: ICategory, isImgUpdate: boolean) {
+    const fileName: string = category.name + (isImgUpdate ? Date.now().toString() : '');
     return new Promise(resolve => {
-      this.http.post('https://api.cloudinary.com/v1_1/' + cloudinaryConfig.cloud_name  + '/image/upload/', {
-        file:  category.image, public_id: 'category-' + category.name,
-        upload_preset : cloudinaryConfig.upload_preset
-      }).subscribe(resp => {
+      this.http.post('https://api.cloudinary.com/v1_1/' + cloudinaryConfig.cloud_name  + '/image/upload/',
+        {
+          file:  category.image,
+          public_id: 'category-' + fileName,
+          upload_preset : cloudinaryConfig.upload_preset
+        }
+      ).subscribe(resp => {
         const response = resp as any;
         // console.log('cloudy', response);
 
@@ -416,12 +420,16 @@ export class DashboardServService {
     });
   }
 
-  updateProduct(product: IProduct) {
+  updateProduct(product: IProduct, isImgUpdate: boolean) {
+    const fileName: string = product.name + (isImgUpdate ? Date.now().toString() : '');
     return new Promise(resolve => {
-      this.http.post('https://api.cloudinary.com/v1_1/' + cloudinaryConfig.cloud_name  + '/image/upload/', {
-        file:  product.images[0].url,
-        public_id: 'product-' + product.name, upload_preset : cloudinaryConfig.upload_preset
-      }).subscribe(resp => {
+      this.http.post('https://api.cloudinary.com/v1_1/' + cloudinaryConfig.cloud_name  + '/image/upload/',
+        {
+          file:  product.images[0].url,
+          public_id: 'product-' + fileName,
+          upload_preset : cloudinaryConfig.upload_preset
+        }
+      ).subscribe(resp => {
         const response = resp as any;
         // console.log('cloudy', response);
 

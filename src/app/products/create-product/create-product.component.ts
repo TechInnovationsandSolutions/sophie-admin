@@ -14,6 +14,7 @@ export class CreateProductComponent implements OnInit {
   productForm: FormGroup;
 
   isCreate =  true;
+  isImgUpdate = false;
   showInputFile =  true;
   productCatgories: ICategory[] = [];
   theProductTags: ITag[] = [];
@@ -206,6 +207,7 @@ export class CreateProductComponent implements OnInit {
     });
 
     this.showInputFile = true;
+    this.isImgUpdate = true;
 
     const imgElem = document.getElementById('imgPreview') as HTMLInputElement;
     imgElem.setAttribute('value', '');
@@ -270,7 +272,7 @@ export class CreateProductComponent implements OnInit {
       }).then((result) => {
         if (result.value) {
           this.blockUI.start('Updating Product ' + product.name + '...');
-          this.serv.updateProduct(product).then((res: any) => {
+          this.serv.updateProduct(product, this.isImgUpdate).then((res: any) => {
             this.blockUI.stop();
             Swal.fire(
               'Updated!',

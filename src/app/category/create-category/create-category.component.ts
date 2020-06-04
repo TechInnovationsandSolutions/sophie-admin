@@ -19,6 +19,7 @@ export class CreateCategoryComponent implements OnInit {
   });
 
   isCreate =  true;
+  isImgUpdate = false;
   showInputFile =  true;
   showPreloader = true;
   @BlockUI() blockUI: NgBlockUI;
@@ -99,6 +100,7 @@ export class CreateCategoryComponent implements OnInit {
     });
 
     this.showInputFile = true;
+    this.isImgUpdate = true;
 
     const imgElem = document.getElementById('imgPreview') as HTMLInputElement;
     imgElem.setAttribute('value', '');
@@ -156,7 +158,7 @@ export class CreateCategoryComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.blockUI.start('Updating Category ' + category.name);
-        this.serv.updateCategory(category).then(res => {
+        this.serv.updateCategory(category, this.isImgUpdate).then(res => {
           this.blockUI.stop();
 
           Swal.fire(

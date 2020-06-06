@@ -11,8 +11,8 @@ const polish = 'ad-spt';
 @Injectable()
 export class AuthService {
   // tslint:disable-next-line: variable-name
-  // http://api.sophiesbathandbody.com/
-  _url = 'https://tis-bandb.herokuapp.com/api/v1/';
+  // _url = 'https://tis-bandb.herokuapp.com/api/v1/';
+ _url = 'https://api.sophiesbathandbody.com/api/v1/';
 
   constructor(
     private http: HttpClient,

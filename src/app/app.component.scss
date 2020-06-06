@@ -1,29 +1,28 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~datatables.net-bs4/css/dataTables.bootstrap4.css";
 
-$smokeyWhite: #F5F4F4;
-$sophiePink : #FFD9E8;
-$placeHolderAsh: #AFA7A7;
-$placeHolderForm: #787A7C;
-$iconColor: #544F4F;
+$smokeyWhite: #f5f4f4;
+$sophiePink: #ffd9e8;
+$placeHolderAsh: #afa7a7;
+$placeHolderForm: #787a7c;
+$iconColor: #544f4f;
 $iconHoverColor: #007bff;
-$limeGreen: #2C9412;
-
+$limeGreen: #2c9412;
 
 //Bootstrap 4 colors
-$primary:    #007bff !default; // primary
-$indigo:  #6610f2 !default;
-$purple:  #6f42c1 !default;
-$pink:    #e83e8c !default;
-$danger:     #dc3545 !default; // danger
-$orange:  #fd7e14 !default;
-$warning:  #ffc107 !default; // warning
-$success:   #28a745 !default; // success
-$teal:    #20c997 !default;
-$cyan:    #17a2b8 !default; // info
+$primary: #007bff !default; // primary
+$indigo: #6610f2 !default;
+$purple: #6f42c1 !default;
+$pink: #e83e8c !default;
+$danger: #dc3545 !default; // danger
+$orange: #fd7e14 !default;
+$warning: #ffc107 !default; // warning
+$success: #28a745 !default; // success
+$teal: #20c997 !default;
+$cyan: #17a2b8 !default; // info
 
 // Grays
-$white:    #fff !default;
+$white: #fff !default;
 $gray-100: #f8f9fa !default; // light
 $gray-200: #e9ecef !default;
 $gray-300: #dee2e6 !default;
@@ -33,45 +32,44 @@ $secondary: #868e96 !default; // secondary
 $gray-700: #495057 !default;
 $dark: #343a40 !default; // dark
 $gray-900: #212529 !default;
-$black:    #000 !default;
+$black: #000 !default;
 
 //My colors
 $sweetWhiteSmokeBlue: #f2f3f7;
 
 @mixin flexWrap {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 @mixin maxWidth {
-    width: 100%;
-    max-width: 100%;
+  width: 100%;
+  max-width: 100%;
 }
 
 @mixin maxWidthFlexWrap {
-    @include flexWrap();
-    @include maxWidth();
+  @include flexWrap();
+  @include maxWidth();
 }
 
-@mixin invertOnHover ($bg:#000, $clr:#fff, $borderClr: $bg, $borderWid: 1px) {
-    background-color: $bg;
-    color: $clr;
+@mixin invertOnHover($bg: #000, $clr: #fff, $borderClr: $bg, $borderWid: 1px) {
+  background-color: $bg;
+  color: $clr;
+  border: $borderWid solid $borderClr;
+  transition: 0.2s ease-in;
+
+  &:hover {
+    background-color: $clr;
+    color: $bg;
     border: $borderWid solid $borderClr;
-    transition: 0.2s ease-in;
-
-    &:hover{
-        background-color: $clr;
-        color: $bg;
-        border: $borderWid solid $borderClr;
-    }
+  }
 }
 
-
-body{
+body {
   background-color: $sweetWhiteSmokeBlue;
 }
 
-textarea{
+textarea {
   resize: none;
 }
 
@@ -86,7 +84,7 @@ textarea{
 }
 
 button {
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   outline: none;
 
   &:disabled,
@@ -110,14 +108,14 @@ button.btn-dt-refresh {
   transition: 0.2s ease-out;
   box-shadow: 2px 3px 5px rgba($color: #000000, $alpha: 0.25);
 
-  &:hover{
+  &:hover {
     background-color: rgba($warning, 0.35);
     color: $dark;
     border: 1px solid $dark;
   }
 }
 
-.btn-bulk-wrapper{
+.btn-bulk-wrapper {
   display: flex;
   flex-wrap: wrap;
 
@@ -127,14 +125,14 @@ button.btn-dt-refresh {
     font-weight: 500;
     transition: 0.2s ease-out;
 
-    &:hover{
+    &:hover {
       background-color: $clr;
       color: #fff;
     }
   }
 
   button.bulk-delete {
-   @include btn_bulk_fn($danger);
+    @include btn_bulk_fn($danger);
   }
 
   button.bulk-move {
@@ -146,59 +144,68 @@ button.btn-dt-refresh {
   }
 }
 
-table{
+table {
   background-color: transparent !important;
   transition: 0.7s ease-in;
   padding: 1em 2em;
-  box-shadow: 2px 2px 4px rgba($color: #000000, $alpha: 0.25), -2px -2px 4px rgba($color: #000000, $alpha: 0.25);
+  box-shadow: 2px 2px 4px rgba($color: #000000, $alpha: 0.25),
+    -2px -2px 4px rgba($color: #000000, $alpha: 0.25);
   font-size: 14px;
 
   button {
     outline: none;
   }
 
-  .btn-item-edit,.btn-item-delete, .btn-item-product_list, .btn-item-move {
+  .btn-item-edit,
+  .btn-item-delete,
+  .btn-item-product_list,
+  .btn-item-move {
     border-radius: 100%;
   }
 
-  .btn-item-edit {
-    @include invertOnHover(#fff, $dark)
+  .btn-item-edit:enabled {
+    @include invertOnHover(#fff, $dark);
   }
 
-  .btn-item-move {
-    @include invertOnHover(#fff, $primary)
+  .btn-item-move:enabled {
+    @include invertOnHover(#fff, $primary);
   }
 
-  .btn-item-delete {
-    @include invertOnHover(#fff, $danger)
+  .btn-item-delete:enabled {
+    @include invertOnHover(#fff, $danger);
   }
 
-  .btn-item-product_list {
-    @include invertOnHover(#fff, $orange)
+  .btn-item-out-of-stock:enabled {
+    @include invertOnHover(#fff, $indigo);
   }
 
-  th{
+  .btn-item-product_list:enabled {
+    @include invertOnHover(#fff, $orange);
+  }
+
+  th {
     text-transform: capitalize;
-    font-family: 'Roboto' sans-serif;
+    font-family: "Roboto" sans-serif;
     font-weight: 500;
   }
 
-  &:hover{
-    tr:hover{
+  &:hover {
+    tr:hover {
       background-color: whitesmoke !important;
       box-shadow: 0.1px 0.1px 0.1px rgba($color: #000000, $alpha: 0.1);
     }
   }
 }
 
-.pagination{
+.pagination {
   width: 100%;
   border-radius: 10px;
   padding: 0.75em;
-  box-shadow: 1px 1px 1px rgba($color: #000000, $alpha: 0.15), -1px -1px 1px rgba($color: #000000, $alpha: 0.15, );
+  box-shadow: 1px 1px 1px rgba($color: #000000, $alpha: 0.15),
+    -1px -1px 1px rgba($color: #000000, $alpha: 0.15);
 
-  span.pagination-nav{
-    $pd:1em;
+  span.pagination-nav {
+    $pd: 1em;
     $py: $pd * 0.5;
     $px: $pd;
     padding: $py $px;
@@ -207,19 +214,19 @@ table{
     border-bottom: 1px solid transparent;
     margin: auto 0.5em;
 
-    &.active{
+    &.active {
       background-color: $success;
       color: white;
       border-radius: 4px;
       font-weight: bold;
       cursor: default;
 
-      &:hover{
+      &:hover {
         border-bottom: 1px solid transparent;
       }
     }
 
-    &:hover{
+    &:hover {
       border-bottom: 1px solid $success;
     }
   }
@@ -229,7 +236,8 @@ table{
   display: flex;
   flex-wrap: wrap;
 
-  .dataTables_filter, table.dataTable {
+  .dataTables_filter,
+  table.dataTable {
     width: 100%;
   }
   .dataTables_filter {
@@ -248,7 +256,8 @@ table{
     order: -1;
   }
 
-  .dataTables_length, .dataTables_info {
+  .dataTables_length,
+  .dataTables_info {
     margin: auto 10px auto 0 !important;
     float: none !important;
     float: none !important;
@@ -269,10 +278,11 @@ table{
     float: none !important;
     margin: auto 0px auto 10px !important;
     border-radius: 10px !important;
-    box-shadow: 1px 1px 1px rgba($color: #000000, $alpha: 0.15), -1px -1px 1px rgba($color: #000000, $alpha: 0.15, ) !important;
+    box-shadow: 1px 1px 1px rgba($color: #000000, $alpha: 0.15),
+      -1px -1px 1px rgba($color: #000000, $alpha: 0.15) !important;
 
     .paginate_button {
-      $pd:1em;
+      $pd: 1em;
       $py: $pd * 0.5;
       $px: $pd;
       padding: $py $px !important;

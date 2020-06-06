@@ -51,6 +51,7 @@ export class LoginComponent implements OnInit {
       }
     },
     r => {
+      this.blockUI.stop();
       this.msg = 'Email or Password is incorrect.';
     });
   }

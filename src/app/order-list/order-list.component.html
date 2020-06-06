@@ -156,9 +156,12 @@
                   <div class="order-item-img-name-container">
                     <div class="d-flex flex-wrap">
                       <img src="{{item?.images[0]?.thumbnail || '/assets/images/product-1.png' }}" alt="image of {{ 'item.produc' }}">
-                      <a [routerLink]='["/product", item?.product_id]' class="order-item-name text-capitalize">
+                      <a *ngIf="!item.deleted_at" [routerLink]='["/product", item?.product_id]' class="order-item-name text-capitalize">
                         {{ item?.product }}
                       </a>
+                      <p *ngIf="item.deleted_at" class="order-item-name">
+                        <span class="text-capitalize">{{ item?.product }} </span><small class="text-danger">(This product was deleted on {{item.deleted_at | date}})</small>
+                      </p>
                     </div>
                   </div>
                   <div class="order-item-price-container">

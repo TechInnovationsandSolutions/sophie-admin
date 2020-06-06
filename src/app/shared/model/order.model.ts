@@ -24,6 +24,7 @@ export interface IOrderItem {
   images: IOrderImage[];
   product: string;
   quantity: number;
+  deleted_at: string;
 }
 
 export interface IOrder {

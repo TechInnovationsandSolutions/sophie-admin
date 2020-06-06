@@ -200,6 +200,53 @@ export class ListProductComponent implements OnInit {
     });
   }
 
+  makeThisProductOutOfStock(product: IProduct) {
+    product.discount = ((product.cost - product.reduced_cost)/product.cost).toString();
+    if (product.quantity < 1) {
+      Swal.fire('No Quantity', product.name + ' has no quantity and hence cannot be made out of stock', 'info');
+      return;
+    }
+
+    Swal.fire({
+      title: 'Confirmation',
+      text: 'You want to make ' + product.name + ' product as out of stock?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, Make out of stock!',
+      cancelButtonText: 'No, cancel!',
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#28a745'
+    }).then((result) => {
+      if (result.value) {
+        this.blockUI.start('Processing...');
+        this.service.setProductToOutOfStock(product).then(() => {
+          this.blockUI.stop();
+          Swal.fire(
+            'Successful!',
+            'Product ' + product.name + 'has been made out of stock.',
+            'success'
+          ).then(() => {
+            // location.reload();
+            product.quantity = 0;
+          });
+        }).catch(err => Swal.fire({
+          title: 'Error',
+          icon: 'error',
+          text: err
+        }));
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        Swal.fire(
+          'Cancelled',
+          'operation aborted',
+          'info'
+        );
+      }
+    });
+  }
+
   getNewCatOpts(arr: number[]) {
     const inpOpts = {};
     const idArry = this.categories.map(c => c.id);

@@ -34,6 +34,8 @@
           <th>cost</th>
           <th>reduced cost</th>
           <th>discount</th>
+          <th>quantity</th>
+          <th></th>
           <th></th>
           <th></th>
           <th></th>
@@ -76,7 +78,12 @@
           </td>
           <td data-field="product-discount">
             <span class="product-discount">
-              {{product?.discount}}
+              {{product?.reduced_cost ? product?.discount : '-'}}
+            </span>
+          </td>
+          <td data-field="product-quantity">
+            <span class="product-quantity">
+              {{product?.quantity}}
             </span>
           </td>
           <td data-field="view-product">
@@ -97,6 +104,13 @@
             <span class="move-product">
               <button title="click to move product to another category" class="btn-item-move btn" (click)="moveThisProduct(product)">
                 <i class="fas fa-share"></i>
+              </button>
+            </span>
+          </td>
+          <td data-field="set-out-of-stock-product">
+            <span class="set-out-of-stock-product">
+              <button title="click to mark product as out of stock" class="btn-item-out-of-stock btn" (click)="makeThisProductOutOfStock(product)" [disabled] = "!product.quantity">
+                <i class="fas fa-download"></i>
               </button>
             </span>
           </td>

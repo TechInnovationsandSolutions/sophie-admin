@@ -4,7 +4,7 @@
       Edit
     </button>
   </div>
-  <form [formGroup]="productForm" (ngSubmit)="onSubmit(productForm.value, $event)">
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit(productForm.value)">
     <fieldset [disabled]="isOnView">
       <div class="form-group">
         <label for="productName">Products Name <span class="text-danger">*</span></label>

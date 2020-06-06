@@ -19,6 +19,7 @@ export class CreateCategoryComponent implements OnInit {
   });
 
   isCreate =  true;
+  isImgUpdate = false;
   showInputFile =  true;
   showPreloader = true;
   @BlockUI() blockUI: NgBlockUI;
@@ -43,12 +44,12 @@ export class CreateCategoryComponent implements OnInit {
 
         setTimeout(() => {
           const imgElem = document.getElementById('imgPreview') as HTMLImageElement;
-          console.log('imhh', imgElem);
+          // console.log('imhh', imgElem);
           imgElem.src = theCategory.image;
           this.showInputFile = false;
          }, 500);
 
-        console.log(this.categoryForm.value, this.categoryForm.valid);
+        // console.log(this.categoryForm.value, this.categoryForm.valid);
 
         this.showPreloader = false;
         this.isCreate = false;
@@ -69,20 +70,20 @@ export class CreateCategoryComponent implements OnInit {
       const [file] = event.target.files;
       reader.readAsDataURL(file);
 
-      // console.log('file',file)
-      // console.log('reader',reader)
-      console.log('file URL', URL.createObjectURL(file));
+      // // console.log('file',file)
+      // // console.log('reader',reader)
+      // console.log('file URL', URL.createObjectURL(file));
 
       reader.onload = () => {
         this.categoryForm.patchValue({
           image: reader.result
        });
 
-        console.log('frm', this.categoryForm.value);
+        // console.log('frm', this.categoryForm.value);
 
         setTimeout(() => {
         const imgElem = document.getElementById('imgPreview') as HTMLImageElement;
-        console.log('imhh', imgElem);
+        // console.log('imhh', imgElem);
         imgElem.src = URL.createObjectURL(file);
         this.showInputFile = false;
        }, 500);
@@ -99,11 +100,12 @@ export class CreateCategoryComponent implements OnInit {
     });
 
     this.showInputFile = true;
+    this.isImgUpdate = true;
 
     const imgElem = document.getElementById('imgPreview') as HTMLInputElement;
     imgElem.setAttribute('value', '');
 
-    console.log('frm', this.categoryForm.value);
+    // console.log('frm', this.categoryForm.value);
   }
 
   createNewCategory(category: ICategory) {
@@ -156,7 +158,7 @@ export class CreateCategoryComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.blockUI.start('Updating Category ' + category.name);
-        this.serv.updateCategory(category).then(res => {
+        this.serv.updateCategory(category, this.isImgUpdate).then(res => {
           this.blockUI.stop();
 
           Swal.fire(
@@ -183,7 +185,7 @@ export class CreateCategoryComponent implements OnInit {
 
   onSubmit(formValue) {
     // e.preventDefault();
-    // console.log(this.swal)
+    // // console.log(this.swal)
     formValue.slug = this.getSlug(formValue.name);
 
     this.isCreate ? this.createNewCategory(formValue) : this.updateNewCategory(formValue);

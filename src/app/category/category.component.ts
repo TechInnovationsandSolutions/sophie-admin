@@ -13,8 +13,8 @@ export class CategoryComponent implements OnInit {
 
   ngOnInit() {
     if (this.route.snapshot.params) {
-      let fn = this.route.snapshot.params.fn;
-      if (fn == 'add' || fn == 'edit') {
+      const fn = this.route.snapshot.params.fn;
+      if (fn === 'add' || fn === 'edit') {
         this.isAddCategory = true;
       } else {
         this.router.navigate(['/categories']);

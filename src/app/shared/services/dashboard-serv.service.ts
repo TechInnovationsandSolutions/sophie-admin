@@ -249,12 +249,12 @@ export class DashboardServService {
         params: new HttpParams().set('page', param)
       }).subscribe(
         res => {
-          console.log('opo', res);
+          // console.log('opo', res);
           if (res.status === 'success') {
             const response = res.data;
-            console.log('response', response);
+            // console.log('response', response);
             response.pg = this.numberOfProductPages(response.total);
-            console.log('kajd', response);
+            // console.log('kajd', response);
             resolve(response);
           }
         },
@@ -378,6 +378,7 @@ export class DashboardServService {
       }).subscribe(resp => {
         const response = resp as any;
         // console.log('cloudy', response);
+        console.log('create product', product);
 
         // tslint:disable-next-line: max-line-length
         const imgThumbnail = this.makeThumbnail(response);
@@ -431,7 +432,7 @@ export class DashboardServService {
         }
       ).subscribe(resp => {
         const response = resp as any;
-        // console.log('cloudy', response);
+        // console.log('update product', product);
 
         // tslint:disable-next-line: max-line-length
         const imgThumbnail = this.makeThumbnail(response);
@@ -467,6 +468,22 @@ export class DashboardServService {
         );
       });
     });
+  }
+
+  setProductToOutOfStock(product: IProduct) {
+    const token = this.getToken();
+    return this.http.put<any>(this._url + 'products/' + product.id, {
+      name: product.name,
+      category_id: product.category.id,
+      description: product.description,
+      excerpts: product.excerpt,
+      cost: product.cost,
+      discount: +product.discount.substring(0, product.discount.length - 1),
+      quantity: 0
+    },
+    {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+    }).toPromise();
   }
 
   updateProductCategory(product: IProduct, newCategoryId: number) {

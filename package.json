@@ -25,7 +25,7 @@
     "@types/crypto-js": "^3.1.47",
     "angular-datatables": "^8.0.0",
     "bootstrap": "^4.4.1",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "cloudinary-core": "^2.8.1",
     "crypto-js": "^4.0.0",
     "datatables.net": "^1.10.21",

@@ -19,7 +19,7 @@ export class DashboardServService {
   constructor(private http: HttpClient, private router: Router) {}
 
   // tslint:disable-next-line: variable-name
-  _url = "http://ec2-52-87-173-131.compute-1.amazonaws.com/"; // Base URL
+  _url = "http://ec2-52-87-173-131.compute-1.amazonaws.com/api/v1/"; // Base URL
   cloudinary = cloudinaryConfig;
 
   // Temporary data

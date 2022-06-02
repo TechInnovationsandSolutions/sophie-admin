@@ -126,7 +126,7 @@ const matModule = [
   imports: [
     BrowserModule,
     CommonModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' }),
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,

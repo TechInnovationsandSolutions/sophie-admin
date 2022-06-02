@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardServService, ICategory } from 'src/app/shared';
@@ -24,7 +24,7 @@ export class CreateCategoryComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private cd: ChangeDetectorRef,
     private route: ActivatedRoute,
     private serv: DashboardServService,

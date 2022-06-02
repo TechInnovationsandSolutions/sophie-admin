@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ICategory, DashboardServService, IProduct, ITag } from './../../shared';
-import { FormBuilder, Validators, FormArray, FormControl, ValidatorFn, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, Validators, UntypedFormArray, UntypedFormControl, ValidatorFn, UntypedFormGroup } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
@@ -11,7 +11,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
   styleUrls: ['./create-product.component.scss']
 })
 export class CreateProductComponent implements OnInit {
-  productForm: FormGroup;
+  productForm: UntypedFormGroup;
 
   isCreate =  true;
   showInputFile =  true;
@@ -25,7 +25,7 @@ export class CreateProductComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private cd: ChangeDetectorRef,
     private route: ActivatedRoute,
     private serv: DashboardServService,
@@ -95,7 +95,7 @@ export class CreateProductComponent implements OnInit {
           });
           console.log('product tag', theProduct.tags);
           if (theProduct && theProduct.tags) {
-            const formArray: FormArray = this.productForm.get('productTags') as FormArray;
+            const formArray: UntypedFormArray = this.productForm.get('productTags') as UntypedFormArray;
             theProduct.tags.forEach(tag => {
               formArray.push(this.fb.control(tag.name));
             });
@@ -174,7 +174,7 @@ export class CreateProductComponent implements OnInit {
     return discount === 1 ? 0 : discount;
   }
 
-  comparePromoPrice(formgroup: FormGroup) {
+  comparePromoPrice(formgroup: UntypedFormGroup) {
     const promoPrice = formgroup.controls.productPromoPrice.value;
     const price = formgroup.controls.productPrice.value;
     return (promoPrice <= price ) ? null : {promoIsMore: true};
@@ -316,7 +316,7 @@ export class CreateProductComponent implements OnInit {
 
   onTagCheck(event) {
     // console.log('event', event, this.updateProductTag);
-    const formArray: FormArray = this.productForm.get('productTags') as FormArray;
+    const formArray: UntypedFormArray = this.productForm.get('productTags') as UntypedFormArray;
 
   /* Selected */
     if (event.target.checked) {
@@ -329,7 +329,7 @@ export class CreateProductComponent implements OnInit {
 
       console.log(event.target.name  + ' was unchecked');
 
-      formArray.controls.forEach((ctrl: FormControl) => {
+      formArray.controls.forEach((ctrl: UntypedFormControl) => {
         if (ctrl.value === event.target.value) {
           // Remove the unselected element from the arrayForm
           formArray.removeAt(i);
@@ -349,7 +349,7 @@ export class CreateProductComponent implements OnInit {
 
   validateTagFormArray() {
     const min = 1; // Minimum selection.
-    const validator: ValidatorFn = (formArray: FormArray) => {
+    const validator: ValidatorFn = (formArray: UntypedFormArray) => {
       const totalSelected = formArray.controls
         // get a list of checkbox values (boolean)
         .map(control => control.value)

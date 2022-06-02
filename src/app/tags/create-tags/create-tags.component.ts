@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
 import { DashboardServService, ITag } from 'src/app/shared';
@@ -12,7 +12,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 })
 export class CreateTagsComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private cd: ChangeDetectorRef, private route: ActivatedRoute, private serv: DashboardServService) { }
+  constructor(private fb: UntypedFormBuilder, private cd: ChangeDetectorRef, private route: ActivatedRoute, private serv: DashboardServService) { }
 
   tagForm = this.fb.group({
     name: ['', Validators.required],

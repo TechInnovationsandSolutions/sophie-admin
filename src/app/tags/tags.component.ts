@@ -15,7 +15,7 @@ export class TagsComponent implements OnInit {
   ngOnInit() {
     if (this.route.snapshot.params) {
       const fn = this.route.snapshot.params.fn;
-      if (fn == 'add' || fn == 'edit') {
+      if (fn === 'add' || fn === 'edit') {
         this.isAddTag = true;
       } else {
         this.router.navigate(['/tags']);

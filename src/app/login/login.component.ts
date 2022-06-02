@@ -44,13 +44,14 @@ export class LoginComponent implements OnInit {
     this.auth.login(email, password).then(r => {
       this.blockUI.stop();
       if (r.data.token && r.data.is_admin) {
-        this.serv.setToken(r.data.token);
+        this.auth.setToken(r.data.token, email);
         this.router.navigateByUrl(this.url_route);
       } else {
         this.msg = 'Email or Password is incorrect.';
       }
     },
     r => {
+      this.blockUI.stop();
       this.msg = 'Email or Password is incorrect.';
     });
   }

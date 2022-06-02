@@ -32,7 +32,7 @@ export class CategoryListComponent implements OnInit {
   ngOnInit() {
     this.serv.getCatgories().then(res => {
       this.categories = res as ICategory[];
-      console.log('this.categories', this.categories);
+      // console.log('this.categories', this.categories);
 
 
       this.chRef.detectChanges();
@@ -49,7 +49,7 @@ export class CategoryListComponent implements OnInit {
   }
 
   editCategory(cat: ICategory) {
-    console.log(cat);
+    // console.log(cat);
     this.serv._category = cat;
     this.router.navigate(['/category/edit'], {
       queryParams: {
@@ -81,7 +81,7 @@ export class CategoryListComponent implements OnInit {
       const no = productList.length;
       const serviceGuy = this.serv;
       const domMan = this.domManipulation;
-      console.log('productList', productList);
+      // console.log('productList', productList);
 
       this.domManipulation.initialBulkAction(no, 'Moving Products to ' + newCat.name);
       try {
@@ -97,15 +97,15 @@ export class CategoryListComponent implements OnInit {
               const id = product.id;
               // tslint:disable-next-line: variable-name
               const prodName = product.name;
-              console.log('hollq!', id);
+              // console.log('hollq!', id);
               await serviceGuy.updateProductCategory(product, newCat.id).then(res => {
-                console.log('b4 Gosh Res updateProd', res);
+                // console.log('b4 Gosh Res updateProd', res);
                 if (res) {
                   return res;
                 }
               })
               .then(resp => {
-                // console.log('b4 Gosh', resp);
+                // // console.log('b4 Gosh', resp);
                 resultMsg.push({
                   username: prodName,
                   msg: resp
@@ -118,7 +118,7 @@ export class CategoryListComponent implements OnInit {
         aProm.then(res => {
           domMan.terminateBulkAction();
           const resp = res as any[];
-          console.log('resultMsg Gosh!', resp);
+          // console.log('resultMsg Gosh!', resp);
           if (resp) {
             let messageFails = [];
             messageFails = resp.filter(r => r.msg.status !== 'success');
@@ -191,7 +191,7 @@ export class CategoryListComponent implements OnInit {
         const noProd = products.length;
         const inpOptsObj = this.getNewCatOpts([cat.id]);
         if (noProd) {
-          console.log(categoryName + ' products', products);
+          // console.log(categoryName + ' products', products);
           const catLink = ['category', cat.id, 'products?page=1'].join('/');
           Swal.fire({
             title: 'Move ' + noProd + ' product' + (noProd > 1 ? 's' : '') + 'of ' + categoryName,
@@ -250,7 +250,7 @@ export class CategoryListComponent implements OnInit {
         .then(result => {
           if (result.value) {
             this.moveCategoryProducts(cat).then((r: any) => {
-              console.log(r);
+              // console.log(r);
               if (r && r.canDelete) {
                 this.deleteCategory(cat);
               }
@@ -272,7 +272,7 @@ export class CategoryListComponent implements OnInit {
   }
 
   deleteCategory(cat: ICategory) {
-    console.log(cat);
+    // console.log(cat);
 
     Swal.fire({
       title: 'Confirmation',
@@ -321,9 +321,9 @@ export class CategoryListComponent implements OnInit {
   }
 
   onCategoryChecked(categoryId: ICategory, e) {
-    console.log(categoryId, e, e.target.checked);
+    // console.log(categoryId, e, e.target.checked);
     const isInCheckList = this.selectedCheckbox.indexOf(categoryId);
-    console.log('isInCheckList', isInCheckList, 'then', !isInCheckList);
+    // console.log('isInCheckList', isInCheckList, 'then', !isInCheckList);
 
     if (e.target.checked === true && isInCheckList === -1) {
       this.selectedCheckbox.push(categoryId);
@@ -333,7 +333,7 @@ export class CategoryListComponent implements OnInit {
       this.selectedCheckbox.splice(isInCheckList, 1);
     }
 
-    console.log('this.selectedCheckbox', this.selectedCheckbox);
+    // console.log('this.selectedCheckbox', this.selectedCheckbox);
   }
 
   unCheckChecked() {
@@ -370,7 +370,7 @@ export class CategoryListComponent implements OnInit {
               const resultMsg = [];
               // tslint:disable-next-line: only-arrow-functions
               (async function() {
-                console.log('async', selectdCats);
+                // console.log('async', selectdCats);
                 // tslint:disable-next-line: prefer-for-of
                 for (let i = 0; i < selectdCats.length; i++) {
                   domMan.updateBulkActionValue(i + 1);
@@ -378,7 +378,7 @@ export class CategoryListComponent implements OnInit {
                   const id = obj.id;
                   // tslint:disable-next-line: variable-name
                   const az_name = obj.name;
-                  console.log('hollq!', id);
+                  // console.log('hollq!', id);
                   await serviceGuy.checkIfCategoryhasProducts(id.toString()).then(res => {
                     const resp = res as any;
                     const noProd = (res as any).total;
@@ -394,7 +394,7 @@ export class CategoryListComponent implements OnInit {
                     }
                   })
                   .then(resp => {
-                    // console.log('b4 Gosh', resp);
+                    // // console.log('b4 Gosh', resp);
                     resultMsg.push({
                       username: az_name,
                       msg: resp
@@ -407,7 +407,7 @@ export class CategoryListComponent implements OnInit {
             aProm.then(res => {
               domMan.terminateBulkAction();
               const resp = res as any[];
-              console.log('Gosh!', resp);
+              // console.log('Gosh!', resp);
               if (resp) {
                 let messageFails = [];
                 messageFails = resp.filter(r => r.msg &&  r.msg.status !== 'success');
@@ -522,7 +522,7 @@ export class CategoryListComponent implements OnInit {
               const productsArr: IProduct[] = [];
               // tslint:disable-next-line: only-arrow-functions
               (async function() {
-                console.log('async', selectdCats);
+                // console.log('async', selectdCats);
                 // tslint:disable-next-line: prefer-for-of
                 for (let i = 0; i < selectdCats.length; i++) {
                   domMan.updateBulkActionValue(i + 1);
@@ -542,7 +542,7 @@ export class CategoryListComponent implements OnInit {
             aProm.then(products => {
               domMan.terminateBulkAction();
               const resp = products as IProduct[];
-              console.log('Gosh! select move', resp);
+              // console.log('Gosh! select move', resp);
               this.moveProducts(resp, theSelectedCat);
               uncheck();
             });

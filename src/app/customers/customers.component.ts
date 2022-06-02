@@ -29,11 +29,11 @@ export class CustomersComponent implements OnInit {
       // this.unSortrdCustomers = res as ICustomer[];
       // this.customers = this.unSortrdCustomers.slice();
       this.customers = res as ICustomer[];
-      console.log('this.customers', this.customers);
+      // console.log('this.customers', this.customers);
       this.showPreloader = false;
-      console.log(this.dataSource);
-    }).then(() => {
       // console.log(this.dataSource);
+    }).then(() => {
+      // // console.log(this.dataSource);
       this.dataSource = new MatTableDataSource(this.customers);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
@@ -41,11 +41,11 @@ export class CustomersComponent implements OnInit {
   }
 
   getCustomerOrders(customer: ICustomer) {
-    console.log('this customer', customer);
+    // console.log('this customer', customer);
   }
 
   sortData(sort: Sort) {
-    console.log(sort);
+    // console.log(sort);
     const data = this.customers.slice();
     if (!sort.active || sort.direction === '') {
       this.customers = data;
@@ -63,7 +63,7 @@ export class CustomersComponent implements OnInit {
       }
     });
 
-    // console.log('sprrt', this.customers);
+    // // console.log('sprrt', this.customers);
     // this.dataSource = new MatTableDataSource(this.customers);
   }
 

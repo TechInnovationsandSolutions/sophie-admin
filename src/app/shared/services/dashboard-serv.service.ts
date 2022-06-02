@@ -8,6 +8,7 @@ import {
 import { Router } from "@angular/router";
 import { ICategory, IProduct, ITag } from "../model";
 import { cloudinaryConfig } from "./../../configs";
+import { AuthService } from "./auth.service";
 
 const TOKEN = "x-admin-token";
 
@@ -16,7 +17,7 @@ const TOKEN = "x-admin-token";
 })
 export class DashboardServService {
   private pageNoOfProduct = 20;
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private auth:AuthService) {}
 
   // tslint:disable-next-line: variable-name
   _url = "http://ec2-52-87-173-131.compute-1.amazonaws.com/"; // Base URL
@@ -30,20 +31,16 @@ export class DashboardServService {
   // tslint:disable-next-line: variable-name
   _tag: ITag;
 
-  setToken(token: string): void {
-    localStorage.setItem(TOKEN, token);
-  }
-
   getToken() {
-    return localStorage.getItem(TOKEN);
+    return this.auth.getToken();
   }
 
   removeToken() {
-    localStorage.removeItem(TOKEN);
+    this.auth.removeToken();
   }
 
   isLogged() {
-    return localStorage.getItem(TOKEN) != null;
+    return this.getToken() != null;
   }
 
   backToLogin() {
@@ -80,7 +77,7 @@ export class DashboardServService {
           }
         },
         (err: HttpErrorResponse) => {
-          console.log(err);
+          // console.log(err);
           if (err.status === 401) {
             this.removeToken();
             // route guard handles the redirection
@@ -101,7 +98,7 @@ export class DashboardServService {
           }
         },
         (err: HttpErrorResponse) => {
-          console.log(err);
+          // console.log(err);
           if (err.status === 401) {
             this.removeToken();
             // route guard handles the redirection
@@ -266,7 +263,7 @@ export class DashboardServService {
             }
           },
           (err: HttpErrorResponse) => {
-            console.log(err);
+            // console.log(err);
             if (err.status === 401) {
               this.removeToken();
               // route guard handles the redirection
@@ -401,7 +398,7 @@ export class DashboardServService {
           }
         },
         (err: HttpErrorResponse) => {
-          console.log(err);
+          // console.log(err);
           if (err.status === 401) {
             this.removeToken();
             // route guard handles the redirection
@@ -568,7 +565,7 @@ export class DashboardServService {
             }
           },
           (err: HttpErrorResponse) => {
-            console.log(err.error);
+            // console.log(err.error);
           }
         );
     });
@@ -743,7 +740,7 @@ export class DashboardServService {
           }
         },
         (err: HttpErrorResponse) => {
-          console.log(err);
+          // console.log(err);
           if (err.status === 401) {
             this.removeToken();
             // route guard handles the redirection

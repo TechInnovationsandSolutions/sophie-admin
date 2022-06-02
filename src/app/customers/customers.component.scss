@@ -1,4 +1,15 @@
-@import './../app.component.scss';
+@mixin invertOnHover($bg: #000, $clr: #fff, $borderClr: $bg, $borderWid: 1px) {
+  background-color: $bg;
+  color: $clr;
+  border: $borderWid solid $borderClr;
+  transition: 0.2s ease-in;
+
+  &:hover {
+    background-color: $clr;
+    color: $bg;
+    border: $borderWid solid $borderClr;
+  }
+}
 
 table {
   width: 100%;
@@ -8,12 +19,12 @@ th.mat-sort-header-sorted {
   color: black;
 }
 
-.btn-customer-product_list{
+.btn-customer-product_list {
   @include invertOnHover(#fff, $purple);
   display: flex;
   padding: 0.75em;
 }
 
-.btn-customer-product_list{
+.btn-customer-product_list {
   border-radius: 100%;
 }

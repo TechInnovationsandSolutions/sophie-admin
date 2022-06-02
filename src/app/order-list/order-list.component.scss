@@ -1,14 +1,50 @@
-@import './../app.component.scss';
+$smokeyWhite: #f5f4f4;
+$sophiePink: #ffd9e8;
+$placeHolderAsh: #afa7a7;
+$placeHolderForm: #787a7c;
+$iconColor: #544f4f;
+$iconHoverColor: #007bff;
+$limeGreen: #2c9412;
+
+//Bootstrap 4 colors
+$primary: #007bff !default; // primary
+$indigo: #6610f2 !default;
+$purple: #6f42c1 !default;
+$pink: #e83e8c !default;
+$danger: #dc3545 !default; // danger
+$orange: #fd7e14 !default;
+$warning: #ffc107 !default; // warning
+$success: #28a745 !default; // success
+$teal: #20c997 !default;
+$cyan: #17a2b8 !default; // info
+
+// Grays
+$white: #fff !default;
+$gray-100: #f8f9fa !default; // light
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$secondary: #868e96 !default; // secondary
+$gray-700: #495057 !default;
+$dark: #343a40 !default; // dark
+$gray-900: #212529 !default;
+$black: #000 !default;
+
+//My colors
+$sweetWhiteSmokeBlue: #f2f3f7;
 
 .orders {
   .order {
-    box-shadow: 1px 1px 2px rgba($color: #000000, $alpha: 0.25), -1px -1px 2px rgba($color: #000000, $alpha: 0.25);
+    box-shadow: 1px 1px 2px rgba($color: #000000, $alpha: 0.25),
+      -1px -1px 2px rgba($color: #000000, $alpha: 0.25);
     border-radius: 10px;
     transition: 0.3s ease-in;
 
     &:hover {
       border-color: $sophiePink;
-      box-shadow: 2px 2px 5px rgba($color: #000000, $alpha: 0.25), -2px 2px 5px rgba($color: #000000, $alpha: 0.25);
+      box-shadow: 2px 2px 5px rgba($color: #000000, $alpha: 0.25),
+        -2px 2px 5px rgba($color: #000000, $alpha: 0.25);
       transform: translateY(-1px);
       cursor: pointer;
     }
@@ -47,7 +83,8 @@
       }
     }
 
-    .order-ref, .order-amt {
+    .order-ref,
+    .order-amt {
       font-size: 1.2em;
 
       span {
@@ -90,7 +127,7 @@
 
     .btn-set-fn_container {
       $br: 10px;
-      box-shadow: 2px 2px 3px rgba(0,0,0,0.25);
+      box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.25);
       border-radius: $br;
 
       .btn-set-fn {
@@ -139,8 +176,10 @@
 }
 
 .order-items {
-  .order-product-title, .order-product-container {
-    @include maxWidth();
+  .order-product-title,
+  .order-product-container {
+    width: 100%;
+    max-width: 100%;
   }
 
   .order-product-title {
@@ -149,8 +188,12 @@
     font-size: 0.875em;
     text-align: center;
 
-    .title-detail, .title-price, .title-quantity, .title-total {
-      @include maxWidth();
+    .title-detail,
+    .title-price,
+    .title-quantity,
+    .title-total {
+      width: 100%;
+      max-width: 100%;
       color: rgba($color: #000000, $alpha: 0.6);
     }
 
@@ -173,21 +216,34 @@
 
   .order-product-container {
     margin: 0.5em auto;
-    @include maxWidthFlexWrap();
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
 
     .order-item-detail {
-      @include maxWidthFlexWrap();
+      width: 100%;
+      max-width: 100%;
+      display: flex;
+      flex-wrap: wrap;
       padding: 1em 0;
       display: grid;
       grid-template-columns: 30% 23% 20% 27%;
-      $fontSize:  0.75em;
+      $fontSize: 0.75em;
       font-size: $fontSize;
 
-      .order-item-img-name-container, .order-item-price-container, .order-item-quantity-container, .order-item-total-container {
-        @include maxWidthFlexWrap();
+      .order-item-img-name-container,
+      .order-item-price-container,
+      .order-item-quantity-container,
+      .order-item-total-container {
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        flex-wrap: wrap;
 
         p {
-          @include maxWidth();
+          width: 100%;
+          max-width: 100%;
           padding: 0.375em;
           margin: auto;
           text-align: center;
@@ -197,7 +253,7 @@
       .order-item-img-name-container {
         grid-column: 1/2;
 
-        &>div {
+        & > div {
           margin-left: auto;
           margin-right: auto;
         }
@@ -212,7 +268,8 @@
         }
 
         .order-item-name {
-          @include maxWidth();
+          width: 100%;
+          max-width: 100%;
           text-align: center;
           margin: auto;
           color: #000000;
@@ -223,7 +280,8 @@
         grid-column: 2/3;
 
         span {
-          @include maxWidth();
+          width: 100%;
+          max-width: 100%;
           margin: auto;
           text-align: center;
 
@@ -248,75 +306,75 @@
   }
 }
 
-.no-result{
-    @include flexWrap();
-    margin: auto;
-    padding: 1em 0.5em;
-    width: 80%;
-    max-width: 500px;
-    background-color: fff;
-    // box-shadow: 1px 1px 5px rgba($color: #000000, $alpha: 0.05);
+.no-result {
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+  padding: 1em 0.5em;
+  width: 80%;
+  max-width: 500px;
+  background-color: fff;
+  // box-shadow: 1px 1px 5px rgba($color: #000000, $alpha: 0.05);
 
-    span {
-      font-size: 5em;
-    }
-
-    p {
-      font-size: 1.5em;
-    }
-}
-
-@media screen and (min-width: 768px){
-  .no-result {
-      padding: 3em 2em;
-    }
-
-  .order-items {
-  .order-product-title {
-    font-size: 1.125em;
-    grid-template-columns: 35% 20% 20% 25%;
-
-    p.title-detail {
-      text-align: left;
-    }
+  span {
+    font-size: 5em;
   }
 
-  .order-product-container {
-    .order-item-detail{
+  p {
+    font-size: 1.5em;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .no-result {
+    padding: 3em 2em;
+  }
+
+  .order-items {
+    .order-product-title {
+      font-size: 1.125em;
       grid-template-columns: 35% 20% 20% 25%;
-      $fontSize:  0.875em;
-      font-size: $fontSize;
 
-      .order-item-img-name-container{
-
-        &>div {
-          margin-left: 0;
-        }
-
-        .order-item-name{
-          width: calc(100% - 100px);
-          margin: auto 1em auto auto;
-          text-align: left;
-        }
+      p.title-detail {
+        text-align: left;
       }
+    }
 
-      .order-item-price-container{
-        span{
-          text-align: left;
+    .order-product-container {
+      .order-item-detail {
+        grid-template-columns: 35% 20% 20% 25%;
+        $fontSize: 0.875em;
+        font-size: $fontSize;
 
-          &.order-item-main{
-            font-size: 0.9 * $fontSize;
+        .order-item-img-name-container {
+          & > div {
+            margin-left: 0;
+          }
+
+          .order-item-name {
+            width: calc(100% - 100px);
+            margin: auto 1em auto auto;
+            text-align: left;
+          }
+        }
+
+        .order-item-price-container {
+          span {
+            text-align: left;
+
+            &.order-item-main {
+              font-size: 0.9 * $fontSize;
+            }
           }
         }
       }
     }
   }
-  }
 }
 
 @media screen and (min-width: 1024px) {
-  .order-items{
-    .order-product-title{
+  .order-items {
+    .order-product-title {
       font-size: 1.5em;
     }
   }

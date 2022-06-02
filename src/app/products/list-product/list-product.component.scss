@@ -1,9 +1,10 @@
-@import "./../../app.component.scss";
-
 #product-table {
   tbody tr td {
     span {
-      @include maxWidthFlexWrap();
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 100%;
       height: 100%;
       margin-top: auto;
       margin-bottom: auto;

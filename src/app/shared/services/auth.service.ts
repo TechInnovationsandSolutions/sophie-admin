@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
-import { CrispyService } from './encryption.service';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { Router } from "@angular/router";
+import { CrispyService } from "./encryption.service";
 
-const TOKEN = 'x-admin-token';
-const loco = 'x35&#';
-const polish = 'ad-spt';
+const TOKEN = "x-admin-token";
+const loco = "x35&#";
+const polish = "ad-spt";
 
 @Injectable()
 export class AuthService {
   // tslint:disable-next-line: variable-name
   // _url = 'https://tis-bandb.herokuapp.com/api/v1/';
- _url = 'https://api.sophiesbathandbody.com/api/v1/';
+  _url = "https://api.sophiesbathandbody.com/";
 
   constructor(
     private http: HttpClient,
@@ -31,7 +31,10 @@ export class AuthService {
     const user = localStorage.getItem(polish);
     const tk = localStorage.getItem(user);
     if (user && tk) {
-      const userToken: string = this.crispyService.decryptyCrypto(tk, loco + user);
+      const userToken: string = this.crispyService.decryptyCrypto(
+        tk,
+        loco + user
+      );
       return userToken;
     }
     return;
@@ -42,14 +45,16 @@ export class AuthService {
   }
 
   login(email: string, password: string) {
-    return this.http.post<any>(this._url + 'auth/login', {
-      email,
-      password
-    }).toPromise();
+    return this.http
+      .post<any>(this._url + "auth/login", {
+        email,
+        password,
+      })
+      .toPromise();
   }
 
   logOut() {
     this.removeToken();
-    this.router.navigate(['/login']);
+    this.router.navigate(["/login"]);
   }
 }

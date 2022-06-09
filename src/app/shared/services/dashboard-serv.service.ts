@@ -10,17 +10,19 @@ import { ICategory, IProduct, ITag } from "../model";
 import { cloudinaryConfig } from "./../../configs";
 import { AuthService } from "./auth.service";
 
-const TOKEN = "x-admin-token";
-
 @Injectable({
   providedIn: "root",
 })
 export class DashboardServService {
   private pageNoOfProduct = 20;
-  constructor(private http: HttpClient, private router: Router, private auth:AuthService) {}
+  constructor(
+    private auth: AuthService,
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   // tslint:disable-next-line: variable-name
-  _url = "http://ec2-52-87-173-131.compute-1.amazonaws.com/"; // Base URL
+  _url = this.auth._url; // Base URL
   cloudinary = cloudinaryConfig;
 
   // Temporary data
@@ -66,7 +68,7 @@ export class DashboardServService {
     return new Promise((resolve, reject) => {
       this.http.get<any>(this._url + "categories/" + id).subscribe(
         (res) => {
-          console.log(res);
+          // console.log(res);
           if (res.status === "success") {
             resolve(res.data);
           } else if (res.code === 401) {
@@ -92,7 +94,7 @@ export class DashboardServService {
     return new Promise((resolve) => {
       this.http.get<any>(this._url + "categories").subscribe(
         (res) => {
-          console.log(res);
+          // console.log(res);
           if (res.status === "success") {
             resolve(res.data);
           }
@@ -124,7 +126,7 @@ export class DashboardServService {
         )
         .subscribe((resp) => {
           const response = resp as any;
-          console.log("cloudy", response);
+          // console.log('cloudy', response);
 
           // tslint:disable-next-line: max-line-length
           const imgThumbnail = this.makeThumbnail(response);
@@ -149,13 +151,13 @@ export class DashboardServService {
             )
             .subscribe(
               (res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.status === "success") {
                   resolve(res);
                 }
               },
               (err: HttpErrorResponse) => {
-                console.log(err);
+                // console.log(err);
                 if (err.status === 401) {
                   this.removeToken();
                   this.backToLogin();
@@ -166,7 +168,9 @@ export class DashboardServService {
     });
   }
 
-  updateCategory(category: ICategory) {
+  updateCategory(category: ICategory, isImgUpdate: boolean) {
+    const fileName: string =
+      category.name + (isImgUpdate ? Date.now().toString() : "");
     return new Promise((resolve) => {
       this.http
         .post(
@@ -175,13 +179,13 @@ export class DashboardServService {
             "/image/upload/",
           {
             file: category.image,
-            public_id: "category-" + category.name,
+            public_id: "category-" + fileName,
             upload_preset: cloudinaryConfig.upload_preset,
           }
         )
         .subscribe((resp) => {
           const response = resp as any;
-          console.log("cloudy", response);
+          // console.log('cloudy', response);
 
           // tslint:disable-next-line: max-line-length
           const imgThumbnail = this.makeThumbnail(response);
@@ -206,13 +210,13 @@ export class DashboardServService {
             )
             .subscribe(
               (res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.status === "success") {
                   resolve(res);
                 }
               },
               (err: HttpErrorResponse) => {
-                console.log(err);
+                // console.log(err);
                 if (err.status === 401) {
                   this.removeToken();
                   this.backToLogin();
@@ -231,13 +235,13 @@ export class DashboardServService {
         })
         .subscribe(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.status === "success") {
               resolve(res.data);
             }
           },
           (err: HttpErrorResponse) => {
-            console.log(err);
+            // console.log(err);
             if (err.status === 401) {
               this.removeToken();
               // route guard handles the redirection
@@ -257,7 +261,7 @@ export class DashboardServService {
         })
         .subscribe(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.status === "success") {
               resolve(res);
             }
@@ -293,7 +297,7 @@ export class DashboardServService {
             }
           },
           (err: HttpErrorResponse) => {
-            console.log(err);
+            // console.log(err);
             if (err.status === 401) {
               this.removeToken();
               // route guard handles the redirection
@@ -312,14 +316,14 @@ export class DashboardServService {
         })
         .subscribe(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.status === "success") {
               res.data.pg = this.numberOfProductPages(res.data.total);
               resolve(res.data);
             }
           },
           (err: HttpErrorResponse) => {
-            console.log(err);
+            // console.log(err);
             if (err.status === 401) {
               this.removeToken();
               // route guard handles the redirection
@@ -338,14 +342,14 @@ export class DashboardServService {
         })
         .subscribe(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.status === "success") {
               res.data.pg = this.numberOfProductPages(res.data.total);
               resolve(res.data);
             }
           },
           (err: HttpErrorResponse) => {
-            console.log(err);
+            // console.log(err);
             if (err.status === 401) {
               this.removeToken();
               // route guard handles the redirection
@@ -364,14 +368,14 @@ export class DashboardServService {
         })
         .subscribe(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.status === "success") {
               res.data.pg = this.numberOfProductPages(res.data.total);
               resolve(res.data);
             }
           },
           (err: HttpErrorResponse) => {
-            console.log(err);
+            // console.log(err);
             if (err.status === 401) {
               this.removeToken();
               // route guard handles the redirection
@@ -386,7 +390,7 @@ export class DashboardServService {
     return new Promise((resolve, reject) => {
       this.http.get<any>(this._url + "products/" + id).subscribe(
         (res) => {
-          console.log(res);
+          // console.log(res);
           if (res.status === "success") {
             resolve(res.data);
           } else if (res.code === 401) {
@@ -424,7 +428,8 @@ export class DashboardServService {
         )
         .subscribe((resp) => {
           const response = resp as any;
-          console.log("cloudy", response);
+          // console.log('cloudy', response);
+          console.log("create product", product);
 
           // tslint:disable-next-line: max-line-length
           const imgThumbnail = this.makeThumbnail(response);
@@ -457,13 +462,13 @@ export class DashboardServService {
             )
             .subscribe(
               (res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.status === "success") {
                   resolve(res);
                 }
               },
               (err: HttpErrorResponse) => {
-                console.log(err);
+                // console.log(err);
                 if (err.status === 401) {
                   this.removeToken();
                   this.backToLogin();
@@ -474,7 +479,9 @@ export class DashboardServService {
     });
   }
 
-  updateProduct(product: IProduct) {
+  updateProduct(product: IProduct, isImgUpdate: boolean) {
+    const fileName: string =
+      product.name + (isImgUpdate ? Date.now().toString() : "");
     return new Promise((resolve) => {
       this.http
         .post(
@@ -483,13 +490,13 @@ export class DashboardServService {
             "/image/upload/",
           {
             file: product.images[0].url,
-            public_id: "product-" + product.name,
+            public_id: "product-" + fileName,
             upload_preset: cloudinaryConfig.upload_preset,
           }
         )
         .subscribe((resp) => {
           const response = resp as any;
-          console.log("cloudy", response);
+          // console.log('update product', product);
 
           // tslint:disable-next-line: max-line-length
           const imgThumbnail = this.makeThumbnail(response);
@@ -521,17 +528,38 @@ export class DashboardServService {
             )
             .subscribe(
               (res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.status === "success") {
                   resolve(res);
                 }
               },
               (err: HttpErrorResponse) => {
-                console.log(err.error);
+                // console.log(err.error);
               }
             );
         });
     });
+  }
+
+  setProductToOutOfStock(product: IProduct) {
+    const token = this.getToken();
+    return this.http
+      .put<any>(
+        this._url + "products/" + product.id,
+        {
+          name: product.name,
+          category_id: product.category.id,
+          description: product.description,
+          excerpts: product.excerpt,
+          cost: product.cost,
+          discount: +product.discount.substring(0, product.discount.length - 1),
+          quantity: 0,
+        },
+        {
+          headers: new HttpHeaders().set("Authorization", `Bearer ${token}`),
+        }
+      )
+      .toPromise();
   }
 
   updateProductCategory(product: IProduct, newCategoryId: number) {
@@ -559,7 +587,7 @@ export class DashboardServService {
         )
         .subscribe(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.status === "success") {
               resolve(res);
             }
@@ -580,7 +608,7 @@ export class DashboardServService {
         })
         .subscribe(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.status === "success") {
               resolve(res.data);
             } else if (res.code === 401) {
@@ -592,7 +620,7 @@ export class DashboardServService {
             }
           },
           (err: HttpErrorResponse) => {
-            console.log(err);
+            // console.log(err);
             if (err.status === 401) {
               this.removeToken();
               // route guard handles the redirection
@@ -613,18 +641,18 @@ export class DashboardServService {
         })
         .subscribe(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.status === "success") {
               const set = new Set();
-              console.log("res data", res.data);
+              // console.log('res data', res.data);
               (res.data as any[]).forEach((r) => set.add(r));
-              console.log("we set", set);
+              // console.log('we set', set);
               res.data = Array.from(set);
               resolve(res.data);
             }
           },
           (err: HttpErrorResponse) => {
-            console.log(err);
+            // console.log(err);
             if (err.status === 401) {
               this.removeToken();
               // route guard handles the redirection
@@ -650,13 +678,13 @@ export class DashboardServService {
         )
         .subscribe(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.status === "success") {
               resolve(res);
             }
           },
           (err: HttpErrorResponse) => {
-            console.log(err);
+            // console.log(err);
             if (err.status === 401) {
               this.removeToken();
               // route guard handles the redirection
@@ -682,13 +710,13 @@ export class DashboardServService {
         )
         .subscribe(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.status === "success") {
               resolve(res);
             }
           },
           (err: HttpErrorResponse) => {
-            console.log(err);
+            // console.log(err);
             if (err.status === 401) {
               this.removeToken();
               // route guard handles the redirection
@@ -708,13 +736,13 @@ export class DashboardServService {
         })
         .subscribe(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.status === "success") {
               resolve(res);
             }
           },
           (err: HttpErrorResponse) => {
-            console.log(err);
+            // console.log(err);
             if (err.status === 401) {
               this.removeToken();
               // route guard handles the redirection
@@ -729,7 +757,7 @@ export class DashboardServService {
     return new Promise((resolve, reject) => {
       this.http.get<any>(this._url + "tags/" + id).subscribe(
         (res) => {
-          console.log(res);
+          // console.log(res);
           if (res.status === "success") {
             resolve(res.data);
           } else if (res.code === 401) {
@@ -761,14 +789,14 @@ export class DashboardServService {
         })
         .subscribe(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.status === "success") {
               const customers = res.data.filter((r) => !r.is_admin);
               resolve(customers);
             }
           },
           (err: HttpErrorResponse) => {
-            console.log(err);
+            // console.log(err);
             if (err.status === 401) {
               this.removeToken();
               // route guard handles the redirection
@@ -788,7 +816,7 @@ export class DashboardServService {
         })
         .subscribe(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.status === "success") {
               const customers = res.data.filter(
                 (r) => !r.is_admin && r.id === id
@@ -797,7 +825,7 @@ export class DashboardServService {
             }
           },
           (err: HttpErrorResponse) => {
-            console.log(err);
+            // console.log(err);
             if (err.status === 401) {
               this.removeToken();
               // route guard handles the redirection
@@ -818,13 +846,13 @@ export class DashboardServService {
         })
         .subscribe(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.status === "success") {
               resolve(res.data);
             }
           },
           (err: HttpErrorResponse) => {
-            console.log(err);
+            // console.log(err);
             if (err.status === 401) {
               this.removeToken();
               this.backToLogin();
@@ -843,13 +871,13 @@ export class DashboardServService {
         })
         .subscribe(
           (res) => {
-            console.log(res);
+            // console.log(res);
             if (res.status === "success") {
               resolve(res.data);
             }
           },
           (err: HttpErrorResponse) => {
-            console.log(err);
+            // console.log(err);
             if (err.status === 401) {
               this.removeToken();
               this.backToLogin();

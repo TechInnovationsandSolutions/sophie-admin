@@ -13,7 +13,7 @@ export class AuthService {
   // tslint:disable-next-line: variable-name
   // _url = 'https://tis-bandb.herokuapp.com/api/v1/';
   // _url = "https://api.sophiesbathandbody.com/";
-  _url = "http://ec2-52-87-173-131.compute-1.amazonaws.com/api/v1/";
+  _url = "http://api.stmbeautyandbath.com/api/v1/";
 
   constructor(
     private http: HttpClient,

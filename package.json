@@ -23,7 +23,7 @@
     "@angular/router": "~8.2.14",
     "@cloudinary/angular-5.x": "^1.2.0-rc.0",
     "@types/crypto-js": "^3.1.47",
-    "angular-datatables": "^8.0.0",
+    "angular-datatables": "^15.0.0",
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.3",
     "cloudinary-core": "^2.8.1",
@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.22",
-    "@angular/cli": "~8.3.22",
+    "@angular/cli": "~15.1.4",
     "@angular/compiler-cli": "~8.2.14",
     "@angular/language-service": "~8.2.14",
     "@types/datatables.net": "^1.10.18",

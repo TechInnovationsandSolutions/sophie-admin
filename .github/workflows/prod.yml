@@ -23,7 +23,7 @@ jobs:
 
       - name: install dependecies
         run: |
-          npm i --force
+          npm ci --force
 
       - name: build
         run: |
